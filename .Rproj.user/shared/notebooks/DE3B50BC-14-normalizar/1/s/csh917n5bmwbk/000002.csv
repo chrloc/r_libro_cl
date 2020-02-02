@@ -1,0 +1,3 @@
+"0","ind <- sapply(datos[,-1], is.numeric)"
+"0","datos[ind] <- lapply(datos[ind], scale)"
+"0","head(datos[ind])"

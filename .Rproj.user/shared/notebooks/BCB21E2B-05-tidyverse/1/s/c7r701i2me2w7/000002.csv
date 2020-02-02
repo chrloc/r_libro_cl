@@ -1,0 +1,4 @@
+"0","library(tidyverse)"
+"0","nyse <- tq_exchange(""NYSE"")"
+"2","Error in tq_exchange(""NYSE"") : could not find function ""tq_exchange""
+"

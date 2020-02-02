@@ -1,0 +1,77 @@
+# Introducción {#intro}
+
+## Objetivo
+
+El objetivo de esta sección es introducir al lenguaje R, como utilizarla como calculadora, como organizar el código, etc.
+
+## Usar R como "calculadora"
+
+R, como otros lenguajes de programación, se puede utilizar como una calculadora. Esto se muestra a continuación, utilizando algunas operaciones matemáticas comunes como ejemplo.
+
+```{r}
+1+1 # 2
+3 * 4 * 2 # 24
+6 / 2 # 3
+8 / 3 # 2.666667
+3 * 4 + 5 # 17
+3 * (4 + 5) # 27
+```
+
+
+## Asignar un valor numérico a una variable
+
+A continuación, se presentan algunos ejemplos al respecto:
+
+- Asignar el valor "2" a la variable "x"
+- Imprimir el valor de la variable "x" a la consola
+- Asignar el valor "5" a la variable "b", asignar el valor de "b" a la variable "a"
+- Mostrar los valores de "b" y "a"
+- Mostrar la clase del objeto (variable) "a"
+
+Observe, el comando para asignar un valor a una variable (objeto) es: <- (ALT + -)
+
+```{r}
+x <- 2
+x
+a <- b <- 5
+b
+a
+class(a)
+```
+
+## Buscar ayuda
+
+F1
+?+
+Help
+
+### Un ejemplo
+
+La página de ayuda para el paquete "quandmod", que tenemos que cargar pimero. Si faltan otros paquetes, se muestra en la consola un posible mensaje de error, y se deben instalar estos paquetes faltantes antes de realizar este ejemplo.
+
+```{r}
+library(quantmod)
+?quantmod
+```
+
+## Organizar el código
+
+Se recomienda, explorar el siguiente contenido ("style guides") para aprender sobre como "organizar" el código para facilitar su lectura y comprensión:
+
+- Google: https://google.github.io/styleguide/Rguide.html
+- Tidyverse: https://style.tidyverse.org/
+
+## Una opción para explorar: Swirl
+
+Un paquete para ayudar en el proceso de aprender R.
+https://swirlstats.com/students.html
+
+## Ejercicio 1
+
+Utilizando R, calcular **el valor presente** de los siguientes flujos de caja:
+
+Año 1: -300
+Año 2: +100
+Año 3: +250
+
+Tasa de descuento: 7.0% anual.

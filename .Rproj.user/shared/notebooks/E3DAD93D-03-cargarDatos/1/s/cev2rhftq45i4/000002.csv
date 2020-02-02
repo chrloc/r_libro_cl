@@ -1,0 +1,4 @@
+"0","library(tidyquant)"
+"0","tbills <- tq_get(c(""TB1YR"",""TB3MS""), get = ""economic.data"") %>%"
+"0","  group_by(symbol)"
+"0","head(tbills)"

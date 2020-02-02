@@ -1,0 +1,5 @@
+"0","url=""http://freakonometrics.free.fr/german_credit.csv"""
+"0","dataset <- read.csv(url, header = TRUE, sep = "","")"
+"0","library(DataExplorer)"
+"2","package ‘DataExplorer’ was built under R version 3.5.3"
+"0","plot_str(dataset)"

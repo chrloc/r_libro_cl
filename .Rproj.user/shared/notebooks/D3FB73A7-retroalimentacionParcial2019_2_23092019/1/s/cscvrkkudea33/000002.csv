@@ -1,0 +1,36 @@
+"0","fit.cont(datos$ValorMillones)
+"
+"2","
+Begin fitting distributions ---------------------------------------
+"
+"2","* fitting normal distribution ... OK
+"
+"2","* fitting Cauchy  distribution ... OK
+"
+"2","* fitting logistic distribution ... OK
+"
+"2","* fitting beta distribution ... failed
+"
+"2","* fitting exponential distribution ... OK
+"
+"2","* fitting chi-square distribution ... OK
+"
+"2","* fitting uniform distribution ... OK
+"
+"2","* fitting gamma distribution ... OK
+"
+"2","* fitting lognormal distribution ... OK
+"
+"2","* fitting Weibull distribution ... OK
+"
+"2","* fitting F-distribution ... OK
+"
+"2","* fitting Student's t-distribution ... OK
+"
+"2","* fitting Gompertz distribution ... OK
+"
+"2","* fitting triangular distribution ... failed
+"
+"2","End fitting distributions -----------------------------------------
+
+"

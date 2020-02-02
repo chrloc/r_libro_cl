@@ -1,0 +1,221 @@
+# Escalar y normalizar (estandarizar datos) {#normalizar}
+
+## Objetivo
+
+El objetivo de esta sección consiste en explicar, cómo se pueden "escalar" y/o "normalizar" datos en R, para evitar sesgos en el análisis de estos. Además, cómo se puede crear una variable "dummy" en R (one-hot encoding).
+
+## Cargar los datos históricos de un archivo csv
+
+Vamos a utilizar un conjunto de datos de créditos de la web.
+
+Bajar el archivo de los datos de la internet y leer los datos del archivo y asignarlos a una variable "mis.datos".
+
+url <- "http://freakonometrics.free.fr/german_credit.csv"
+datos <- read.csv(url, header = TRUE, sep = ",")
+
+```{r}
+url <- "http://freakonometrics.free.fr/german_credit.csv"
+datos <- read.csv(url, header = TRUE, sep = ",")
+# Estos mismos datos también se pueden bajar de la siguiente dirección:
+# url <-  "https://newonlinecourses.science.psu.edu/onlinecourses/sites/stat508/files/german_credit.csv"
+# datos <- read.csv(url(direccion))
+```
+
+## Analizar los datos de la columna "Credit.Amount" (monto del crédito)
+
+- Analizar los datos de la columna "Credit.Amount", utilizando las funciones summary() y sd(). Esta última para determinar también la desviación estándar (standard deviation) de los datos de esta columna
+
+```{r}
+summary(datos$Credit.Amount)
+sd(datos$Credit.Amount)
+```
+
+Como se puede observar en el resultado, los valores de la variable (Credit.Amount) son "dispersos", ya que existe una diferencia "grande" entre el monto mínimo y máximo y la desviación estándar también es "alta", lo que puede dificultar la implementación de técnicas de analítica de datos y Machine Learning. 
+Recordar, la variable Credit.Amount se refiere a valores que representan dinero, p.ej. dólares.
+
+## Escalar los datos
+
+Escalar datos significa colocar los datos en la misma escala, generalmente, entre 0 y 1. Realizar un escalado de la variable "Credit.Amount" en un rango [0,1] de la siguiente forma y asignar el resultado a la variable datos$Credit.Amount2:
+
+x.escalada = (x - min(x)) / (max(x) - min(x))
+
+Esto se puede lograr más facil, utilizando la función rescale() del paquete scales de R. (Nota: Esto de pronto requiere también de la instalación del paquete "lifecycle" en su equipo de cómputo)
+
+- Observar las primeras seis filas de los datos de la columna Credit.Amount. Todos los valores ahora deben estar entre 0 y 1
+
+```{r}
+library(scales)
+?scales
+datos$Credit.Amount2 <- rescale(datos$Credit.Amount)
+head(datos$Credit.Amount2)
+```
+
+## La normalización de los datos
+
+La normalización significa ajustar los valores medidos en diferentes escalas respecto a una escala común. El objetivo de la normalización es "eliminar" variaciones sistemáticas, conservando la señal en los datos.
+
+Se pueden normalizar únicamente columnas con datos numéricos.
+
+- Realizar esta normalización para todos los datos del data frame "datos", menos la viable de salida (aquí: Creditability) y asignar el resultado a una variable "datos2"
+- Utilizar el paquete tidyverse (dplyr) y la función mutate_if() para realizar una prueba, si los datos son "númericos"
+- Recordar, en "datos" solo existen datos "numéricos", pero se debe utilizar mutate_if(). Esta función aplica de forma condicional una función. En el presente caso se trata de is.numeric(), que actúa como un filtro condicional
+- Mostrar las primeras seis filas de "datos2"
+- Reflexionar, si es realmente "adecuado" normalizar todas las variables de entrada, tomando en cuenta la naturaleza de los datos de este ejemplo
+
+```{r}
+ind <- sapply(datos[,-1], is.numeric)
+datos[ind] <- lapply(datos[ind], scale)
+head(datos[ind])
+```
+
+Con tidyverse:
+
+library(tidyverse)
+datos.normalizados <- datos[,-1] %>% 
+  mutate_if(is.numeric, scale)
+head(datos.normalizados)
+
+### Comprobar el resultado
+
+Queremos comprobar, si el resultado tiene una media de 0 y una desviación estándar (sd) de 1.
+
+- Utilizar la función colMeans() y sd() 
+- Observar: La media esta "cerca" de "0" y la desviación estándar es "1" para las variables
+- Reflexionar sobre lo siguiente: Algunas variables son categóricas, aunque estas tienen valores numéricos. Sin embargo, estos valores númericos representan una categoría. ¿Este hecho afecta la normalización?
+
+```{r}
+colMeans(datos[ind])  # version más rápida de apply(datos[ind], 2, mean)
+apply(datos[ind], 2, sd)
+```
+
+## Escala logarítmica
+
+La escala logarítmica informa sobre los cambios relativos (multiplicativos), mientras que la escala lineal informa sobre los cambios absolutos (aditivos). ¿Cuándo se usa cada uno? Debes usar una escala logarítmica cuando el porcentaje cambia, o el cambio, en órdenes de magnitud, es más importante que cambios en
+unidades absolutas. Es de resaltar, lo que constituye una "diferencia significativa" depende del orden de magnitud de los valores, p.ej. ingresos, que se analizan. En una población donde algunas personas tienen ingresos muy altos, estos datos (observaciones) se compriman en una zona relativamente pequeña de la distribución de ingresos. Es decir, si la distribución es sesgada, es una buena idea utilizar una escala logarítmica (Zumel, N., & Mount, J. (2014). Practical data science with R. Manning Publications Co., véase Anexo B).
+
+**Ejemplo - Bolsa de Valores.**
+
+La acción A cotiza en el día 1: \$ 100. En el día 2: \$ 101. Normalmente, se informa este cambio de dos maneras: (1) + \$ 1. (2) + 1%. El primero es una medida de cambio absoluto y aditivo, el segundo una medida de cambio relativo.
+(Fuente: https://stats.stackexchange.com/questions/18844/when-and-why-should-you-take-the-log-of-a-distribution-of-numbers)
+
+Ejemplo:
+
+La acción A sube de \$ 1 a \$ 1.10. La acción B de \$ 100 a \$ 110.
+
+La acción A ganó 10%, la acción B ganó 10% (escala relativa, igual), pero la acción A ganó 10 centavos, mientras que la acción B ganó \$ 10 (B ganó más cantidad absoluta en dólares).
+
+Si tomamos el log, los cambios relativos aparecen como cambios absolutos.
+
+La acción A aumenta de log10 (\$ 1) a log10 (\$ 1.10) = 0 a .0413
+La acción B aumenta de log10 (\$ 100) a log10 (\$ 110) = 2 a 2.0413
+
+Ahora, tomando la diferencia absoluta en el espacio logarítmico, encontramos que ambos cambiaron en .0413.
+
+El cálculo en R para la situación A y B:
+
+```{r}
+# A
+log10(1.10) - log10(1)  # 0.04139269
+# B
+log10(110) - log10(100) # 0.04139269
+```
+
+
+### Un ejemplo - retornos logarítmicos
+
+Bajando datos bursátiles desde yahoo con el paquete quantmod.
+
+- Cargar el paquete "quantmod"
+- Este paquete requiere que se defina un entorno (environment): new.env()
+
+```{r}
+library(quantmod)
+?quantmod
+stockData <- new.env() #Generar un entorno nuevo para que quantmod pueda guardar los datos en este entorno
+```
+
+- Definir una fecha de inicio y final para bajar los datos. - Utilizar como fecha final la fecha actual y como fecha de inicio la fecha final menos 30 días.
+
+```{r}
+startDate = Sys.Date() - 30  # o as.Date("2019-07-01")
+endDate = Sys.Date()
+```
+
+- Definir una lista de los tickers (empresas) para las cuales se requieren los datos. P.ej. Amazon: ticker - AMZN
+- Descargar los datos históricos de la/s acción/es (para todos los tickers), utilizando la función getsymbols() de quantmod
+
+```{r}
+tickers <- c("AMZN")
+getSymbols(tickers, 
+           env = stockData, 
+           src = "yahoo", 
+           from = startDate, 
+           to = endDate)
+```
+
+- Analizar las primeras 6 filas de estos datos ya descargados
+- Observar la clase de los datos (class())
+
+```{r}
+head(stockData$AMZN)
+class(stockData) # environment
+```
+
+- Determinar los retornos logarítmicos con base en los precios de la columna "AMZN.Close" y asignar el resultado a una variable "prices"
+- Imprimir a la pantalla las primeras seis filas de los retornos logarítmicos calculados
+
+```{r}
+prices <- stockData$AMZN$AMZN.Close
+log_returns <- diff(log(prices), lag=1)
+head(log_returns)
+```
+
+En las finanzas es común trabajar con retornos logarítmicos.
+
+
+## Creando variables dummy (one-hot encoding)
+
+En situaciones, donde tenemos variables categóricas (factores), pero necesitamos usarlas en métodos analíticos que requieren números, como por ejemplo en k vecinos más cercanos (KNN) o regresión lineal, necesitamos crear variables "dummy".
+
+- Utilizar el paquete "dummies" y la función dummy() para generar una variable dummy para los datos de la columna "Type.of.apartment" del data frame "datos", que trabajamos al inicio de esta sección, y asignar el resultado a una variable "datos$Dummy.Apartment.Type"
+- Mostrar en la pantalla los datos para las primeras 10 filas de "datos$Dummy.Apartment.Type"
+- Interpretar este resultado
+
+```{r}
+library(dummies)
+datos$Dummy.Apartment.Type <- dummy(datos$Type.of.apartment)
+head(datos$Dummy.Apartment.Type, n = 10)
+```
+
+*Otro ejemplo:*
+
+Fuente: https://stackoverflow.com/questions/11952706/generate-a-dummy-variable.
+
+
+- Crear un data frame "df1" con 4 años: 2016 hasta 2019, que tiene una columna id: 1-4 y luego una columna con los años mencionados, utilizando la función cbind()
+- Luego, generar las columnas con las variables dummy y sus valores, utilizando la función dummy() del paquete dummies
+- Mostrar el resultado (de df1) en la pantalla, utilizando la función print()
+
+Es decir, el resultado se debe presentar de la siguiente forma:
+
+|   id | year | df1_2016 | df1_2017 | df1_2018 | df1_2019 |
+|------|------|----------|----------|----------|----------|
+| 1    | 2016 |        1 |      0   |     0    |    0     |
+| 2    | 2017 |        0 |      1   |     0    |    0     |
+| 3    | 2018 |        0 |      0   |     1    |    0     |
+| 4    | 2019 |        0 |      0   |     0    |    1     |
+
+
+```{r}
+library(dummies)
+df1 <- data.frame(id = 1:4, year = 2016:2019)
+df1 <- cbind(df1, dummy(df1$year, sep = ""))
+print(df1)
+```
+
+## Ejercicio 11
+
+- Utilizar el paquete "ISLR" y el dataset "Smarket", que viene con este paquete, y 
+- "escalar" los datos de la columna "Lag1" de este dataset, utilizando el paquete "scales", y asignar el resultado a una variable "Lag1.scaled"
+- Mostrar las últimas 10 filas del resultado en la pantalla
+

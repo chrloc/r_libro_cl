@@ -1,0 +1,5 @@
+"0","set.seed(123)"
+"0","d = sort(sample(nrow(mis.datos),nrow(mis.datos)*0.66, replace=FALSE))"
+"0","# dividir en una conjunto de  training y test set"
+"0","train_data <- mis.datos[d, ]"
+"0","test_data  <- mis.datos[-d, ]"

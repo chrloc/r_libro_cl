@@ -1,0 +1,5 @@
+# Palabras finales
+
+Terminamos una breve introducción a R con un enfoque financiero y adminstrativo, presentando ejemplos de código al respecto.
+
+Ojála, el contenido del librito sea una "ayuada" para aumentar su "productividad".

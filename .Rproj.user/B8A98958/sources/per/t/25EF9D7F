@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1552741844653.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3611134323",
+    "id" : "25EF9D7F",
+    "lastKnownWriteTime" : 1552791784,
+    "last_content_update" : 1552791784088,
+    "path" : "~/r_libro_cl/06-buckles.Rmd",
+    "project_path" : "06-buckles.Rmd",
+    "properties" : {
+        "cursorPosition" : "119,31",
+        "scrollLine" : "83"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

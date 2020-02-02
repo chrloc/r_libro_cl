@@ -1,0 +1,261 @@
+# Bucles {#bucles}
+
+## ¿Qué son las funciones del tipo "apply()" ? Respuesta: bucles o loops
+
+1. apply - se utiliza para una matriz. Para "iterar" sobre sus filas o columnas.
+2. tapply - se utiliza para una matriz para extraer subconjuntos de datos y aplicar una función sobre ellos. Para data frames es parecido al concepto de "group by" en SQL
+3. eapply - se utiliza para un entorno (environment (E))
+4. lapply - se utiliza para iterar sobre los elementos de una lista ( list (L))
+5. sapply - una versión más sencilla de lapply. Es decir, simplifica el resultado (simplify (S)), ya que el resultado no se muestra como una lista, sino como matriz o vector
+6. vapply - devuelve un valor predeterminado (pre-defined return value (V))
+7. replicate - ejecuta una funciòn varias veces y se utiliza, en tèrminos generales, en la generaciòn de números (variables) aleatorios
+8. mapply - versión multivariada (multivariate (M)) de sapply. Los argumentos de la función se pueden "reciclar"
+9. rapply - una versión recursiva de lapply (recursive (R) version)
+
+A continuación, no s enfocamos en la aplicación de las funicones: apply, lapply y sapply.
+Dónde, apply se utiliza para matrices y lapply y sapply para listas y vectores.
+
+Consultar la ayuda para la función apply.
+
+```{r}
+?apply
+```
+
+Apply tiene la siguiente signatura: apply(X, MARGIN, FUN, ...) 
+Donde, x es una matriz y margin es 1 (rows) o 2 (columns) y FuN es una función (function), p.ej. parecido a la función promedio: mean()
+
+Vamos a generar primero "manualmente" un data frame con los siguientes datos para poder demostrar después el funcionamiento de las funciones del tipo apply()
+
+|id |	Nombre	|Apellido	 |Ingresos	|Egresos	|Calificación
+----|---------|----------|----------|---------|------------
+|1  |	Jimmy	  |Toro		   |4000000	  |3500000	|80
+|2  |	Joe	    |Arango		 |3500000	  |4000000	|20
+|3  |	Diana	  |Ramirez	 |3000000	  |3000000	|50
+|4  |	Cris	  |Mesa		   |2500000	  |2000000	|70
+|5  |	Manuela	|Meier		 |2000000	  |1000000	|70
+|6  |	Lucia	  |Müller		 |1500000	  |1400000	|45
+|7  |	Andres	|Avelaez	 |1000000	  |1000000	|40
+|8  |	Bill	  |Jaramillo |750000		|800000		|10
+|9  |	Gabriel	|Arias	   |500000		|500000		|12
+|10 |	Javier	|Gomez		 |450000		|450000		|10
+
+```{r}
+dataset <-  data.frame(id= 1:10,
+                       Nombre = c("Jimmy", "Joe", "Diana", "Cris", "Manuela", "Lucia", 
+                                  "Andres", "Bill", "Gabriel", "Javier"),
+                       Apellido = c("Toro", "Arango", "Ramirez", "Mesa", "Meier", "Müller", 
+                                    "Avelaez", "Jaramillo", "Arias", "Gomez"),
+                       Ingresos = c(4000000, 3500000, 3000000, 2500000, 2000000, 1500000, 1000000, 750000, 500000, 450000),
+                       Egresos = c(3500000, 4000000, 3000000, 2000000, 1000000, 1400000, 1000000, 800000, 500000, 450000),
+                       Calificacion = c(80, 20, 50, 70, 70, 45, 40, 10, 12, 10)
+                       )
+
+class(dataset)
+print(dataset) # imprimir el dataset a la pantalla (consola)
+```
+
+Determinar el valor maximo para las filas (para cada fila) del dataset.
+
+```{r}
+apply(dataset, 1, max) # 1 = por filas
+```
+Determinar el valor maximo para las columnas (para cada columna) del dataset.
+
+```{r}
+apply(dataset, 2, max) # 1 = por columnas
+```
+
+Determinar si dataset tiene datos faltantes.
+
+```{r}
+apply(dataset, 2, is.na)
+```
+
+Determinar la estructura del dataset
+
+```{r}
+str(dataset)
+```
+
+```{r}
+dataset.num <- dataset[ , c("id", "Ingresos", "Egresos", "Calificacion")]
+print(dataset.num)
+```
+
+```{r}
+apply(dataset.num, 2, mean) # calcula el promedio por columna (2)
+mean(dataset$Ingresos) # validación para la columna "ingresos"
+```
+
+
+apply(Chicago, 1, mean) # you get the average value for each row
+#check for the 3rd row, which is named AvgPrecip_inch
+mean(Chicago[3,]) # 3.253333
+mean(Chicago["AvgPrecip_inch", ]) # the same result
+#analyze one city
+Chicago
+apply(Chicago, 1, max)
+apply(Chicago, 1, min)
+# just for practice (as it does not make much sense, but it is a good exercise)
+# apply for columns
+apply(Chicago, 2, max)
+apply(Chicago, 2, min)
+# compare the cities site by site
+apply(Chicago, 1, mean) 
+apply(NewYork, 1, mean) 
+apply(Houston, 1, mean) 
+apply(SanFrancisco, 1, mean) 
+# that result is almost the deliverable
+# how to make a table from these results?
+
+# video 41 - recreating the apply function with loops
+# its more a conceptual video
+Chicago
+# find the mean of every row
+# 1. via loops
+output <- NULL #preparing an empty vector
+# using a loop with a counter i which represents the rows
+nrow(Chicago) # 5
+for(i in 1:5){
+	output[i] <- mean(Chicago[i,])
+}
+output # [1]  59.333333  43.250000   3.253333   9.916667 208.666667
+#assign names for the output vector
+rownames(Chicago)
+names(output) <-  rownames(Chicago) # this assigns column names
+# check, if we have a named vector
+output
+# 2. via apply function
+apply(Chicago, 1, mean) # gives the same result using only one line of code
+# conclusion: apply is shorter and faster than a loop
+
+# video 42 - using lapply()
+?lapply # returns a list
+# ejercise transpose chicago
+t(Chicago) # transpose the matrix
+Chicago
+Weather # a whole list of weather data (for the four cities)
+#  how would I apply the transposed function (t()) to each matrix of the weather list and put the result into a list?
+t(Weather$Chicago)
+t(Weather$NewYork)
+t(Weather$Houston)
+t(Weather$SanFranciso)
+# that's very long, especially if you have many cities...
+# so lets look for a more efficient way:
+# lapply (applies a function to all items ) !!!
+lapply(Weather, t) # = t(Weather$Chicago), t(Weather$NewYork), t(Weather$Houston), t(Weather$SanFranciso)
+mynewlist <- lapply(Weather, t)
+mynewlist
+# example 2
+Chicago
+#add a new row, using row bind (rbind())
+rbind(Chicago, NewRow=1:12) # as we have data of 12 month
+# use lapply to do it for every city which is in the Weather data
+# notice rbind is FUN and NewRow=1:12 is a parameter that will be passed to FUN
+lapply(Weather, rbind, NewRow=1:12)
+#example 3
+?rowMeans # calculates the mean for all rows
+rowMeans(Chicago) # identical to apply(Chicago,1 , mean)
+# apply rowMeans to every single city (item) of the Weather data
+lapply(Weather, rowMeans) # the result is a list
+# almost the result, but has to be improved further
+
+#rowMeans()
+#colMeans()
+#rowSums()
+#colSums()
+
+# video 43 -  combining lapply() with []
+Weather # our Weather list
+Weather$Chicago[1,1] # equivalent to: Weather[[1]][1,1]
+# how to we extract this first row and first column value for the cities in the Weather data?
+# we have to iterate over the four elements (cities) of the weather list
+# i.e. Weather[1][1,1], Weather[[2]][1,1], Weather[[3]][1,1], Weather[[4]][1,1]
+# lets do that with lapply
+lapply(Weather, "[", 1, 1) # 32  39   63   57
+#where [ refers to the second brackets as R knows that we iterate over the components of the Weather list
+
+# the first row for every single city?
+lapply(Weather, "[", 1,)
+# values just for the month of march (third column) ?
+lapply(Weather, "[", ,3 )
+
+# video 44 - adding your own functions
+lapply(Weather, rowMeans) #rowMeans() is a pre-defined function
+# lets replace it with our own function
+lapply(Weather, function(x) x[1,] ) # the function takes the component (city) and applies the square brackets
+# first rwo of our Weather matrix
+lapply(Weather, function(x) x[5,] )
+#lets look at december data only (column: 12)
+lapply(Weather, function(x) x[,12] )
+
+#calculate a difference: values of first row - values of second row
+lapply(Weather, function(z) z[1,]-z[2,])
+# convert into relative Changes, i.e. divide through the base
+lapply(Weather, function(z) round((z[1,]-z[2,])/z[2,],2))
+# that is deliverable #2 temp fluctuations. However, we will improve this result
+
+# video 45 - Using sapply()
+?sapply
+# sapply is a simpler version of lapply as it returns a vector or matrix (and not a list)
+Weather
+#AvgHigh_F (1st row) for July (column 7)?
+lapply(Weather, "[" , 1, 7)
+# now use sapply(), which returns a vector, which is more readable
+sapply(Weather, "[" , 1, 7)
+
+# AVGHigh_F for 4th quarter (columns 10 till 12)
+lapply(Weather, "[" , 1, 10:12)
+sapply(Weather, "[" , 1, 10:12) # much more beautiful (a matrix)
+
+# antother example
+lapply(Weather, rowMeans)
+sapply(Weather, rowMeans) # a nice matrix
+#...even better
+round(sapply(Weather, rowMeans), 2) # that is the required deliverable #1
+
+# Another example:
+lapply(Weather, function(z) round((z[1,]-z[2,])/z[2,],2))
+sapply(Weather, function(z) round((z[1,]-z[2,])/z[2,],2))
+# that is deliverable #3
+
+# by the way
+sapply(Weather, rowMeans)
+sapply(Weather, rowMeans, simplify=FALSE) # same as lapply
+
+# video 46 - nesting apply() functions
+Weather
+lapply(Weather, rowMeans)
+?rowMeans
+#how to we get maximums
+Chicago
+apply(Chicago, 1, max) # for Chicago (first component of the list Weather) take the first row and determine the max values (for each month, i.e. column)
+# lets apply it to all the cities
+# apply accross the whole list of cities of the Weather data
+lapply(Weather, apply, 1 , max)
+lapply(Weather, function(x) apply(x, 1 , max)) # gives the same result
+#apply will iterate through the list of cities and will pass the matrix through apply and will take the optional parameters: 1, max
+
+# make it tidy
+sapply(Weather, apply, 1 , max) # deliverable 3
+sapply(Weather, apply, 1 , min) # deliverable 4
+
+# video 47 - which.max() and which.min()
+# which.max
+sapply(Weather, apply, 1 , max) # deliverable 3
+#when was the highest temperature (which month)
+?which.max
+chicago
+Chicago[1,]
+which.max(Chicago[1,]) # Jul 7
+names(which.max(Chicago[1,]) ) # Jul
+# do it for all rows of one city (-> apply) and all cities (->lapply or sapply)
+# apply iterates over rows of a matrix and
+# lapply or sapply iterates over the components (cities) of a list
+apply(Chicago, 1, function(x) names(which.max(x) ) ) # x receives the result of  Chicago, 1
+lapply(Weather, function(y) apply(y, 1, function(x) names(which.max(x) ) ))
+# the result of y gets passed to x
+# make it beautiful...
+sapply(Weather, function(y) apply(y, 1, function(x) names(which.max(x) ) ))
+#wow
+

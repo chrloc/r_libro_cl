@@ -1,0 +1,54 @@
+"0","library(tidyverse)"
+"0","library(rvest)"
+"2","Loading required package: xml2
+"
+"2","
+Attaching package: ërvestí
+
+"
+"2","The following object is masked from ëpackage:purrrí:
+
+    pluck
+
+"
+"2","The following object is masked from ëpackage:readrí:
+
+    guess_encoding
+
+"
+"0","url = ""https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population"""
+"0","urldata <- read_html(url)"
+"0","class(urldata)"
+"1","[1]"
+"1"," ""xml_document"""
+"1"," ""xml_node""    "
+"1","
+"
+"0","tab <- urldata %>% html_nodes(""table"")"
+"0","tab"
+"1","{xml_nodeset ("
+"1","2"
+"1",")}
+"
+"1","[1] <table class=""wikitable sortable"" style=""text-ali ..."
+"1","
+"
+"1","[2] <table class=""nowraplinks hlist mw-collapsible au ..."
+"1","
+"
+"0","tab[[1]] # el primer elemento es la tabla que se quiere cargar..."
+"1","{xml_node}
+"
+"1","<table class=""wikitable sortable"" style=""text-align:right"">"
+"1","
+"
+"1","[1] <tbody>\n<tr>\n<th data-sort-type=""number"">Rank</ ..."
+"1","
+"
+"0","tab <- tab[[1]] %>% html_table(header = TRUE, fill = TRUE)"
+"0","class(tab) # data frame"
+"1","[1]"
+"1"," ""data.frame"""
+"1","
+"
+"0","View(tab) # ... y los contenidos se cargaron m√°s o menos bien, en t√©rminos del formato ..."

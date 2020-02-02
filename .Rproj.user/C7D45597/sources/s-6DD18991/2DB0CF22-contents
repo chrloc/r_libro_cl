@@ -1,0 +1,6 @@
+book_filename: "r_libro_cl"
+output_dir: docs
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Sección "

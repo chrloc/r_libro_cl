@@ -1,0 +1,2 @@
+"0","#dataset3 <- read.csv(file.choose(), header=TRUE)"
+"0","#str(dataset3)"

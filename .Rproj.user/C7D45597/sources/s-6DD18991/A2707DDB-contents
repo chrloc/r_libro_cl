@@ -1,0 +1,202 @@
+# Árbol de decisión - Decision Tree {#arbolDec}
+
+## Objetivo
+
+El objetivo en este ejemplo consiste en clasificar datos de créditos (credit data), utilizando un modelo de árbol de decisión (AD)
+
+Vamos a utilizar los datos de crédito que están disponibles en línea como archivo csv, en la siguiente dirección (url), para clasificarlos en dos grupos (clases): "buena paga" y "mala paga"
+
+## Cargar los datos
+
+Bajar el archivo de los datos de la internet y leer los datos del archivo y asignarlos a una variable "dataset"
+
+url <- "http://freakonometrics.free.fr/german_credit.csv"
+dataset <- read.csv(url, header = TRUE, sep = ",")
+
+```{r}
+url <- "http://freakonometrics.free.fr/german_credit.csv"
+dataset <- read.csv(url, header = TRUE, sep = ",")
+# Estos mismos datos también se pueden bajar de la siguiente dirección:
+# url <-  "https://newonlinecourses.science.psu.edu/onlinecourses/sites/stat508/files/german_credit.csv"
+# credit <- read.csv(url(direccion))
+```
+
+## Explorar los datos
+
+- Mostrar las primeras seis filas de los datos (dataset) en la pantalla
+- Analizar la estructura de los datos
+- Determinar la clase de los datos (class())
+- Realizar una estadística descriptiva de los datos, utilizando la función summary()
+
+Observe: Todos los datos son "numéricos"
+
+¿Cuál es la variable de salida, cuáles son variables de entrada para el modelo (aquí: árbol de decisión)?
+
+```{r}
+print(head(dataset))
+str(dataset)
+class(dataset) # data.frame
+summary(dataset)
+```
+
+## Mejorar los nombres (etiquetas) de las columnas del dataset
+
+- Mostrar primero estos nombres. Es decir, los nombres de las columnas del dataset
+
+```{r}
+colnames(dataset)
+```
+
+## Transformar algunos datos
+
+Asignar los siguientes nombres nuevos para las columnas del dataset.
+
+newColNames <- c("Creditability_Default",
+              "Account_Balance",
+              "Duration_Credit_Month",
+              "Pmt_Status_Prev_Cred",
+              "Purpose",
+              "Credit_Amount",
+              "Value_Savings_Stocks",
+              "Length_current_employment",
+              "Instalment_per_cent",
+              "Sex_Marital_Status",
+              "Guarantors",
+              "Duration_current_address",
+              "Most_value_avail_asset",
+              "Age_years",
+              "Concurrent_Credits",
+              "Type_of_apartment",
+              "No_of_Credits_at_this_Bank",
+              "Occupation",
+              "No.of.dependents",
+              "Telephone",
+              "Foreign_Worker"
+              )
+
+```{r}
+newColNames <- c("Creditability_Default",
+              "Account_Balance",
+              "Duration_Credit_Month",
+              "Pmt_Status_Prev_Cred",
+              "Purpose",
+              "Credit_Amount",
+              "Value_Savings_Stocks",
+              "Length_current_employment",
+              "Instalment_per_cent",
+              "Sex_Marital_Status",
+              "Guarantors",
+              "Duration_current_address",
+              "Most_value_avail_asset",
+              "Age_years",
+              "Concurrent_Credits",
+              "Type_of_apartment",
+              "No_of_Credits_at_this_Bank",
+              "Occupation",
+              "No.of.dependents",
+              "Telephone",
+              "Foreign_Worker"
+              )
+#Asignar estos nombres para utilizarlos a partir de ahora
+names(dataset) <- newColNames
+colnames(dataset)
+```
+
+- Analizar la variable dependiente (variable de salida): Creditability_Default, en términos de una tabla que muestra las frecuencias para los valores "0" y "1"
+
+¿Cuál es el valor para "buena paga"?  ¿"0" o "1"?
+
+```{r}
+table(dataset$Creditability_Default)
+prop.table(table(dataset$Creditability_Default)) # lo mismo pero como porcentajes
+```
+
+- Determinar la clase de la variable (columna) "Creditability_Default"
+
+```{r}
+class(dataset$Creditability_Default) # integer
+```
+
+- Transformar esta variable (dependiente) en una variable categórica (factor)
+
+```{r}
+dataset$Creditability_Default <- as.factor(dataset$Creditability_Default)
+str(dataset$Creditability_Default)
+```
+
+## Particionar los datos
+
+- Particionar (dividir) los datos en dos partes, de forma aleatoria. En una parte (un grupo) de *entrenamiento* (credit_train) y otra de *prueba* (credit_test), utilizando una relación 66% (nombre: credit_train) y 34% (nombre: credit_test)
+- Utilizar la función sample() y la semilla 123 para hacer los resultados reproducibles (set.seed())
+- Nota: La cantidad de los datos se puede determinar con: nrow(dataset)
+
+```{r}
+set.seed(123)
+d = sort(sample(nrow(dataset),nrow(dataset)*0.66, replace=FALSE))
+# dividir en una conjunto de training y test set
+credit_train <- dataset[d, ]
+credit_test  <- dataset[-d, ]
+```
+
+- Luego, verificar las proporciones entre estos dos grupos con respecto a la variable de salida (variable de predicción)
+
+```{r}
+prop.table(table(credit_train$Creditability_Default))
+prop.table(table(credit_test$Creditability_Default))
+```
+
+Como se puede observar a través del resultado, las proporciones no se conservaron exactamente, pero aproximadamente
+
+## Construir el modelo (árbol de decisión, AD)
+
+- Analizar el paquete "C50", que permite construir un árbol de decisión
+- Construir un árbol de decisión sencillo con el nombre "credit_DT_model", utilizando el paquete C50 (con "C" mayúscula), la función C50() y los datos de entrenamiento
+- Excluir de los datos la columna "Telephone" (porque no explica si un cliente es de "buena o de mala paga") y adicionalmente la variable de salida (variable de predicción)
+- Mostrar los resultados (output), utilizando la función summary() y analizarlos
+- ¿Cuál es la variable más importante para estimar, si un cliente es de "buena paga" o "mala paga"?
+
+```{r}
+library(C50)
+?C5.0
+# create the DT
+credit_DT_model <- C5.0(credit_train[ , -c(1,20)], credit_train$Creditability_Default) # -1 excluye la columna Creditability_Default y -20 la columna del Telephone
+summary(credit_DT_model)                       
+```
+
+## Realizar la predicción con base en el modelo
+
+- Utilizar el modelo anteriormente generado para hacer una predicción (prediction vector), utilizando la función predict() y los datos de prueba (credit_test).
+- Asignar el resultado de la predicción a la variable "credit_pred".
+
+```{r}
+credit_pred <- predict(credit_DT_model, credit_test)
+```
+
+## Evaluar el desempeño del modelo (árbol de decisión)
+
+- Evaluar el desempeño del modelo, generando una matriz de error (matriz de confusión o matriz de clasificación) con respecto a la variable de predicción (variable de salida), utilizando los datos de prueba 
+- Esta matriz se puede crear, utilizando el paquete "gmodels" y la función CrossTable() o simplemente usando la función table(), que genera una tabla más sencilla, pero con la misma cantidad de observaciones
+
+- Explicar, cómo se debe interpretar el contenido de la tabla
+- ¿Cuántos "0" clasificó bien el modelo?
+
+```{r}
+library(gmodels)
+CrossTable(credit_test$Creditability_Default, credit_pred)
+#Alternativa
+table(credit_test$Creditability_Default, credit_pred)
+```
+
+## Ejercicio 9
+
+Realizar un árbol decisión en R, utilizando el paquete "ISLR" y el dataset "Smarket", que viene con este paquete, para clasificar los datos del dataset con el objetivo de determinar, si el mercado (índice S&P500) va a subir o bajar.
+
+- Mostrar las primeras 3 filas de este dataset "Smarket" y analizar de esta forma las columnas (variables) del dataset. Nota: Las variables "Lag.." se refieren a precios determinados en el mercado de capitales (S&P Stock Market Data) y refleja rendimientos diarios de este índice búrsatil, expresado como porcentaje. Utilizar el comando "?Smarket" para consultar las páginas de ayuda al respecto
+- Mostrar, la estructura de este dataset, utilizando la función str()
+- Utilizando la semilla 123 (set.seed(123)), dividir los datos en una parte de entrenamiento (train_data) y otra parte de pruebas (test_data). 66% del total de los datos se deben utilizar para el entrenamiento y el resto para las pruebas (test_data)
+- Analizar el paquete "C50", que permite construir un árbol de decisión
+- Construir un árbol de decisión sencillo con el nombre "modelo.AD", utilizando el paquete C50 (con "C" mayúscula), la función C50() y los datos de entrenamiento
+- Mostrar los resultados (output), utilizando la función summary() y analizarlos
+- Realizar la predicción, utilzando el modelo construido y los datos de prueba (test_data), asignando el resultado a una variable "pred"
+- Mostrar el resultado de la clasificación en una tabla, utilizando p.ej. la función table()
+- Interpretar el resultado obtenido

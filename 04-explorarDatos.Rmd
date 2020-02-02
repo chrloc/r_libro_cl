@@ -1,0 +1,172 @@
+# Explorar datos {#explorar}
+
+## Objetivo
+
+El objetivo de esta sección consiste en presentar diferentes formas para realizar EDA - Exploratory Data Analysis. La presentación incluye formas gráficas al respecto.
+
+Para empezar con una "exploración" necesitamos datos. P.ej. algunos datos de la web, desde un archivo csv ... [véase](#cargar)
+http://freakonometrics.free.fr/german_credit.csv
+
+```{r}
+url="http://freakonometrics.free.fr/german_credit.csv"
+dataset <- read.csv(url, header = TRUE, sep = ",")
+```
+
+## Desarrollar un entendimiento inicial del conjunto de datos
+
+- Mostrar la clase del dataset
+- Explorar las dimensiones del dataset
+- Ver las primeras 6 filas del dataset
+- Explorar la estructura del dataset
+- Mostrar un resumen estadístico de las variables del dataset
+
+```{r}
+class(dataset)
+dim(dataset) 
+head(dataset) 
+str(dataset) 
+summary(dataset) 
+```
+
+## Comprobar, si existen datos faltantes
+
+Se debe analizar, si existen datos faltantes en el dataset, ya que la falta de datos afecta la calidad de los datos y puede "sesgar" el análisis de los mismos
+
+### Opción 1
+
+- Utilizar la función is.na() para determinar si existen datos faltantes (NAs) y mostrar las primeras 6 filas al respecto
+
+```{r}
+head(is.na(dataset)) # muestra el valor True para un dato faltante
+```
+
+### Opción 2
+
+Si se trata de un conjunto de datos con muchos datos, es mejor analizar los datos faltantes de forma gráfica, utilizando el paquete "Amelia" y la función missmap(). En este caso de nuestro dataset no existen datos faltantes, como se puede observar en la gráfica abajo arrojada por missmap
+
+```{r}
+if(!require('Amelia')) install.packages('Amelia'); library(Amelia)
+missmap(dataset, main="Datos faltantes en el conjunto de datos - dataset", col=c("red","grey"),legend=FALSE)
+```
+
+### Opción 3
+
+La función summary() muestra, si hay datos faltantes para una variable del conjunto de datos (dataset). Si existen datos faltantes, esto se indica como NAs.
+
+- Usar la función summary() es muy útil y común, ya que el resultado muestra una estadística descripitva para cada atributo (coloumna) de los datos de forma resumida. 
+- Nota: Como se muestra el resultado depende del tipo de una variable. El resultado de una variable continúa se muestre diferente al resultado de una variable categórica
+
+```{r}
+summary(dataset)
+```
+
+### Opción 4
+
+- Cargar el paquete "ez" y ejectuar la función exPrecis() para el conjunto de datos (dataset)
+
+```{r}
+if(!require('ez')) install.packages('ez'); library(ez)
+ezPrecis(dataset)
+```
+
+## Visualizaciones para explorar datos
+
+- Utlizar el paquete "ggplot2" para la visualización de los datos y el paquete "farver" (High Performance Colour Space Manipulation)
+- Utilizar el diagrama de bigote (diagrama de caja o boxplot), únicamente para variables continuas, para visualizar datos extremos (outliers)
+- Aquí, generar un boxplot para las 2 variables "Creditibility" (lo que significa default) y "Credit.Amount" (Monto del crédito) del dataset
+
+```{r}
+library(ggplot2)
+library(farver)
+dataset.boxplot <- ggplot(data=dataset, aes(x = as.factor(Creditability), y = Credit.Amount))
+# agregar la capa del boxplot mediante la función geom_boxplot()
+dataset.boxplot + geom_boxplot()
+# y utilizar etiquetas adecuadas mediante la función labs()
+dataset.boxplot + geom_boxplot() + labs(x="Default (0 or 1)", y = "Amount")
+```
+
+- Utilizar histogramas. Estos diagramas se pueden utilizar para variables continuas y categóricas (factor)
+- Histogramas proveen información sobre un posible sesgo en la distribución de los datos (skewness) y sobre su nivel de levantamiento o cuán aplanada es la distribución (kurtosis). Es decir, se puede ver el nivel de normalidad de la distribución
+
+```{r}
+dataset.histogram <-ggplot(data=dataset, aes(x = Creditability)) + theme(legend.position="none")
+dataset.histogram + geom_bar(colour="darkgreen", fill="white" ) + labs(x="Default 0 or 1", y="Frequency")
+```
+
+## Guardar un histograma
+
+- Guardar la gráfica en un archivo de tipo "png", bajo el nombre "HistogramDefault.png" en el directorio de trabajo de R, utilizando la función ggsave()
+- Comprobar en el directorio de trabajo, si usted puede encontrar este archivo en este lugar (una vez guardado) y abrirlo con un visor de imágenes (herramienta de windows) ...
+
+```{r}
+#ggsave(file="HistogramDefault.png")
+```
+
+## Apalancarse por el paquete DescTools
+
+El paquete DescTools provee funcionalidad en términos de una estadística descriptiva y de un análisis exploratorio de los datos para comprender mejor los datos (antes de generar modelos).
+Donde DescTools = Tools for Descriptive Statistics and Exploratory Data Analysis.
+
+- Cargar este paquete, utilizando la función library()
+
+```{r}
+library(DescTools)
+```
+
+- Consultar la páginas de ayuda de DescTools: ?DescTools
+
+```{r}
+?DescTools
+```
+
+- Describir de la variable data los datos de la columna "Credit.Amount", utilizando la función Desc(). Nota: Es con D mayúscula
+- Observar el resultado en la pantalla
+
+```{r}
+Desc(dataset$Credit.Amount)
+```
+
+- Para la columna dataset$Credit.Amount realizar un qq-plot (gráfica), utilizando el paquete DescTools
+- Interpretar el resultado, que muestra la gráfica (el QQ-Plot)
+
+```{r}
+PlotQQ(dataset$Credit.Amount)
+```
+
+- Ahora, utilizar la función PlotFdist() de DescTools para la misma variable (Credit.Amount)
+- Observar el resultado, que combina una gráfica de la distribución de frecuencias, un histograma, un diagrama de caja (box plot) y ecdf.plotd
+
+```{r}
+PlotFdist(dataset$Credit.Amount)
+```
+
+- Generar una tabla de frecuencias para la variable Credit.Amount, utilizando la función Freq()
+- Observar el resultado
+
+```{r}
+Freq(dataset$Credit.Amount)
+```
+
+- Generar un diagrama de caja de dos dimensiones (two dimensional boxplot). Es decir, un "bagplot". Este diagrama se genera con base en dos variables numéricos "x" y "y". Aquí vamos a utilizar: Credit.Amount y Duration.of.Credit..month
+- Observar el resultado
+- ¿Qué se puede decir, con respecto a valores extremos (outliers)?
+
+```{r}
+PlotBag(dataset$Credit.Amount, dataset$Duration.of.Credit..month.)
+```
+
+## Ejercicio 4
+
+- Analizar el paquete "DataExplorer" de R para explorar datos
+- Cargar los datos de la siguiente forma: 
+
+- url="http://freakonometrics.free.fr/german_credit.csv"
+- dataset <- read.csv(url, header = TRUE, sep = ",")
+
+- Luego, utilizar el paquete "DataExplorer", utilizando la función "plot_str()"
+- Visualizar los valores faltantes, utilizando una función adecuada del paquete "DataExplorer"
+- Crear histogramas para (las variables continúas) del "dataset", utilizando una función adecuada del paquete "DataExplorer"
+- Crear un data frame "dataset2", que contiene los valores de las columnas "Age..years." y "Credit.Amount" del dataset
+- Visualizar las correlaciones entre los valores de las columnas "Age..years." y "Credit.Amount" del dataset2
+- Aplicar la función plot_bar del paquete "DataExplorer" al dataset
+

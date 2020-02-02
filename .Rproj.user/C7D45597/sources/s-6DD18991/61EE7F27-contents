@@ -1,0 +1,165 @@
+# MCDA: Outranking: sobre calificación {#electre1}
+
+## Objetivo y contextualización
+
+Uno de los riesgos que enfrentan las instituciones financieras y demás organizaciones tiene que ver con las personas. Una parte de este riesgo se refiere al proceso de la contratación del personal y como las organizaciones toman esas decisiones de la selección del personal. La selección de personal, en este caso para el área de la gestión de riesgos, requiere de la toma de decisiones, en la cual intervienen múltiples criterios. 
+En el siguiente caso hipotético sencillo tenemos tres candidatos (alternativas) para el puesto del CRO (chief risk officer) en una entidad financiera, con sus respectivas características, ya evaluadas por expertos de la empresa.
+
+La siguiente tabla muestra, en las columnas, los tres candidatos para el cargo / puesto. En las filas se muestran los criterios de evaluación para los candidatos (personal).
+Para cada candidato se muestran los datos (valores númericos) correspondientes que lo caracterizan.
+Donde: 1 = “no tan bueno”; 10 = “mejor calificación posible”.
+En la columna "MiniMax" se indica para cada uno de los criterios, si este se debe minimizar o maximizar. En el presente ejemplo, los valores de todos los criterios se deben maximizar. La columna "Peso" indica el peso (la ponderación) para cada criterio.
+
+Para seleccionar la mejor alternativa, basado en estos criterios, la institución financiera pide su ayuda. La institución quiere que usted aplique el método ELECTRE_1() para evaluar las alternativas (candidatos). Usted debe aplicar ELECTRE basado en el paquete “OutrankingTools” de R, que implementa los algoritmos de sobre clasificación (outranking), que se pueden aplicar a estos problemas de MCDA (multiple criteria decision analysis).
+
+- ¿Cuál candidato se debe seleccionar?
+- Es decir, ¿cuál candidato sobre califica (outranks) a otro?
+
+
+## Datos 
+
+-  Primero, generar manualmente un archivo en MS-Excel (xlsx) con los siguientes datos:
+
+|            |  Alternativa1 | Alternativa2	| Alternativa3	| MinMax	| Peso
+-------------|---------------|--------------|---------------|---------|------
+|Criterio	   | Daniela	     | Jaime	      | Alejandro		  |         |
+|Referencias |	   5	       |     8	      |    5	        |  max	  | 0.10
+|Experiencia |     2	       |    10	      |    5	        |  max	  | 0.35
+|Educacion	 |     8	       |     6	      |    8	        |  max	  | 0.35
+|Liderazgo	 |     1	       |     6	      |    6	        |  max	  | 0.20
+
+
+- Determinar su directorio de trabajo para R, utilizando la función getwd()
+- Pegar los datos, que se muestran en la tabla anterior, a la primera hoja del Excel
+- Guardar los datos como archivo de Excel (xlsx), bajo el nombre "electre_datos.xlsx", en su directorio de trabajo de R.
+
+
+## Leer los datos desde un archivo de Excel
+
+Para leer los datos desde Excel utilizar el paquete readxl de R.
+
+```{r}
+library(readxl)
+#getwd()
+#setwd("C:/Users/christian.lochmuller/Documents/directorioR") #working directory
+# nota: no se puede cambiar el directorio in bookdown
+mis.datos <- read_excel('electre_datos.xlsx')
+View(mis.datos)
+```
+
+## Analizar el paquete Outranking Tools y la función electre_1()
+
+- Analizar el paquete Outranking Tools y la función Electre_1() mediante el comando ?Electre_1 (una vez ejecutado el comando library(OutrankingTools))
+
+```{r}
+library(OutrankingTools)
+?Electre_1
+```
+
+## Transformar los datos al formato requerido
+
+Vamos a transformar a continuación algunos datos al formato requerido por la función electre_1().
+
+- Asignar los valores de los datos leidos desde Excel para los parámetros:
+  -alternativas y 
+  -criterios
+
+
+```{r}
+alternatives <- as.character(mis.datos[1,c(2:4)])
+class(alternatives)
+print(alternatives)
+
+criteria <- as.character(mis.datos[-1,1])
+class(criteria)
+print(criteria)
+```
+
+- Eliminar la primera fila, ya que esta no contiene numeros / valores relevantes
+
+```{r}
+mis.datos1 <- mis.datos[-1, ]
+print(mis.datos1)
+```
+
+- Crear la matriz de desempeño (performance matrix)
+
+```{r}
+performanceMatrix <- mis.datos1[, c(2:4)]
+print(performanceMatrix)
+```
+
+- Convertir los numeros a tipo de dato "numeric"
+
+```{r}
+performanceMatrix$Alternativa1 <- as.numeric(performanceMatrix$Alternativa1)
+performanceMatrix$Alternativa2 <- as.numeric(performanceMatrix$Alternativa2)
+performanceMatrix$Alternativa3 <- as.numeric(performanceMatrix$Alternativa3)
+print(performanceMatrix)
+```
+
+- Transponer esta matriz
+
+```{r}
+performanceMatrix <- t(performanceMatrix)
+print(performanceMatrix)
+```
+
+- Asignar al parámetro "criteriaweights" los datos correspondiente leidos del archivo de Excel
+
+```{r}
+criteriaWeights <- as.numeric(mis.datos1$Peso)
+print(criteriaWeights)
+```
+
+- Asignar al parámetro "minimaxcriteria" leido de los datos del archivo de Excel
+
+```{r}
+minmaxcriteria <- mis.datos1$MinMax
+print(minmaxcriteria)
+```
+
+- Corregir el tipo de dato de la variable "criteria" para que realmente haya un vector de criteria...
+- Esto se puede lograr mediante: as.character(unlist(mis.datos[-1,1]))
+
+```{r}
+print(criteria) # criteria como esta actualmente
+print(mis.datos)
+#corrección:
+#criteria <- mis.datos1$..1  
+#usar notación "...$..." con mis.datos1 o unlist con mis.datos:
+criteria <- as.character(unlist(mis.datos[-1,1])) # mejor para no utilizar $..1
+print(criteria)
+```
+
+- Ejecutar la función Electre_1() y asigne el resultado a una varialbe "overall"
+- Utlizar para los últimos dos parámetros que requiere Electre_1 lo siguiente:
+  - concordance_threshold = 0.6, 
+  - discordance_threshold = 0.4
+
+- Observar el resultado, en particular la gráfica del "outranking" de los candidatos
+
+```{r}
+overall <-Electre_1(performanceMatrix, 
+                    alternatives, 
+                    criteria, 
+                    criteriaWeights, 
+                    minmaxcriteria, 
+                    concordance_threshold = 0.6, 
+                    discordance_threshold = 0.4)
+```
+
+- Utilizando la variable "overall", imprimir a la pantalla la "Performance Matrix".
+Es decir, el contenido de la matriz de desempeño.
+
+```{r}
+#performanceMatrix
+overall$`Performance Matrix` # o print(overall[[1]]) 
+#ConcordanceMatrix
+overall$`Concordance Matrix`
+#DiscordanceMatrix
+overall$`Discordance Matrix`
+```
+
+
+

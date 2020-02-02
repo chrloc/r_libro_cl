@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1552739173627.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4091834033",
+    "id" : "7349D1FE",
+    "lastKnownWriteTime" : 1552695863,
+    "last_content_update" : 1552695863,
+    "path" : "~/directorioR/sapply_lists_cl.R",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "17,26",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

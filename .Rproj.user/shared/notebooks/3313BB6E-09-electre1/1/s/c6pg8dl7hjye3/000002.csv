@@ -1,0 +1,2 @@
+"0","mis.datos1 <- mis.datos[-1, ]"
+"0","print(mis.datos1)"

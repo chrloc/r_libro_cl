@@ -1,0 +1,3 @@
+"0","data(""EuStockMarkets"")"
+"0","dataset.Eur <- as.data.frame(EuStockMarkets)"
+"0","head(dataset.Eur, n=10)"

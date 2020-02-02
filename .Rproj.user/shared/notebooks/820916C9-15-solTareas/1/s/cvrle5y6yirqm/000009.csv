@@ -1,0 +1,3 @@
+"0","col <- c(""Credit.Amount"", ""Age..years."")"
+"0","dataset2 <- dataset[col]"
+"0","plot_correlation(dataset2)"

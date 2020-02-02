@@ -1,0 +1,3 @@
+"0","iris.por.species <- iris %>%"
+"0","  group_by(Species)"
+"0","tail(iris.por.species, 3)"

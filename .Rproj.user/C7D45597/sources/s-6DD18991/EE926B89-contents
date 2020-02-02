@@ -1,0 +1,248 @@
+# Muestreo - sampling {#muestreo}
+
+## Objetivo
+
+El objetivo consiste en presentar diferentes formas de construir una muestra, que representa una población, p.ej. para diseñar un "experimento".
+
+## Muestreo aleatorio simple - Simple Random Sampling
+
+Fuente: https://dzone.com/articles/data-sampling-methods-in-r
+
+El contexto.
+
+Planeamos diseñar un experimento para una encuesta donde queremos saber, si a las personas les gustan nuestros productos.
+Las dos respuestas permitidas son "Sí" o "No". Antes de enviar las encuestas a 500 personas, preparamos un análisis (ejemplo) para el que es necesario generar una muestra con una relación de respuesta de 9 : 1.
+Para simular esto podemos utilizar la función sample() de R de la siguiente forma:
+
+sample(0:1, 500, replace = TRUE, prob = c(0.90, 0.10))
+
+Es decir, se generan aleatoriamente 500 números de 0 (No) y 1 (Sí), tomando en cuenta las probabilidades (pesos) dados para cada uno de estos dos números (0.9 y 0.1).
+
+```{r}
+sample(0:1, 500, replace = TRUE, prob = c(0.90, 0.10)) # nota: replace = TRUE
+```
+
+## Proceso de muestreo para determinar la muestra para realizar una encuesta
+
+En mercadeo, a menudo se genera nuevo conocimiento a través de encuestas.
+Dado que es "costoso" preguntar a toda una población numerosa, generalmente se trabaja con una muestra.
+Si la población es menor que 100.000 (personas), se puede proceder de la siguiente forma.
+Fuente: http://www.marketing-xxi.com/proceso-de-la-investigacion-de-mercados-i-24.htm
+
+### Creamos "nuestra propia función" en R 
+
+Según: https://www.tutorialspoint.com/r/r_functions.htm, una función permite realizar una operación, como un cálculo, que se puede reutilizar de forma fácil.
+
+function_name <- function(arg_1, arg_2, ...) {
+   Function body 
+}
+
+En nuestro caso se trata de crear la función (llamémosla "muestra.n") para calcular la muestra para una población con menos de 100.000 individuos:
+
+Donde:
+
+- n = Número de elementos de la muestra.
+- N = Número de elementos del universo (población).
+- P/Q = Probabilidades con las que se presenta el fenómeno. Q = 1-P. Si P es desconocido el valor es 0,5 (50%).
+- Z^2 = Valor crítico correspondiente al nivel de confianza elegido.
+- E = Margen de error permitido (a determinar por el director del estudio). Típicamente 5% o 6%.
+
+```{r}
+muestra.n <- function(N, P, Q, Z, E){
+  ((Z^2)*P*Q*N) / ((E^2)*(N-1)+(Z^2)*P*Q)
+}
+```
+
+### Definir los valores para los parámetros de la función "muestra.n"
+
+Con:
+
+- Z	<- 1.96 # 1.96 = 95% nivel de confianza
+- P	<- 0.5 #0.5
+- Q	<- 1-P
+- N	<- 1300 #1300
+- E	<- 0.05 #5% o 0.05
+
+
+### Llamar la función "muestra.n" y observar el resultado. 
+
+Se puede observar el resultado del cálculo del tamaño de la muestra, utilizando estos valores:
+
+muestra.n(N, P, Q, Z, E)
+
+```{r}
+Z	<- 1.96 # 1.96 = 95% nivel de confianza
+P	<- 0.5 # 0.5
+Q	<- 0.5 # 1-P
+N	<- 1300 #1300
+E	<- 0.05 #5% o 0.05
+muestra.n(N, P, Q, Z, E) #296.7086 = 297 = n
+```
+
+### Para poblaciones mayor que 100.000 la función es:
+  
+muestra.n.2 <- function(P, Q, Z, E){
+  ((Z^2) P*Q) / (E^2)
+}
+
+```{r}
+muestra.n.2 <- function(P1, Q1, Z1, E1){
+  ((Z1^2)*P1*Q1) / (E1^2)
+}
+```
+
+### Definir los valores para los parámetros de la función "muestra.n.2"
+
+- Z1	<- 1.96 # 1.96 = 95% nivel de confianza
+- P1	<- 0.5 # 0.5
+- Q1	<- 1-P
+- N1	<- 48000000 # 48000000 , p.ej. cantidad de habitantes de Colombia en el año 2018. Nota: N no se usa en la función.
+- E1	<- 0.05 # 5% o 0.05
+
+
+### Llamar la función
+
+muestra.n.2(P1, Q1, Z1, E1) con estos valores.
+
+```{r}
+Z1	<- 1.96 # 1.96 = 95% nivel de confianza
+P1	<- 0.5 # 0.5
+Q1	<- 0.5 # 1-P
+N1	<- 48000000 # 48000000 , p.ej. cantidad de habitantes de Colombia en el año 2018. Nota: N no se usa en la función.
+E1	<- 0.05 # 5% o 0.05
+muestra.n.2(P1, Q1, Z1, E1) # 384.16 = 385 = n
+```
+
+## Muestreo para un problema de datos masivos (big data)
+
+El siguiente ejemplo se tomó de la siguiente fuente: https://medium.com/data-science-journal/how-to-correctly-select-a-sample-from-a-huge-dataset-in-machine-learning-24327650372c
+
+Lo que vamos a hacer es, considerar cada variable independientemente de las demás. Si cada uno de los histogramas únicos y univariados de las columnas de muestra es comparable con el histograma correspondiente de las columnas de población, podemos suponer que la muestra no está sesgada.
+
+Algunos de ustedes podrían pensar que estamos olvidando la correlación entre las variables. Esto no es del todo cierto si seleccionamos nuestra muestra de manera uniforme. Es ampliamente conocido que seleccionar una submuestra de manera uniforme producirá, con grandes números, la misma distribución de probabilidad de la población original. Potentes métodos de remuestreo como bootstrap se basan en este concepto.
+
+El histograma para variables categóricas se puede comparar utilizando un Pearson's chi-square test, mientras la función de la distribución cumulativa de variables numéricas se puede comparar utilizando un Kolmogorov-Smirnov test.
+
+Ambas pruebas estadísticas funcionan bajo la hipótesis nula de que la muestra tiene la misma distribución como la población. Dado que una muestra está compuesta por muchas columnas y queremos que todas sean significativas, podemos rechazar la hipótesis nula si el valor p de al menos una de las pruebas es inferior al nivel de confianza, habitualmente del 5%. En otras palabras, queremos que cada columna pase la prueba de significancia para aceptar la muestra como válida.
+
+Simulemos algunos datos (masivos). Crearemos una dataset con 1 millón de registros y 2 columnas. 
+
+-El primero tiene 500,000 registros tomados de una distribución normal, mientras que los otros 500,000 registros se toman de una distribución uniforme. Esta variable está claramente sesgada y me ayudará a explicar los conceptos de significancia estadística más adelante.
+-El otro campo es una variable de factor creada usando las primeras 10 letras del alfabeto distribuidas uniformemente.
+
+set.seed(100), 
+N = 1000000 # = 1e06, 
+dataset = data.frame(
+  # La variable x1 tiene un sesgo. Se toman los primeros 500 mil valores, 
+  # de una distribución normal, mientras que los 500 mil restantes, 
+  # se toman de una distribución uniforme, 
+  x1 = c(
+    rnorm(N/2,0,1) ,
+    runif(N/2,0,1)
+  ),
+  # Variable categórica construida por las primeras 10 letras del alfabeto, 
+  x2 = sample(LETTERS[1:10],N,replace=TRUE)
+)
+
+```{r}
+set.seed(100)
+N = 1000000 # = 1e06
+dataset = data.frame(
+    x1 = c(
+    rnorm(N/2,0,1) ,
+    runif(N/2,0,1)
+      ),
+    x2 = sample(LETTERS[1:10],N,replace=TRUE)
+)
+# La variable x1 tiene un sesgo. Se toman los primeros 500 mil valores
+# de una distribución normal, mientras que los 500 mil restantes
+# se toman de una distribución uniforme
+# X2: Variable categórica construida por las primeras 10 letras del alfabeto
+head(dataset)
+```
+
+Ahora podemos intentar de crear una muestra compuesta por 10.000 registros del conjunto de datos original y verificar su significancia.
+
+Para cada prueba, almacenaremos su valor p en una lista con nombre para la verificación final. 
+Si todos los valores p son superiores al 5%, podemos decir que la muestra no está sesgada.
+
+sample_size = 10000
+set.seed(1)
+idxs = sample(1:nrow(dataset), sample_size, replace=F)
+subsample = dataset[idxs, ]
+pvalues = list()
+for (col in names(dataset)) {
+  if (class(dataset[,col]) %in% c("numeric","integer")) {
+    # Variable númerico. Utilizando Kolmogorov-Smirnov test
+      pvalues[[col]] = ks.test(subsample[[col]],dataset[[col]])$p.value
+  } 
+  else {
+    # Variable categórica. Utilizando Pearson's Chi-square test
+    probs = table(dataset[[col]])/nrow(dataset)
+    pvalues[[col]] = chisq.test(table(subsample[[col]]),p=probs)$p.value
+  }
+}
+pvalues
+
+```{r}
+sample_size = 10000
+set.seed(1)
+idxs = sample(1:nrow(dataset), sample_size, replace=F)
+subsample = dataset[idxs, ]
+pvalues = list()
+for (col in names(dataset)) {
+  if (class(dataset[,col]) %in% c("numeric","integer")) {
+            pvalues[[col]] = ks.test(subsample[[col]],dataset[[col]])$p.value
+  } 
+  else {
+      probs = table(dataset[[col]])/nrow(dataset)
+      pvalues[[col]] = chisq.test(table(subsample[[col]]),p=probs)$p.value
+  }
+}
+pvalues
+# ks.test: Variable númerica. Utilizando Kolmogorov-Smirnov test
+# probs: Variable categórica. Utilizando Pearson's Chi-square test
+```
+
+Cada uno de los valores p es superior al 5%, por lo que podemos decir, que la muestra es estadísticamente significativa.
+
+## Muestreo estratificado - Stratified sampling
+
+Fuente: https://dzone.com/articles/data-sampling-methods-in-r
+
+En el muestreo estratificado, la población de datos se divide en grupos y se toman muestras de cada grupo.
+La división de la población en grupos se llama "strate", y la muestra aleatoria simple para cada grupo se llama "stratum".
+
+Utilizamos el paquete "dplyr" (parte del tidyversee) y los datos iris, que vienen con la instalación de R.
+Agrupamos por especie.
+
+sample_iris <- iris %>%
+   group_by(Species) %>% 
+   sample_n(2)
+
+Nota: los datos iris tienen 150 observaciones y 5 variables
+Resultado: 6 observaciones de 5 variables = 2 de cada especie
+
+## Trabajar con *potencia* (power analysis)
+
+library(pwr) # Power analysis
+
+Ejemplo: Queremos medir el cambio de la productividad con respecto a una población (empresas de un determinado sector en una región).
+Conocemos o suponemos que el crecimiento de la productividad tiene una desviación estándar (SD) de 4.0% (anual) y que una diferencia de 3% en la variación de la productividad (anual) se puede considerar una variación importante (el tamaño del efecto "d" sería d=3/4=0.75  - la diferencia de medias dividido la SD -). 
+Para una potencia del 80% (el valor que típicamente se usa) y un nivel de confianza del 95%, *¿cuántos participantes necesitamos en nuestro estudio?* 
+
+### Utilziar la función pwr.t.test() - Power calculations for t-tests of means
+
+?pwr.t.test
+
+pwr.t.test(d=.75, sig.level=.05, power=.8, type="two.sample", alternative="two.sided")
+
+two.sample es para dos grupos. Un grupo de que se va a "intervenir" o otro que sirve como grupo de control (control group).
+
+```{r}
+library(pwr)
+?pwr.t.test
+pwr.t.test(d=.75, sig.level=.05, power=.8, type="two.sample", alternative="two.sided")
+```
+
+Nota: Si podemos asumir para el presente caso, que solo hay crecimiento y no hay decrecimiento, p.ej. por la situación coyuntural durante el estudio, se puede definir "single.sided" (solo un lado de la distribución).

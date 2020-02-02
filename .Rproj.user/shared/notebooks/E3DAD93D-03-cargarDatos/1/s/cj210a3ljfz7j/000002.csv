@@ -1,0 +1,6 @@
+"0","start <- Sys.Date() - 365"
+"0","acciones <- tq_get(c(""FB"", ""AMZN""), # tickers"
+"0","                      get  = c(""stock.prices"", ""dividends""),"
+"0","                      from = start,"
+"0","                      to   = Sys.Date()) # se puede entrar también una fecha específica (entre comillas), como p.ej.: ""2019-03-01"""
+"0","head(acciones)"

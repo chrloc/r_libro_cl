@@ -1,0 +1,7 @@
+"0","start <- Sys.Date() - 10"
+"0","acciones <- tq_get(c(""FB"", ""MSFT""),"
+"0","                      get  = c(""stock.prices""), # c(""stock.prices""dividends"")"
+"0","                      from = start,"
+"0","                      to   = Sys.Date()) "
+"0","# se puede entrar también una fecha específica (entre comillas), como p.ej.: ""2020-02-01"""
+"0","tail(acciones)"

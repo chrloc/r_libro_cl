@@ -1,0 +1,33 @@
+# crear 3 listas con números
+dataset1 <- list(1:3)
+dataset1
+dataset2 <- list(4:6)
+dataset3 <- list(7:9)
+#unir las 3 listas en una nueva lista
+data.list <- list(dataset1, dataset2, dataset3)
+data.list
+
+#acceder en la lista "dataset1" al segundo elemento
+dataset1[[1]][2] #2
+
+#ahora de la lista de las 3 listas, acceder al segundo elemento. Es decir, al contenido de la segunda lista (dataset2)
+data.list[2] # 4 5 6
+data.list[2][1] # 4 5 6
+
+# acceder al segundo elemento de la segunda lista (dataset2)
+data.list[[2]][[1]][2] # 5
+
+# sapply() permite iterar sobre los elementos de una lista y devuelve una lista o un vector (no una lista como lapply).
+# (en este sentido sapply es una versión simple de lapply).
+# acceder a la lista "data.list", utilizando una función(),
+# sin utilizar un for loop:
+# acceder a cada uno de los elementos (dataset1, dataset2, dataset3) de la lista "data.list"
+sapply(data.list, function(x) x[1][1]) # 1 2 3  4 5 6  7 8 9 
+
+# acceder al segundo elemento de cada lista (dataset1, dataset2, dataset3) dentro de la lista "data.set"
+sapply(data.list, function(x) x[[1]][2]) # 2 5 8
+
+# agregar el valor de "1" al segundo elemento de cada lista (dataset1, dataset2, dataset3) dentro de la lista "data.set"
+sapply(data.list, function(x) x[[1]][2] + 1) # 3 6 9
+
+

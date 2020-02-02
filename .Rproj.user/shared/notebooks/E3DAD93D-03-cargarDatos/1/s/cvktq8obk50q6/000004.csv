@@ -1,0 +1,30 @@
+"0","library(XLConnect)"
+"2","package ‘XLConnect’ was built under R version 3.5.3"
+"2","Loading required package: XLConnectJars
+"
+"2","package ‘XLConnectJars’ was built under R version 3.5.3"
+"2","XLConnect 0.2-15 by Mirai Solutions GmbH [aut],
+  Martin Studer [cre],
+  The Apache Software Foundation [ctb, cph] (Apache POI),
+  Graph Builder [ctb, cph] (Curvesapi Java library)
+"
+"2","http://www.mirai-solutions.com
+https://github.com/miraisolutions/xlconnect
+"
+"0","glimpse(tq_index(""SP500""))"
+"2","Getting holdings for SP500
+"
+"1","Observations: 505
+"
+"1","Variables: 5
+"
+"1","$ symbol      [3m[38;5;246m<chr>[39m[23m ""MSFT"", ""AAPL"", ""AMZN"", ""FB"", ""...
+"
+"1","$ company     [3m[38;5;246m<chr>[39m[23m ""Microsoft Corporation"", ""Apple...
+"
+"1","$ weight      [3m[38;5;246m<dbl>[39m[23m 0.043550233, 0.038071842, 0.030...
+"
+"1","$ sector      [3m[38;5;246m<chr>[39m[23m ""Information Technology"", ""Info...
+"
+"1","$ shares_held [3m[38;5;246m<dbl>[39m[23m 82181840, 46878104, 4435024, 25...
+"

@@ -1,0 +1,8 @@
+"0","library(eurostat) # R Tools for Eurostat open data (requiere versiÃ³n dplyr > 0.8)
+"
+"2","package ‘eurostat’ was built under R version 3.5.3"
+"2","Error: package or namespace load failed for â€˜eurostatâ€™:
+ .onLoad failed in loadNamespace() for 'sf', details:
+  call: get(genname, envir = envir)
+  error: object 'group_map' not found
+"

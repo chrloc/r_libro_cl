@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1552789320945.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "311669958",
+    "id" : "B963BB37",
+    "lastKnownWriteTime" : 1552182836,
+    "last_content_update" : 1552182836,
+    "path" : "~/r_libro_cl/03-cargarDatos.Rmd",
+    "project_path" : "03-cargarDatos.Rmd",
+    "properties" : {
+        "cursorPosition" : "17,43",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

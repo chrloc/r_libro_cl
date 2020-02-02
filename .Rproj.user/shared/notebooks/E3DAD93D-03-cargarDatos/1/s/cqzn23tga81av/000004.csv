@@ -1,0 +1,37 @@
+"0","library(tidyquant)"
+"2","package ‘tidyquant’ was built under R version 3.5.3"
+"2","Loading required package: lubridate
+"
+"2","
+Attaching package: ‘lubridate’
+
+"
+"2","The following object is masked from ‘package:base’:
+
+    date
+
+"
+"2","Loading required package: PerformanceAnalytics
+"
+"2","
+Package PerformanceAnalytics (1.5.2) loaded.
+Copyright (c) 2004-2018 Peter Carl and Brian G. Peterson, GPL-2 | GPL-3
+https://github.com/braverock/PerformanceAnalytics
+
+"
+"2","
+Attaching package: ‘PerformanceAnalytics’
+
+"
+"2","The following object is masked from ‘package:graphics’:
+
+    legend
+
+"
+"0","tq_exchange_options() "
+"1","[1]"
+"1"," ""AMEX""  "
+"1"," ""NASDAQ"""
+"1"," ""NYSE""  "
+"1","
+"

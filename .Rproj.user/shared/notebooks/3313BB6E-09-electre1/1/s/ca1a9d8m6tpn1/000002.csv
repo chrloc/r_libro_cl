@@ -1,0 +1,4 @@
+"0","performanceMatrix$Alternativa1 <- as.numeric(performanceMatrix$Alternativa1)"
+"0","performanceMatrix$Alternativa2 <- as.numeric(performanceMatrix$Alternativa2)"
+"0","performanceMatrix$Alternativa3 <- as.numeric(performanceMatrix$Alternativa3)"
+"0","print(performanceMatrix)"

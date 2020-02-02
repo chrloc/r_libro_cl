@@ -1,0 +1,12 @@
+"1","
+Chosen continuous distribution is: NA"
+"1","
+Fitted parameters are: 
+"
+"1","[1]"
+"1"," NA"
+"1","
+"
+"1","
+"
+"0","res5 <- fit.cont(datos$poiss) "

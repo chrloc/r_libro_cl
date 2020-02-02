@@ -1,0 +1,11 @@
+id;Nombre;Apellido;Ingresos;Egresos;Calificación
+1;Jimmy;Toro;4000000;3500000;80
+2;Joe;Arango;3500000;4000000;20
+3;Diana;Ramirez;3000000;3000000;50
+4;Cristina;Mesa;2500000;2000000;70
+5;Manuela;Meier;2000000;1000000;70
+6;Lucia;Müller;1500000;1400000;45
+7;Andres;Avelaez;1000000;1000000;40
+8;Bill;Jaramillo;750000;800000;10
+9;Gabriel;Arias;500000;500000;12
+10;Javier;Gomez;450000;450000;10

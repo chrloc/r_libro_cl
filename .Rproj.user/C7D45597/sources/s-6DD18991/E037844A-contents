@@ -1,0 +1,231 @@
+# Regresión logística (modelo logit) {#regrLog}
+
+## Objetivo
+
+El objetivo en este ejemplo consiste en clasificar datos de créditos (credit data), utilizando un modelo de regresión logística
+
+Para este modelo de la regresión logística véase p.ej. también las definiciones en: https://en.wikipedia.org/wiki/Logit
+
+## Cargar los datos históricos de un archivo csv
+
+Vamos a utilizar un conjunto de datos de créditos de la web.
+
+El objetivo consiste en construir un clasificador, utilizando una regresión logística, para clasificar los registros en dos grupos (clases): "buena paga" y "mala paga".
+
+- Bajar el archivo de los datos de la internet y leer los datos del archivo y asignarlos a una variable "mis.datos"
+
+url <- "http://freakonometrics.free.fr/german_credit.csv"
+mis.datos <- read.csv(url, header = TRUE, sep = ",")
+
+```{r}
+url <- "http://freakonometrics.free.fr/german_credit.csv"
+mis.datos <- read.csv(url, header = TRUE, sep = ",")
+# Estos mismos datos también se pueden bajar de la siguiente dirección:
+# url <-  "https://newonlinecourses.science.psu.edu/onlinecourses/sites/stat508/files/german_credit.csv"
+# mis.datos <- read.csv(url(direccion))
+```
+
+## Explorar los datos
+
+- Mostrar las primeras seis filas de los datos (dataset) en la pantalla
+- Analizar la estructura de los datos
+- Determinar la clase de los datos (class())
+- Realizar una estadística descriptiva de los datos, utilizando la función summary()
+
+Observe: Todos los datos son "numéricos"
+
+¿Cuál es la variable de salida y cuáles son variables de entrada para el modelo a construir (aquí: regresión logística)?
+
+```{r}
+print(head(mis.datos))
+str(mis.datos)
+class(mis.datos) # data.frame
+summary(mis.datos)
+```
+
+## Mejorar los nombres (etiquetas) de las columnas del dataset
+
+- Primero, mostrar estos nombres, utilizando la función colnames()
+
+```{r}
+colnames(mis.datos)
+```
+
+## Transformar algunos datos
+
+- Asignar los siguientes nombres nuevos para las columnas del dataset "mis.datos"
+
+newColNames <- c("Creditability_Default",
+              "Account_Balance",
+              "Duration_Credit_Month",
+              "Pmt_Status_Prev_Cred",
+              "Purpose",
+              "Credit_Amount",
+              "Value_Savings_Stocks",
+              "Length_current_employment",
+              "Instalment_per_cent",
+              "Sex_Marital_Status",
+              "Guarantors",
+              "Duration_current_address",
+              "Most_value_avail_asset",
+              "Age_years",
+              "Concurrent_Credits",
+              "Type_of_apartment",
+              "No_of_Credits_at_this_Bank",
+              "Occupation",
+              "No.of.dependents",
+              "Telephone",
+              "Foreign_Worker"
+              )
+
+```{r}
+newColNames <- c("Creditability_Default",
+              "Account_Balance",
+              "Duration_Credit_Month",
+              "Pmt_Status_Prev_Cred",
+              "Purpose",
+              "Credit_Amount",
+              "Value_Savings_Stocks",
+              "Length_current_employment",
+              "Instalment_per_cent",
+              "Sex_Marital_Status",
+              "Guarantors",
+              "Duration_current_address",
+              "Most_value_avail_asset",
+              "Age_years",
+              "Concurrent_Credits",
+              "Type_of_apartment",
+              "No_of_Credits_at_this_Bank",
+              "Occupation",
+              "No.of.dependents",
+              "Telephone",
+              "Foreign_Worker"
+              )
+#Asignar estos nombres nuevos para utilizarlos en adelante
+names(mis.datos) <- newColNames
+colnames(mis.datos)
+```
+
+- Analizar la variable dependiente (variable de salida): Creditability_Default, en términos de una tabla que muestra las frecuencias para los valores "0" y "1"
+
+¿Cuál es el valor para "buena paga"?  ¿"0" o "1"?
+
+```{r}
+?table
+table(mis.datos$Creditability_Default)
+prop.table(table(mis.datos$Creditability_Default)) 
+# lo mismo, pero como porcentajes
+```
+
+- Transformar la variable (dependiente) en una variable categórica (factor)
+
+```{r}
+mis.datos$Creditability_Default <- as.factor(mis.datos$Creditability_Default)
+str(mis.datos$Creditability_Default)
+```
+
+## Particionar los datos
+
+- Particionar (dividir) los datos en dos partes, de forma aleatoria. En una parte (un grupo) de entrenamiento (credit_train) y otra de pruebas (credit_test), utilizando una relación 66% (nombre: credit_train) y 34% (nombre: credit_test)
+- Utlizar la función sample() y la semilla 123 para hacer los resultados reproducibles (set.seed())
+- Nota: La cantidad de los datos se puede determinar con: nrow(dataset)
+
+```{r}
+set.seed(123)
+d = sort(sample(nrow(mis.datos),nrow(mis.datos)*0.66, replace=FALSE))
+# dividir en una conjunto de  training y test set
+train_data <- mis.datos[d, ]
+test_data  <- mis.datos[-d, ]
+```
+
+- Luego, verificar las proporciones entre estos dos grupos con respecto a la variable de salida (variable de predicción)
+
+```{r}
+prop.table(table(train_data$Creditability_Default))
+prop.table(table(test_data$Creditability_Default))
+```
+
+Como se puede observar a través del resultado, las proporciones no se conservaron exactamente, pero aproximadamente
+
+## Construir el modelo logit (regresión logística)
+
+- Generar el modelo logit con los datos de entrenamiento ("train_data"), utilizando la función glm(), "generalized linear models", y asignar el resultado a una variable "modelo.logit". Donde el parámetro family de la función glm debe tener el valor "binomial("logit")"
+- Mostrar el resultado (del modelo), utilizando la función summary()
+- Observar, cuáles de las variables de entrada son estadísticamente significativas
+
+```{r}
+?glm
+modelo.logit <- glm(Creditability_Default ~ ., family = binomial("logit"), data = train_data)
+summary(modelo.logit)
+```
+
+- Eliminar las variables que estadísticamente *no* son significativas, generando un conjunto de datos train_data2 y test_data2 y generamos el modelo nuevamente con estas variables 
+- Esta eliminación se puede realizar de la siguiente forma: train_data[ ,!(colnames(train_data) %in% c("Duration_Credit_Month", "Purpose",...)) ]
+
+```{r}
+train_data2 <- train_data[ ,!(colnames(train_data) %in% c("Duration_Credit_Month", "Purpose", "Length_current_employment", "Guarantors", "Duration_current_address", "Age_years", "Concurrent_Credits", "No_of_Credits_at_this_Bank", "Occupation", "No.of.dependents", "Telephone",  "Foreign_Worker")) ]
+head(train_data2)
+
+test_data2 <- test_data [ ,!(colnames(test_data) %in% c("Duration_Credit_Month", "Purpose", "Length_current_employment", "Guarantors", "Duration_current_address", "Age_years", "Concurrent_Credits", "No_of_Credits_at_this_Bank", "Occupation", "No.of.dependents", "Telephone",  "Foreign_Worker")) ]
+head(test_data2)
+```
+
+También es posible lograr lo mismo con pipes:
+
+library(dplyr)
+train_data2 <- train_data %>% 
+  select(-Duration_Credit_Month, -Purpose, -Length_current_employment,         -Guarantors, -Duration_current_address, -Age_years, -Concurrent_Credits,     -No_of_Credits_at_this_Bank, -Occupation, -No.of.dependents, -Telephone,     -Foreign_Worker)
+head(train_data2)
+
+test_data2 <- test_data %>% 
+  select(-Duration_Credit_Month, -Purpose, -Length_current_employment,         -Guarantors, -Duration_current_address, -Age_years, -Concurrent_Credits,     -No_of_Credits_at_this_Bank, -Occupation, -No.of.dependents, -Telephone,     -Foreign_Worker)
+head(test_data2)
+
+## Generar el modelo "mejorado"
+
+Generar el modelo "mejorado" significa que se utilizan únicamente las variables de "train_data2"
+
+- Nombrar el nuevo modelo (mejorado): "modelo.logit2"
+- Mostrar el resultado (del nuevo modelo), utilizando la función summary()
+- Observar, cuáles de las variables de entrada son estadísticamente significativas
+
+```{r}
+modelo.logit2 <- glm(Creditability_Default ~ ., family = binomial("logit"), data = train_data2)
+summary(modelo.logit2)
+```
+
+## Realizar una predicción con el modelo logit mejorado
+
+- Realizar esta predicción, utilizando la función predict() y los datos de prueba "test_data2" y asignar el resultado a una variable "probs", ya que el resultado representa probabilidades. Nota: el parámetro "type" debe ser "response"
+- Observar el resultado, utilizando la función head()
+
+```{r}
+# probabilidades:
+probs <- predict(modelo.logit2, test_data2, type = "response")
+head(probs)
+```
+
+## Convertir estas probabilidades en dos clases: 1 y 0 ("buena paga" y "mala paga")
+
+- Convertir estas probabilidades en dos clases: 1 y 0, utilizando la función ifelse(), que funciona parecida a la función Si() en MS-Excel
+- Generar una matriz de error (matriz de clasificación), utilizando la función table() con respecto a la variable de salida (variable de predicción)
+- Interpretar los valores de esta matriz
+
+```{r}
+prediccion <- ifelse(probs > 0.5, 1, 0)
+table(prediccion, test_data2$Creditability_Default)
+```
+
+## Ejercicio 10
+
+Realizar una regresión logística en R, utilizando el paquete "ISLR" y el dataset "Smarket", que viene con este paquete, para clasificar los datos del dataset con el objetivo de determinar, si el mercado (índice S&P500) va a subir o bajar.
+
+- Mostrar las primeras 3 filas de este dataset "Smarket" y analizar de esta forma las columnas (variables) del dataset. Nota: Las variables "Lag.." se refieren a precios determinados en el mercado de capitales (S&P Stock Market Data) y refleja rendimientos diarios de este índice bursátil, expresado como porcentaje. Utilizar el comando "?Smarket" para consultar las páginas de ayuda al respecto
+- Mostrar, la estructura de este dataset, utilizando la función str()
+- Utilizando la semilla 123 (set.seed(123)), dividir los datos en una parte de entrenamiento (train_data) y otra parte de pruebas (test_data). 66% del total de los datos se deben utilizar para el entrenamiento y el resto para las pruebas
+- Realizar un modelo de regresión logística con los datos de entrenamiento, utilizando como variables de entrada únicamente las variables "Lag1", "Lag2" y "Lag3". Asignar el resultado a una variable "modelo.logit", Nota: En este caso no se preocupe de los valores p (p-values) obtenidos para las tres variables de entrada
+- Mostrar el resultado de la regresión en la pantalla, utilizando la función summary() para el modelo de la regresión generada
+- Luego, realizar la predicción para el S&P500, utilizando el modelo generado y los datos de prueba (test_data) y asignar el resultado (probabilidades) a una variable "probs"
+- Si las probabilidades son mayor que 0.5, asigna el valor "1", en el caso contrario el valor "0"
+- Mostrar el resultado de la clasificación en una tabla, utilizando p.ej. la función table()
+- Interpretar el resultado obtenido

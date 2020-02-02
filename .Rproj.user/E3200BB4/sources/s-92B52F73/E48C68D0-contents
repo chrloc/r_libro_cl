@@ -1,0 +1,130 @@
+#Source: https://datascienceplus.com/understanding-titanic-dataset-with-h2os-automl-dalex-and-lares-library/
+#######################################################################################
+#### Machine Learning (h2o) with DALEX (Descriptive mAchine Learning EXplanations) ####
+#### also see: https://www.h2o.ai/wp-content/uploads/2018/01/RBooklet.pdf          ####
+#######################################################################################
+
+#first install the devtools package, then install "lares" from the github repository:
+devtools::install_github("laresbernardo/lares")  # author: Bernardo Lares, Venezuela
+
+library(dplyr)
+library(lares)
+library(DALEX)
+
+#define a seed ("semilla")
+seed <- 123
+
+#check working directory
+getwd()
+# load data from csv file in the working directory
+df <- read.csv(file="Titanic_cl_092018.csv", sep=";", dec=",", stringsAsFactors = FALSE, header=TRUE)
+#explore the first lines of the data
+head(df)
+#see column names
+colnames(df)
+#see the structure (str()) of the data
+str(df)
+
+#using pipes (dplyr), create a data frame: dfm
+dfm <- df %>%
+	select(-Name, -TicketNumber, -Lifeboat, -Cabin, -BodyID, -HomeOrDestinationComplete, -HomeOrDestination) %>%
+	rename("tag" = "Survived") %>% 
+	mutate(tag = as.factor(tag), 
+				 PassengerClass = as.factor(PassengerClass),
+				 Gender = as.factor(Gender),
+				 TravelingAlone = as.factor(TravelingAlone),
+				 Child_.Adult = as.factor(Child_.Adult),
+				 Age = as.numeric(Age)
+				 ) # ... so here we changed data types for some columns of the data frame (table)
+
+#check  the structure of the dfm data frame
+str(dfm)
+#check for the number of entries (rows) in the data frame
+nrow(dfm) #1309
+
+# Creating a model with H2o_automl (=machinge learning)
+# NOTE: when using the lares::h2o_automl function with our data frame as it is, 
+# with no ‘train_test’ parameter, it will automatically split 70/30 for our training 
+# and testing sets (use ‘split’ in the function if you want to change this relation).
+results <- lares::h2o_automl(df = dfm, seed = seed, max_time = 60)
+
+#The outcome is an object (results) with all the model’s results: 
+# name, metrics, predictions, datasets, variable importances, etc.
+# Let’s quickly check our model’s performance:
+lares::mplot_full(tag = results$score$tag, 
+									score = results$scores$score,
+									subtitle = "Titanic dataset")
+# Note: AUC value is quite decent...
+# We can study which features did it chose as the most relevant and why. 
+# To understand this, there are probably many ways, but today we are going to check the DALEX results.
+# The most important variables
+
+# Every dataset has relevant and irrelevant features. 
+# Sometimes it is our work as data scientist or analysts to detect which ones are these, 
+# how do they affect our independent variable and, most importantly, why.
+lares::mplot_importance(var = results$importance$variable, 
+												imp = results$importance$percentage,
+												subtitle = "Titanic dataset")
+
+# Partial Dependency Plots (PDP)
+# Now that we know that Gender, Age, PassengerClass are the most relevant features, 
+# we should check how the model detects the relationship between the target (Survival) 
+# and these features. 
+# Besides, these plots not only are incredibly powerful for communicating our insights to non-technical users, 
+# but will also help us implement with more confidence our models (less black-boxes) into production.
+
+# To start plotting with DALEX, we have to create an explainer. 
+# If you are using h2o or lares functions above, this is all you need to do:
+explainer <- lares::dalex_explainer(df = results$datasets$test, 
+																		model = results$model)
+
+# So, let’s check our PDPs on our main features. 
+# Note that we will have different outputs regarding our variables’ class: if it’s a numerical value, 
+# then well have a Partial Dependency Plot (line-plot); if we have a categorical or factor variable, then we will 
+# get a Merging Path Plot (dendogram-plot).
+lares::dalex_variable(explainer, "Gender")
+# Basically, if you were a man and survived, you were quite lucky ;-)
+
+#...plot for the fair_lbs (ticket price) feature (input variable)
+lares::dalex_variable(explainer, "Fair_lbs")
+
+#plots
+lares::dalex_variable(explainer, "Age")
+# Independently of your class, sex, and age, children were the ones who had a higher score, 
+# thus the highest probability of surviving. We get some picks around 33 years old and  the elders had a low probability to survive.
+
+lares::dalex_variable(explainer, "PassengerClass")
+# To emphasize once more on the economical situation vs survivals, we see how the 1st and 2nd classes were “luckier” than the 3rd class passengers.
+
+# Individual Interpretation
+# The DALEX’s local interpretation functions are awesome! If you have used LIME before, in my taste, these are quite similar
+# but better. Note than we can see that several predictors have zero contribution, while others have positive, 
+# and others negative contributions.
+# Before you start, let me tell you that each example you run lasts almost a minute to generate the plot… 
+local12 <- lares::dalex_local(explainer, 
+															row = results$datasets$test["12",], 
+															plot = TRUE)
+# Here we can see a specific woman who scored pretty OK. 
+# The predicted value for this individual observation was positively and strongly influenced by the Sex = Female 
+# and PassengerClass = 1. Alternatively, the Age = 41 and TravelingAlone = Yes variable reduced this person’s probability of surviving.
+
+# passengers with the worst score:
+results$datasets$test[results$scores$score == min(results$scores$score),]
+
+# We have 1 person (#488) in our test set which scored worst. 
+# (he really didn’t survive: tag = No). Let’s study now this guy with our DALEX function:
+local488 <- lares::dalex_local(explainer,
+															row = results$datasets$test["488", ], 
+															plot = TRUE)
+# The most important features of this guy were gender = male and his age = 61...
+
+#Subject #3 (Best score):
+
+# Lets have a look at passengers with the highest score. 
+results$datasets$test[results$scores$score == max(results$scores$score),]
+#We get a woman (#599), who travelled second class, with her parents on board, was 18 years old and not travelling alone...
+
+# Let’s take a closer look at this record:
+local559 <- lares::dalex_local(explainer,
+															 row = results$datasets$test["559",], 
+															 plot = TRUE)

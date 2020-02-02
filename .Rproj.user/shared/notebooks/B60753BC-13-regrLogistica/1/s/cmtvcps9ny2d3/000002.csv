@@ -1,0 +1,7 @@
+"0","mis.datos$Creditability_Default <- as.factor(mis.datos$Creditability_Default)"
+"0","str(mis.datos$Creditability_Default)"
+"1"," Factor w/ 2 levels ""0"",""1"": "
+"1","2 2 2 2 2 2 2 2 2 2"
+"1"," ..."
+"1","
+"

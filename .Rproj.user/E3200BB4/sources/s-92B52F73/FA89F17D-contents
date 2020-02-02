@@ -1,0 +1,782 @@
+#video 6 - import data
+getwd()
+setwd('C:/Users/espos/Documents/directorioR/')
+
+# download csv file for section 2 from: https://www.superdatascience.com/rcourse-advanced/
+#fin.data <-  read.csv('Future-500.csv')
+fin.data <- read.csv('Future-500.csv', na.strings = c(""))
+fin.data
+head(fin.data)
+tail(fin.data, n=2)
+str(fin.data)
+
+summary(fin.data)
+
+#video 7 - factors
+#changing from non factor to factor
+fin.data$ID <- factor(fin.data$ID)
+summary(fin.data)
+str(fin.data)
+
+fin.data$Inception <- factor(fin.data$Inception)
+summary(fin.data)
+str(fin.data)
+
+# video 8 (FVT)
+# Factor variable trap (FVT)
+# when casting a factor to a non factor
+#for characters
+a <-  c("12", "13", "14", "12", "12")
+a
+class(a)
+typeof(a)
+
+b <- as.numeric(a)
+b
+typeof(b)
+
+#converting into numeric from factor
+# create a factor z:
+z <- factor(c("12", "13", "14", "12", "12"))
+z
+typeof(z) #integer
+# to numeric
+y <- as.numeric(z)
+y # !!!!  1 2 3 1 1 that is not what we want...=FVT
+typeof(y) #double
+
+# solution:
+# first cast to character and then to a factor (i.e. it's a 2 step process)
+x <- as.numeric(as.character(z))
+x
+typeof(x) # double = numeric
+
+# video 9 FVT example
+head(fin.data)
+# lokk at revenue, expenses and profit
+str(fin.data)
+fin.data$Profit <- factor(fin.data$Profit)
+str(fin.data) #now Profit is a factor
+#convert this factor into numeric, to see the mean, etc.
+# be aware of the FVT pitfall, so use a 2-step cast
+fin.data$Profit <- as.numeric(as.character(fin.data$Profit))
+str(fin.data) # Profit1 is now numeric
+
+# video 10 - sub and gsub (pattern matching and replacement)
+?sub
+head(fin.data) # note: the Dollars word in Expenses
+# sub replaces only one, wheras gsub replaces all
+fin.data$Expenses <- gsub(" Dollars", "", fin.data$Expenses)
+head(fin.data) # note: the Dollars word has gone...
+str(fin.data) # note: Expenses now is a string
+
+head(fin.data) # note: the dollar sign in Revenue
+fin.data$Revenue <- gsub("$", "", fin.data$Revenue)
+head(fin.data) # note: the dollar sign hasn't gone, as it is a special character.
+# the solution is to escape (\\)that dollar sign, like this:
+fin.data$Revenue <- gsub("\\$", "", fin.data$Revenue)
+head(fin.data) # note: the dollar sign has been eliminated now
+#so now eliminate the comma of the Revenue:
+fin.data$Revenue <- gsub(",","", fin.data$Revenue)
+head(fin.data) # note: the comma has been eliminated
+str(fin.data)
+# do the same for Expenses
+fin.data$Expenses <- gsub(",","", fin.data$Expenses)
+head(fin.data) # note: the comma has been eliminated
+# note the changed variables are now characters
+
+# now eliminate the percentage sign for Growth
+fin.data$Growth <- gsub("%", "", fin.data$Growth)
+head(fin.data) # note: the comma has been eliminated
+str(fin.data)
+# note the Growth variable is of type character now
+
+#now, cast this three variables (from chr) to numeric
+fin.data$Expenses <- as.numeric(fin.data$Expenses)
+fin.data$Revenue <- as.numeric(fin.data$Revenue)
+fin.data$Growth <- as.numeric(fin.data$Growth)
+str(fin.data)
+summary(fin.data)
+
+#video 11 - dealing with missing data (section 2, lecture 11)
+# 1. predict missing data with 100% accuracy
+# 2. leave the record as it is (with missing data)
+# 3. remove the record (with missing data) entirely
+# 4. replace with the mean or median (one of the main approaches)
+# 5. fill in by exploring correlations and similarities
+# 6. introduce a dummy variable for "Missingness"
+
+#check the excel file for Fortune-500...
+
+# this part is not shown in the video
+# e.g missing data for # of Employees
+# count NAs
+library(tidyverse)
+fin.data %>% 
+  select(Employees) %>% 
+  summarise_all(funs(sum(is.na(.))))
+# to see it for all variables:
+fin.data %>% 
+  select(everything()) %>% 
+  summarise_all(funs(sum(is.na(.))))
+
+# again the video: video 12 (section 2, lecture 12)
+# NAs and what it is...it's a missing value
+?NA
+# NA is a third type of logical variable...
+TRUE #1
+FALSE #0
+NA
+
+summary(fin.data) # gives the number of NAs
+
+TRUE == FALSE # FALSE
+TRUE == 5 # FALSE
+TRUE == 1 # TRUE
+FALSE == 4 # FALSE
+FALSE == FALSE # TRUE
+FALSE == 0 # TRUE
+NA == TRUE # NA
+NA == FALSE # NA
+NA == 15 # NA
+15 == NA # NA
+NA == NA # NA so NAS its similar to NULL in SQL
+
+
+# video 13 - an elegant way to locate NAs:
+head(fin.data, n=25)
+# empty is also possible and different to NA
+complete.cases(fin.data) # true / false refer to the rows
+# rows that do have an NA
+fin.data[!complete.cases(fin.data), ] # note the comma
+# these are 6 rows...so the command is not counting empty strings
+
+# solution: read the data in differently using na.strings()
+# fin.data <-  read.csv("Future-500.csv", na.strings =c(""))
+# re-run the beforementioned code !!!
+# so now the empty strings are <NA> values...
+# and the commoand fin.data[!complete.cases(fin.data), ]
+# now counts 12 rows with NAs
+
+# video 14 - Which for non-missing data
+# filtering with which()
+head(fin.data)
+fin.data[fin.data$Revenue == 9746272, ]
+# however this command includes the NAs in the result...
+# so the way to correct the filter is:
+which(fin.data$Revenue == 9746272)
+?which #ignores false and NAs, that is what we want
+# so this which gives as a result: 3 (rows)
+# so we have to pass this filter to our data frame, to get jsut the TRUE values:
+fin.data[which(fin.data$Revenue == 9746272), ]
+# so we just get one row, as the NAs now do not taken into account
+
+# filter the companiers with 45 employees
+head(fin.data)
+fin.data[which(fin.data$Employees == 45), ]
+# the result shows 10 rows (companies) with 45 employees
+
+# an alternative way of doing the same (tidyversing the code)
+fin.data %>% 
+	filter(Employees == 45) 
+# the result shows 10 rows (companies) with 45 employees
+
+# video 15 - section 2, lecture 15
+# is.na() for missing data
+# filtering:  is.na() for missing data
+# = subsetting rows that have NAs
+head(fin.data, n=24)
+fin.data$Expenses == NA
+fin.data[fin.data$Expenses == NA, ]
+# that did'nt work
+# so use is.na()
+# example
+a <-  c(1,24,543,NA,76,45,NA)
+is.na(a) #indicates if the element is TRUE or FALSE with regard to NAs
+# so let's use this for our case
+is.na(fin.data$Expenses)
+#apply it to our data frame (similar to which)
+# so we will filter the rows that have NAs
+fin.data[is.na(fin.data$Expenses), ] # use the comma
+
+# video 16 - removing records with missing data
+# removing these rows
+# remove rows where industry has NAs
+# first, make a backup
+fin.data_bak <- fin.data
+fin.data[!complete.cases(fin.data), ]
+fin.data[is.na(fin.data$Industry), ]
+fin.data[!is.na(fin.data$Industry), ] #opposite: rows without NAs
+#overwrite ...
+fin.data <- fin.data[!is.na(fin.data$Industry), ]
+fin.data
+fin.data[!complete.cases(fin.data), ]
+
+# video 17 - resetting the data frame index
+# if we removed rows from the data frame
+# there are gaps in the row names
+# fixing row names
+rownames(fin.data)
+nrow(fin.data) #500
+rownames(fin.data) <- 1:nrow(fin.data)
+fin.data
+nrow(fin.data) #498
+
+#video 18 - factual analysis method for replacing missing values
+# for NAs in State we can restore the value as we know the city
+fin.data[!complete.cases(fin.data), ] #10
+fin.data[is.na(fin.data$State), ] #4 rows
+# correct NAs in State, where city is New York
+fin.data[is.na(fin.data$State) & fin.data$City == "New York", ]
+fin.data[is.na(fin.data$State) & fin.data$City == "New York", "State"] <- "NY"
+#check row name 11 and 377 to see if they have been corrected to NY
+fin.data[c(11,377), ]
+
+# see reamining NAs
+fin.data[!complete.cases(fin.data$State), ]
+# correct NAs in State, where City is San Francisco
+fin.data[is.na(fin.data$State) & fin.data$City == "San Francisco", "State"] <- "CA"
+#check row name 82 and 265
+fin.data[c(82,265), ]
+fin.data[!complete.cases(fin.data), ]
+
+# video 19 - median imputation method (part I)
+# select retail sector (industry) companies only
+# so the idea is to use the median for Emplyee based on the sector
+# median is often better the the mean , as it is less prone to outliers
+fin.data[!complete.cases(fin.data), ]
+
+median(fin.data[,"Employees"]) # NA
+median(fin.data[,"Employees"], na.rm=TRUE) #56
+median(fin.data[fin.data$Industry=="Retail","Employees"], na.rm=TRUE)
+med_empl_retail <-  median(fin.data[fin.data$Industry=="Retail","Employees"], na.rm=TRUE)
+med_empl_retail # 28
+
+fin.data[is.na(fin.data$Employees) & fin.data$Industry=="Retail", ]
+fin.data[is.na(fin.data$Employees) & fin.data$Industry=="Retail", "Employees"] <- med_empl_retail
+#check
+fin.data[3,]
+
+# same for Financial Services industry..
+median(fin.data[,"Employees"], na.rm=TRUE) #56
+median(fin.data[fin.data$Industry=="Financial Services","Employees"], na.rm=TRUE)
+med_empl_finServices <-  median(fin.data[fin.data$Industry=="Financial Services","Employees"], na.rm=TRUE)
+med_empl_finServices # 80
+fin.data[is.na(fin.data$Employees) & fin.data$Industry=="Financial Services", "Employees"] <- med_empl_finServices
+fin.data[330,]
+
+# video 20 - median imputation (part II)
+# deal with NAs in the Growth column
+fin.data[!complete.cases(fin.data), ]
+med_growth_constr <- median(fin.data[fin.data$Industry=="Construction","Growth"], na.rm=TRUE)
+med_growth_constr
+
+fin.data[is.na(fin.data$Growth), ]
+fin.data[is.na(fin.data$Growth) & fin.data$Industry =="Construction", "Growth"] <- med_growth_constr
+#check
+fin.data[8,]
+fin.data[!complete.cases(fin.data), ]
+
+#Video 21 - part III
+# determin the median for revenue and expenses by industry
+fin.data[!complete.cases(fin.data), ]
+median(fin.data[fin.data$Industry=="Construction","Revenue"], na.rm=TRUE)
+med_revenue_constr <- median(fin.data[fin.data$Industry=="Construction","Revenue"], na.rm=TRUE)
+med_revenue_constr
+
+fin.data[is.na(fin.data$Revenue) & fin.data$Industry=="Construction", ]
+fin.data[is.na(fin.data$Revenue) & fin.data$Industry=="Construction", "Revenue"] <- med_revenue_constr
+#check
+fin.data[c(8,42), ]
+
+median(fin.data[fin.data$Industry=="Construction","Expenses"], na.rm=TRUE)
+med_expenses_constr <- median(fin.data[fin.data$Industry=="Construction","Expenses"], na.rm=TRUE)
+med_expenses_constr
+
+# an additional filter (& is.na(fin.data$Profit)) to guarantee consistency
+fin.data[is.na(fin.data$Expenses) & fin.data$Industry=="Construction" & is.na(fin.data$Profit), ]
+fin.data[is.na(fin.data$Expenses) & fin.data$Industry=="Construction" & is.na(fin.data$Profit), "Expenses"] <- med_expenses_constr
+#check
+fin.data[c(8,42), ]
+
+# video 22 - missing values
+# missing profit: calculate it
+# Profit = Revenue - Expenses
+# Expenses = Revenue - Profit
+fin.data[!complete.cases(fin.data), ]
+fin.data[is.na(fin.data$Profit), ]
+fin.data[is.na(fin.data$Profit), "Profit"] <- fin.data[is.na(fin.data$Profit), "Revenue"] - fin.data[is.na(fin.data$Profit), "Expenses"]
+#check
+fin.data[c(8,42), ]
+
+#finally: missing expenses
+fin.data[!complete.cases(fin.data), ]
+fin.data[is.na(fin.data$Expenses), "Expenses"] <- fin.data[is.na(fin.data$Expenses), "Revenue"] - fin.data[is.na(fin.data$Expenses), "Profit"]
+#check
+fin.data[c(15), ]
+
+fin.data[!complete.cases(fin.data), ]
+# we can keep this record, as it will not distort our analysis
+
+# video 23 - Visualizing results (starting with the analyse)
+# scatterplot classified by industry showing revenue, expense and profit
+library(ggplot2)
+p <-  ggplot(data=fin.data)
+p + geom_point(aes(x=Revenue, y = Expenses,
+									 colour=Industry, size=Profit))
+
+# scatterplott that includes industry trends for the expenses
+p1 <-  ggplot(data=fin.data, aes(x=Revenue, y = Expenses,
+									 colour=Industry))
+p1 + geom_point() + geom_smooth(fill=NA, size=1.2)
+# fill = NA means you don't see the confidence bands
+
+# Boxplot showing Growth by Industry
+p2 <-  ggplot(data=fin.data, aes(x=Industry, y = Growth,
+																 colour=Industry))
+p2 + geom_boxplot()
+
+#Extra:
+p2 + geom_jitter() +
+	geom_boxplot(size=1, alpha=0.5, outlier.colour=NA)
+#alpha is a transparency factor
+
+# video 24 = recap
+
+# quizz about the first part
+
+# 2nd part - lists -video 25
+# video 26 - project brief: machine utilization
+
+# Deliverable - a list with the following characteristics:
+# character: machine name
+# vector: min, mean, max utiliztion for the month (excluding unknown hours
+# Logical: Has utilization ever fallen below 90% true/false?
+# Dataframe: For this machine
+# Plot: For all machines
+
+# get the dataset from: from: https://www.superdatascience.com/rcourse-advanced/
+# it is called "Machine-Utiliztion.csv"
+
+# video 27 - import the data
+# read the data
+util <-  read.csv("Machine-Utilization.csv")
+head(util, n=12) # percent.Idle is a percentage
+str(util)
+summary(util)
+
+# derive a utilization column
+util$Utilization <- 1 - util$Percent.Idle
+head(util, n=12)
+
+# video 28 - handling date-times in R
+# Timestanp
+tail(util) # european format DD/MM/YYYY HH:MM
+#unisveral type of format: POSIXct ct = calendar time
+?POSIXct
+# POSIXct = number of seconds since 1070
+# convert Timestamp column into POSIXct (which is like Unix Time)
+as.POSIXct(util$Timestamp, format="%d/%m/%Y %H:%M")
+util$PosixTime <- as.POSIXct(util$Timestamp, format="%d/%m/%Y %H:%M")
+head(util, n=12)
+summary(util)
+#tip: how to arrange columns in a data frame
+util$Timestamp <-  NULL #eliminate the Timestamp column
+head(util, 12)
+#re-arrange the order of the columns
+util <- util[ , c(4,1,2,3)]
+head(util, 12)
+
+# video 29 - what is a list?
+summary(util)
+# filter for RL1 machines only
+util$Machine=="RL1" # only returns true / false for all registers
+util[util$Machine=="RL1", ] # returns all the rows of RL1's
+RL1 <- util[util$Machine=="RL1", ]
+summary(RL1)
+str(RL1)
+# there should be only one factor for machine,i.e. RL1
+RL1$Machine <- factor(RL1$Machine) # not: as.factor()
+str(RL1)
+
+# construct the list
+# character: machine name
+# Vector: min, mean, max utiliztion for the month (excluding unknown hours)
+# Logical: Has utilization ever fallen below 90% true/false?
+util_stats_rl1 <-  c(min(RL1$Utilization, na.rm=TRUE),
+                     mean(RL1$Utilization, na.rm=TRUE),
+                     max(RL1$Utilization, na.rm=TRUE))
+# create the flag for "has utilization ever fallen below 90%?"
+# yes as we see from the data...
+RL1$Utilization < 0.9 # only returns true / false for all rows, includes NAs.
+# so use the which operator, which ignores NA, to find the rows where utilization < 0.9
+which(RL1$Utilization < 0.9) # that gives us the row numbers
+# and this will give us the entire rows (data), where utilization is < 0.9
+RL1[which(RL1$Utilization < 0.9), ]
+# how many rows?
+length(which(RL1$Utilization < 0.9)) # 27
+length(which(RL1$Utilization < 0.9)) > 0 # TRUE
+# creating the flag
+util_under_90_flag <- length(which(RL1$Utilization < 0.9)) > 0 # TRUE
+util_under_90_flag
+
+list_rl1 <-  list("RL1", util_stats_rl1, util_under_90_flag)
+list_rl1
+
+# video 30  - naming components of a list
+list_rl1
+#check names
+names(list_rl1) # null
+# 1 = machine, 2 = stats, 3 = low threshold
+names(list_rl1) <- c("Machine", "Stats", "LowThreshold")
+list_rl1
+# another way to do the same
+rm(list_rl1) # elimintes (removes) the list
+list_rl1
+list_rl1 <- list(Machine ="RL1", Stats=util_stats_rl1, LowThreshold = util_under_90_flag)
+list_rl1
+
+# conclusion: named components make the handling of lists easier
+
+# video 31 - extracting components from a list
+# 1. [] will always return a list
+# 2. [[]] will always return the actual object
+# 3. $ - same as [[]] but prettier
+list_rl1
+list_rl1[1] # RL1
+list_rl1[[1]] # RL1
+list_rl1$Machine # RL1
+
+list_rl1[2] # 0.8492262 0.9516976 0.9950000
+typeof(list_rl1[2]) # list
+list_rl1[[2]] # 0.8492262 0.9516976 0.9950000
+typeof(list_rl1[[2]]) # double !
+list_rl1$Stats # 0.8492262 0.9516976 0.9950000
+typeof(list_rl1$Stats) # double !
+
+# how would you access the third value of the vector (max utilization)
+list_rl1$Stats[3] # 0.995
+# the same:
+list_rl1[[2]][3] # 0.995
+
+# video 32 - adding and deleting components
+list_rl1
+# adding a fourth element
+# vector: all hours where utilization is unknown: NAs
+RL1[!complete.cases(RL1),]
+RL1[is.na(RL1$Utilization), ] # all columns
+RL1[is.na(RL1$Utilization), "PosixTime"] # only the PosixTime column
+list_rl1$Unknown.hours <-  RL1[is.na(RL1$Utilization), "PosixTime"]
+list_rl1
+# alternative for adding an element (at position #6 of the list):
+list_rl1[6] <-  "New Information"
+list_rl1 # notice this produces a NULL at position #5
+# delete an (this) element (#5) of the list
+list_rl1[5] <- NULL
+list_rl1 # Notice: numeration of the rows gets shifted, unlike in data frames
+# delete "New Information" as well
+list_rl1[5] <- NULL
+list_rl1
+# add a data frame to the list
+list_rl1$Data <-  RL1
+list_rl1
+# look a this
+summary(list_rl1)
+# structure
+str(list_rl1)
+
+# video 33 - subsetting a list
+list_rl1
+# Access the forth element and the first value
+list_rl1[[4]][1]
+list_rl1$Unknown.hours[1] # this is equivalent
+# subsetting - E.g.: showing component 1 till 5
+list_rl1[1:5]
+# the first component (name of the machine) and 4th (the unknown hours)
+list_rl1[c(1,4)]
+# alternatively:
+list_rl1[c("Machine", "Unknown.hours")]
+sublist_rl1 <- list_rl1[c("Machine", "Stats")]
+sublist_rl1
+# accessing in Stats the second element (the mean)
+sublist_rl1[[2]][2] # 0.9516976
+sublist_rl1$Stats[2] # the same: 0.9516976
+
+# Double square brackets are not for subsetting, but for accessing a specific element (value)
+list_rl1[[1:5]] # that does not work: ERROR, because [[]] can only access one element
+
+# video 34 - create a time series plot, i.e PosixTime on the x-axes
+# analyze, which machine fall below 0.9 utilization
+# (using a line chart)
+library(ggplot2)
+list_rl1
+p <- ggplot(data=util)
+p + geom_line(aes(x=PosixTime, y = Utilization,
+                  colour=Machine), size=1.2) +
+  facet_grid(Machine~.) +
+  geom_hline(yintercept = 0.90,
+             colour="Gray", size=1,2,
+             linetype=3) #use ?linetype
+# assign this plot to a variable "myplot"
+myplot <- p + geom_line(aes(x=PosixTime, y = Utilization,
+                  colour=Machine), size=1.2) +
+  facet_grid(Machine~.) +
+  geom_hline(yintercept = 0.90,
+             colour="Gray", size=1,2,
+             linetype=3) #use ?linetype
+# add this plot to our list
+list_rl1$Plot <-  myplot
+list_rl1
+summary(list_rl1) # it added the plot, as a list of length 9
+str(list_rl1)
+
+# video 35 - section recap
+
+#Quiz 2 - lists in R
+
+#section 4
+# video 36 - what you will learn: apply family of functions
+# apply functions are like loops
+
+# video 37 - project brief: weather patterns
+# for 4 cities: Chicago, ne York, Houston and San Francisco
+# desired outputs:
+# 1. A table showing the annual averages of each observed metric for every city
+# 2. A table showing by how much temperature fluctuates each month from 
+#  min to max (in %). Take min temperature a s the base
+# 3. A table showing the annual maximums of each observed metric for every city
+# 4. A table showing the annual minimums of each observed metric for every city
+# 5. A table showing in which months the annual maximums of each metric were observed in every city (advanced)
+
+# First, download the data set (Weather-Data.zip) from: https://www.superdatascience.com/rcourse-advanced/
+# you have the temperatures in Celsius and Fahrenheit for each of the four cities
+# lets use Fahrenheit (F)
+
+# video 38 - import the data
+getwd()
+# setting a relative path, where  the . (dot) referes to the actual working directory
+setwd("./WeatherData/")
+# read data
+Chicago <-  read.csv("Chicago-F.csv", row.names = 1)
+# row.names = 1 means that the values of the first column will be the row names.
+Chicago
+NewYork <-  read.csv("NewYork-F.csv", row.names = 1)
+NewYork
+Houston <-  read.csv("Houston-F.csv", row.names = 1)
+Houston
+SanFrancisco <-  read.csv("SanFrancisco-F.csv", row.names = 1)
+SanFrancisco
+# these are data frames
+class(Chicago)
+# or:
+is.data.frame(Chicago)
+# cast to matrices
+Chicago <- as.matrix(Chicago)
+NewYork <- as.matrix(NewYork)
+Houston <- as.matrix(Houston)
+SanFrancisco <- as.matrix(SanFrancisco)
+is.matrix(Chicago)
+# lets put all of these into a list
+Weather <-  list(Chicago, NewYork, Houston, SanFrancisco)
+Weather
+# assign proper names to each element
+Weather <-  list(Chicago=Chicago, NewYork=NewYork, Houston=Houston, SanFrancisco=SanFrancisco)
+Weather
+# try it
+Weather[[3]] # gives us the matrix by itself for Houston
+Weather$Houston # the same
+
+# video 39 - what is the apply family? answer:loops
+# apply is designed for a matrix
+# 1. apply - use on a matrix: either the wors of the columns
+# 2. tapply - use on a vector to extract subgroups and apply a function to them
+#  by - use on data frames. Same concept as in group by in SQL
+# 3. eapply - use on an environment (E)
+# 4. lapply - apply a funciotn to elements of a list (L)
+# 5. sapply - a version of lapply. Can simplify (S) the result so it is not presented a a list
+# 6. vapply - has a pre-specified type of return value (V)
+# 7. replicate - run a function serveral times. usually used with the generation of random variables
+# 8. mapply - multivariate (M) version of sapply. Arguments can be recycled
+# 9. rapply - recursive (R) version of lapply
+
+# here we will focus on apply, lapply and sapply
+# where apply is used for matrices and lapply and sapply for lists and vectors
+
+# video 40 - using apply()
+?apply
+#apply(X, MARGIN, FUN, ...) where x is a matriz, margin is 1 (rows) or 2 (columns) and FuN is a function like mean()
+apply(Chicago, 1, mean) # you get the average value for each row
+#check for the 3rd row, which is named AvgPrecip_inch
+mean(Chicago[3,]) # 3.253333
+mean(Chicago["AvgPrecip_inch", ]) # the same result
+#analyze one city
+Chicago
+apply(Chicago, 1, max)
+apply(Chicago, 1, min)
+# just for practice (as it does not make much sense, but it is a good exercise)
+# apply for columns
+apply(Chicago, 2, max)
+apply(Chicago, 2, min)
+# compare the cities site by site
+apply(Chicago, 1, mean) 
+apply(NewYork, 1, mean) 
+apply(Houston, 1, mean) 
+apply(SanFrancisco, 1, mean) 
+# that result is almost the deliverable
+# how to make a table from these results?
+
+# video 41 - recreating the apply function with loops
+# its more a conceptual video
+Chicago
+# find the mean of every row
+# 1. via loops
+output <- NULL #preparing an empty vector
+# using a loop with a counter i which represents the rows
+nrow(Chicago) # 5
+for(i in 1:5){
+	output[i] <- mean(Chicago[i,])
+}
+output # [1]  59.333333  43.250000   3.253333   9.916667 208.666667
+#assign names for the output vector
+rownames(Chicago)
+names(output) <-  rownames(Chicago) # this assigns column names
+# check, if we have a named vector
+output
+# 2. via apply function
+apply(Chicago, 1, mean) # gives the same result using only one line of code
+# conclusion: apply is shorter and faster than a loop
+
+# video 42 - using lapply()
+?lapply # returns a list
+# ejercise transpose chicago
+t(Chicago) # transpose the matrix
+Chicago
+Weather # a whole list of weather data (for the four cities)
+#  how would I apply the transposed function (t()) to each matrix of the weather list and put the result into a list?
+t(Weather$Chicago)
+t(Weather$NewYork)
+t(Weather$Houston)
+t(Weather$SanFranciso)
+# that's very long, especially if you have many cities...
+# so lets look for a more efficient way:
+# lapply (applies a function to all items ) !!!
+lapply(Weather, t) # = t(Weather$Chicago), t(Weather$NewYork), t(Weather$Houston), t(Weather$SanFranciso)
+mynewlist <- lapply(Weather, t)
+mynewlist
+# example 2
+Chicago
+#add a new row, using row bind (rbind())
+rbind(Chicago, NewRow=1:12) # as we have data of 12 month
+# use lapply to do it for every city which is in the Weather data
+# notice rbind is FUN and NewRow=1:12 is a parameter that will be passed to FUN
+lapply(Weather, rbind, NewRow=1:12)
+#example 3
+?rowMeans # calculates the mean for all rows
+rowMeans(Chicago) # identical to apply(Chicago,1 , mean)
+# apply rowMeans to every single city (item) of the Weather data
+lapply(Weather, rowMeans) # the result is a list
+# almost the result, but has to be improved further
+
+#rowMeans()
+#colMeans()
+#rowSums()
+#colSums()
+
+# video 43 -  combining lapply() with []
+Weather # our Weather list
+Weather$Chicago[1,1] # equivalent to: Weather[[1]][1,1]
+# how to we extract this first row and first column value for the cities in the Weather data?
+# we have to iterate over the four elements (cities) of the weather list
+# i.e. Weather[1][1,1], Weather[[2]][1,1], Weather[[3]][1,1], Weather[[4]][1,1]
+# lets do that with lapply
+lapply(Weather, "[", 1, 1) # 32  39   63   57
+#where [ refers to the second brackets as R knows that we iterate over the components of the Weather list
+
+# the first row for every single city?
+lapply(Weather, "[", 1,)
+# values just for the month of march (third column) ?
+lapply(Weather, "[", ,3 )
+
+# video 44 - adding your own functions
+lapply(Weather, rowMeans) #rowMeans() is a pre-defined function
+# lets replace it with our own function
+lapply(Weather, function(x) x[1,] ) # the function takes the component (city) and applies the square brackets
+# first rwo of our Weather matrix
+lapply(Weather, function(x) x[5,] )
+#lets look at december data only (column: 12)
+lapply(Weather, function(x) x[,12] )
+
+#calculate a difference: values of first row - values of second row
+lapply(Weather, function(z) z[1,]-z[2,])
+# convert into relative Changes, i.e. divide through the base
+lapply(Weather, function(z) round((z[1,]-z[2,])/z[2,],2))
+# that is deliverable #2 temp fluctuations. However, we will improve this result
+
+# video 45 - Using sapply()
+?sapply
+# sapply is a simpler version of lapply as it returns a vector or matrix (and not a list)
+Weather
+#AvgHigh_F (1st row) for July (column 7)?
+lapply(Weather, "[" , 1, 7)
+# now use sapply(), which returns a vector, which is more readable
+sapply(Weather, "[" , 1, 7)
+
+# AVGHigh_F for 4th quarter (columns 10 till 12)
+lapply(Weather, "[" , 1, 10:12)
+sapply(Weather, "[" , 1, 10:12) # much more beautiful (a matrix)
+
+# antother example
+lapply(Weather, rowMeans)
+sapply(Weather, rowMeans) # a nice matrix
+#...even better
+round(sapply(Weather, rowMeans), 2) # that is the required deliverable #1
+
+# Another example:
+lapply(Weather, function(z) round((z[1,]-z[2,])/z[2,],2))
+sapply(Weather, function(z) round((z[1,]-z[2,])/z[2,],2))
+# that is deliverable #3
+
+# by the way
+sapply(Weather, rowMeans)
+sapply(Weather, rowMeans, simplify=FALSE) # same as lapply
+
+# video 46 - nesting apply() functions
+Weather
+lapply(Weather, rowMeans)
+?rowMeans
+#how to we get maximums
+Chicago
+apply(Chicago, 1, max) # for Chicago (first component of the list Weather) take the first row and determine the max values (for each month, i.e. column)
+# lets apply it to all the cities
+# apply accross the whole list of cities of the Weather data
+lapply(Weather, apply, 1 , max)
+lapply(Weather, function(x) apply(x, 1 , max)) # gives the same result
+#apply will iterate through the list of cities and will pass the matrix through apply and will take the optional parameters: 1, max
+
+# make it tidy
+sapply(Weather, apply, 1 , max) # deliverable 3
+sapply(Weather, apply, 1 , min) # deliverable 4
+
+# video 47 - which.max() and which.min()
+# which.max
+sapply(Weather, apply, 1 , max) # deliverable 3
+#when was the highest temperature (which month)
+?which.max
+chicago
+Chicago[1,]
+which.max(Chicago[1,]) # Jul 7
+names(which.max(Chicago[1,]) ) # Jul
+# do it for all rows of one city (-> apply) and all cities (->lapply or sapply)
+# apply iterates over rows of a matrix and
+# lapply or sapply iterates over the components (cities) of a list
+apply(Chicago, 1, function(x) names(which.max(x) ) ) # x receives the result of  Chicago, 1
+lapply(Weather, function(y) apply(y, 1, function(x) names(which.max(x) ) ))
+# the result of y gets passed to x
+# make it beautiful...
+sapply(Weather, function(y) apply(y, 1, function(x) names(which.max(x) ) ))
+#wow
+
+# video 48 - recap
+
+# video 49 - Quiz
+

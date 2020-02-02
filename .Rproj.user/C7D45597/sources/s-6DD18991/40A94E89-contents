@@ -1,0 +1,365 @@
+# Cargar datos a R/RStudio {#cargar}
+
+## Objetivo
+
+El objetivo de esta sección consiste en explicar diferentes escenarios para cargar ("importar") datos de diferentes fuentes a R / RStudio. Esto como una condición previa para analizar posteriormente estos datos. La explicación incluye fuentes de datos financieros como la cotización de acciones.
+
+## Leer datos desde un archivo de tipo csv y xlsx
+
+Primero, vamos a generar manualmente un archivo en MS-Excel con los siguientes datos:
+
+|id |	Nombre	|Apellido	 |Ingresos	|Egresos	|Calificación
+----|---------|----------|----------|---------|------------
+|1  |	Jimmy	  |Toro		   |4000000	  |3500000	|80
+|2  |	Joe	    |Arango		 |3500000	  |4000000	|20
+|3  |	Diana	  |Ramírez	 |3000000	  |3000000	|50
+|4  |	Cris	  |Mesa		   |2500000	  |2000000	|70
+|5  |	Manuela	|Meier		 |2000000	  |1000000	|70
+|6  |	Lucia	  |Müller		 |1500000	  |1400000	|45
+|7  |	Andrés	|Aveláez	 |1000000	  |1000000	|40
+|8  |	Bill	  |Jaramillo |750000		|800000		|10
+|9  |	Gabriel	|Arias	   |500000		|500000		|12
+|10 |	Javier	|Gómez		 |450000		|450000		|10
+
+
+- Determinar su directorio de trabajo para R, utilizando la función getwd()
+- Guardar este archivo como **csv** (comma separated value), bajo el nombre "test1csv.csv", en su directorio de trabajo (working directory de R)
+- Guardarlo también como archivo de Excel (xlsx), bajo el nombre "test1excel.xlsx", en su directorio de trabajo de R
+
+
+- Ahora, leer el contenido del archivo csv, utilizando en RStudio la función read.csv(), tomando en cuenta que los datos tienen un "encabezado" y asignar el resultado a una variable "dataset"
+- Visualizar el contenido de la tabla de datos (dataset), utilizando la función View()
+- Determinar la clase del (objeto) "dataset"
+- Determinar la estructura de "dataset", utilizando la función str()
+- Mostrar "Meier", que es un elemento en la fila con el id "5", columna #3 del "dataset" (quinta fila, tercera columna)
+
+```{r}
+dataset <- read.csv('test1csv.csv', sep = ';') # si el separador es coma o punto coma, depende como Excel almacena el archivo csv...
+View(dataset)
+class(dataset)
+str(dataset)
+dataset[5,3]
+```
+
+- Ahora, leer el contenido del archivo xlsx, utilizando en RStudio la función read_excel() del paquete readxl, tomando en cuenta que los datos tienen un "encabezado" y asignar el resultado a la variable "dataset2"
+- Visualizar el contenido de la tabla de datos (dataset2), utilizando la función View()
+- Determinar la clase del "dataset2"
+- Determinar la estructura de "dataset2", utilizando la función str()
+- Mostrar los ingresos de la persona "Javier Gómez" (observación en la fila #10 y columna #4), que es parte del "dataset2"
+
+```{r}
+library(readxl)
+dataset2 <- read_excel('test1excel.xlsx', sheet='Hoja2') 
+# en el proceso de guardar como xlxs se genera esta hoja 2
+View(dataset2)
+class(dataset2)
+str(dataset2)
+dataset[10,4]
+```
+
+- Explorar la función file.choose() para el archivo csv, utilizando el comando "dataset3 <- read.csv(file.choose(), header=TRUE)"
+- Explorar la estructura de #dataset3"
+- Cambiar el código para los parámetros de la función read.csv() de tal forma, que se utiliza "stringsAsFactors=FALSE" para evitar que los datos de tipo "string" se convierten en una variable categórica (factor)
+
+Solución:
+
+dataset3 <- read.csv(file.choose(), header=TRUE)
+
+Nota: El comando file.choose() abre una ventana nueva, que permite seleccionar un archivo en cualquier parte del equipo de cómputo o en una memoria externa.
+
+## Leer datos desde un archivo csv de una página web (url)
+
+- Cargar datos de solicitudes de crédito de la siguiente url, donde se encuentra un archivo "german_credit.csv": url="http://freakonometrics.free.fr/german_credit.csv" y asignar el resultado a una variable "credito". Tomar en cuenta que estos datos tienen un encabezado y que las columnas están separadas por coma.
+- Analizar la estructura de los datos "credito"
+
+```{r}
+url="http://freakonometrics.free.fr/german_credit.csv"
+credito <- read.csv(url, header = TRUE, sep = ",")
+str(credito)
+```
+
+## Leer datos de acciones, utilizando el paquete quantmod
+
+- Cargar el paquete "quantmod"
+- Analizar con el comando de "help" (?) el contenido de este paquete
+- Este paquete requiere que se defina (al principio) un entorno (environment): new.env() que se asigna a una variable, p.ej. con el nombre "stockData" 
+
+```{r}
+library(quantmod)
+?quantmod
+stockData <- new.env() #Generar un entorno nuevo 
+# para que quandmod pueda guardar los datos en este entorno
+```
+
+- Definir una fecha de inicio y final para bajar los datos.
+- Utilizar como fecha final la fecha actual y como fecha de inicio una fecha "cercana" a la fecha final
+
+```{r}
+startDate = as.Date("2020-01-20")
+endDate = Sys.Date()
+```
+
+- Definir una lista de los tickers (empresas) para las cuales se requieren los datos. P.ej. Amazon: ticker - AMZN
+
+```{r}
+tickers <- c("AMZN")
+```
+
+- Descargar los datos históricos de la/s acción/es (para todos los tickers), utilizando la función getsymbols() de quandmod y como fuente yahoo (src = "yahoo")
+
+```{r}
+getSymbols(tickers, 
+           env = stockData, 
+           src = "yahoo", 
+           from = startDate, 
+           to = endDate)
+```
+
+- Analizar las primeras 6 filas de estos datos ya descargados
+- Observar la clase de los datos (class())
+
+```{r}
+head(stockData$AMZN)
+class(stockData) # environment
+```
+
+## Leer datos de una tabla de una página web: wikipedia
+
+- Instalar y cargar los paquetes "tidyverse" y "rvest"
+- Leer datos desde la tabla en https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population, utilizando la función read_html() para guardar el resultado en una variable "urldata"
+- Observar la clase de la varialbe "urldata"
+- Extraer la/s tabla/s mediante: tab <- urldata %>% html_nodes("table")
+- Observar el contenido de la variable "tab"
+- Escoger la primera tabla con: tab[[1]]
+- Transformar a un data frame con: tab <- tab[[1]] %>% html_table(header = TRUE, fill = TRUE)
+- Observar la clase de la variable "tab""
+- Mostrar su contenido
+
+```{r}
+library(tidyverse)
+library(rvest)
+
+url = "https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population"
+
+urldata <- read_html(url)
+class(urldata)
+
+tab <- urldata %>% html_nodes("table")
+
+tab
+
+tab[[1]] # el primer elemento es la tabla que se quiere cargar...
+
+tab <- tab[[1]] %>% html_table(header = TRUE, fill = TRUE)
+class(tab) # data frame
+View(tab) 
+# los contenidos se cargaron, más o menos, bien, 
+# en términos del formato ...
+```
+
+## Cargar un conjunto de datos, que viene con R
+
+Con la instalación básica de R vienen algunos datasets (pre-loaded datasets in R)
+
+- Utilizar el paquete (library) "datasets" y la función data() para imprimir a la pantalla una lista con los conjuntos de datos disponibles
+
+```{r}
+library(datasets)
+data() # abre una pestaña en RStudio donde se muestran todos los datasets disponibles
+```
+
+- Cargar el dataset con el nombre "EuStockMarkets", utilizando la función data()
+- Convertir este datset a un data frame y asignar el resultado a la variable "dataset.Eur"
+- Mostrar las primeras 10 filas de "dataset.Eur"
+- Mostrar la estructura de "dataset.Eur"
+
+```{r}
+data("EuStockMarkets")
+dataset.Eur <- as.data.frame(EuStockMarkets)
+head(dataset.Eur, n=10)
+str(dataset.Eur)
+```
+
+## Cargar datos financieros con el paquete tidyquant
+
+### Renta variable - precio de acciones
+
+Con respecto al paquete "tidyquant", ver también el siguiente vínculo: https://rdrr.io/cran/tidyquant/man/tq_get.html
+
+- Encontrar todas las bolsas disponibles, utilizando la función tq_exchange_options()
+
+```{r}
+library(tidyquant)
+tq_exchange_options() 
+```
+
+- Encontrar todos los indices búrsatiles disponibles, utilizando la función tq_index_options()
+
+```{r}
+tq_index_options() 
+```
+
+- Explorar el índice S&P500 (SP500), utilizando la función glimpse(), que es parecida a str(). Se requiere el paquete XLConnect.
+
+```{r}
+library(XLConnect)
+glimpse(tq_index("SP500"))
+```
+
+- Utilizar la función tq_get_options() para obtener una lista con opciones para obtener (get) datos financieros
+
+```{r}
+tq_get_options() # vamos a utilizar opción [1] "stock.prices"
+```
+
+- Obtener los precios (stock.prices) de los últimos 10 dias de las siguientes acciones: Facebook (FB) y Microsoft (MSFT), utilizando la función tq_get().
+- Mostrar las últimas 6 registros de estas acciones, utilizando la función tail()
+
+```{r}
+start <- Sys.Date() - 10
+
+acciones <- tq_get(c("FB", "MSFT"),
+                      get  = c("stock.prices"),
+                      from = start,
+                      to   = Sys.Date()) 
+
+# se puede entrar también una fecha específica (entre comillas), como p.ej.: "2020-02-01"
+tail(acciones)
+```
+
+- Extraer (mostrar) los primeros registros de los precios (stock.prices) para el símbolo de "MSFT"
+
+```{r}
+a2 <- acciones[acciones$symbol=="MSFT", ] 
+head(a2)
+```
+
+### Renta fija 
+
+Aquí, se trata de cargar 1-Y y 3-M bonos libre de riesgos (EE.UU. treasury bills) utilizando R
+
+Utilizar nuevamente el paquete tidyquant y la función "tq_get()" para bajar los datos de precios para bonos del estado de la página web de [FRED, Federal Reserve Bank of St. Louis Economic Data](https://fred.stlouisfed.org/).
+Se deben bajar los datos para "TB1YR" y "TB3MS". Es decir, treasury bills de un año (1YR) y de tres meses (3MS) [Stöckl, S. (21/09/2018). Tidy Portfoliomanagement in R](https://bookdown.org/sstoeckl/Tidy_Portfoliomanagement_in_R/s-2Data.html#fnref1).
+
+```{r}
+library(tidyquant)
+tbills <- tq_get(c("TB1YR","TB3MS"), get = "economic.data") %>%
+  group_by(symbol)
+
+head(tbills)
+```
+
+## Cargar datos de criptomonedas
+
+- Utilizar el paquete "coinmarketcapr"
+- Descargar las criptomonedas "top", utilizando el comando get_marketcap_ticker_all() de este paquete, y asignar el resultado a una variable "top_cc"
+- Analizar la clase de esta variable
+- Mostrar las primeras 6 filas de esta variable, utilizando la función kable(), aquí (head(top_cc)), la cual es parte del paquete knitr, y analizar estos datos
+
+```{r}
+library(coinmarketcapr)
+library(knitr)
+top_cc <- get_marketcap_ticker_all()
+class(top_cc) #top_cc es un dataframe
+# kable es un generador de tablas (del paquete knitr) y muestra las primeras filas (head) de los datos
+kable(head(top_cc))
+```
+
+### Para cargar datos históricos de criptomonedas
+
+- Utilizar el paquete crypto de R
+- y la función crypto_history(), p.ej. para bajar los datos para Bitcoin, en términos de la última cotización (parámetro "limit" = 1) 
+- Asignar el resultado a una variable "bitc"
+- Mostrar las primeras seis filas de "bitc"
+- Mostrar los primeros seis valores de la columna "close" de "bitc"
+
+```{r}
+library(crypto)
+moneda <- 'BTC' #"bitcoin"
+#start <- '20191201' 
+limit <- 1 # últimos 1 cotizaciones
+bitc <- crypto_history(coin = moneda, 
+											 limit = limit,
+											 sleep = 7.5)
+head(bitc)
+head(bitc[,"close"]) # primeras seis filas de la columna "close"
+```
+
+## Cargar datos de Eurostat con R
+
+Eurostat es la oficina estadística de la Unión Europea. Su misión es proporcionar estadísticas de alta calidad para Europa.
+
+- Instalar y utilizar el paquete (library) eurostat [R Tools for Eurostat open data]( https://ropengov.github.io/eurostat).
+- Explorar el manual para el paquete "eurostat", utilizando el comando ?eurostat
+- Véase también: http://ropengov.github.io/eurostat/articles/cheatsheet.html
+
+```{r}
+library(dplyr) # debe ser una versión de dplyr mayor a 0.8
+library(eurostat) # R Tools para Eurostat open data (requiere versión dplyr > 0.8)
+?eurostat # página de ayuda
+```
+
+- Cargar los datos desde Eurostat, utilizando la función get_eurostat(), y asignar el resultado a una variable "contenido" (tabla de contenido).
+Nota: La carga de estos datos se demora un rato
+
+```{r}
+library(eurostat)
+contenido <- get_eurostat_toc()
+```
+
+- Mostrar para el contenido las primeras filas en una tabla, utilizando knitr::kable()... Esto requiere el paquete "knitr"
+
+```{r}
+library(knitr)
+kable(head(contenido))
+```
+
+Utilizando la función search_eurostat(), se puede buscar en la tabla de contenido, p.ej. por conjuntos de datos (datasets), que están relacionados con las "tasas de intéres" (interest rates):
+kable(head(search_eurostat("interest rates")), n=25)
+
+Donde n=5 limita el resultado a 5 filas.
+
+```{r}
+kable(head(search_eurostat("interest rates")), n=5)
+```
+
+Nota: Los códigos para el conjunto de datos se pueden buscar también en la base de datos de Eurostat. Esta base de datos proporciona códigos en forma de un árbol de navegación de datos, entre paréntesis después de cada conjunto de datos: https://ec.europa.eu/eurostat/data/database
+
+Para descargar los datos de un conjunto de datos, utilizar la función search_eurostat() de la siguiente forma, donde code[1] es importante para que este id sea el code correspondiente, que se muestra en la tabla anterior. 
+
+```{r}
+id <- search_eurostat("Money market interest rates - annual data", 
+                         type = "dataset")$code[1]
+print(id)
+```
+
+Ahora, se puede "aprovechar" de este "id", de la siguiente forma, utilizando la función get_eurostat() y asignando el resultado a una variable "datos"
+
+```{r}
+datos <- get_eurostat(id, time_format = "num")
+```
+
+- Ver los "datos", utilizando la función str() y con head(), los primeros 5 registros de "datos"
+
+```{r}
+str(datos)
+head(datos, n=5)
+```
+
+
+## Ejercicio 3
+
+- Crear un archivo de tipo CSV con los siguientes datos, distribuidos en cinco filas y 4 columnas, y separados por punto y coma (;):
+
+- \#;Estrato;Ingresos;Nombre
+- 1;1;100.0;Jaime
+- 2;2;150;María
+- 3;2;140;Paula
+- 4;5;90;Cristina
+
+- Cargar estos datos desde el archivo csv a una variable "dataset10" en R / RStudio. Los datos de las primeras tres columnas deben ser numéricos (int o num) y de la última de tipo "character" (chr)
+- Mostrar la estructura del "dataset10" en la pantalla
+- Cambiar el nombre de la primera columna al texto "numero"
+
+
+

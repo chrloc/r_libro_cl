@@ -1,0 +1,5 @@
+"0","set.seed(123)"
+"0","d = sort(sample(nrow(dataset),nrow(dataset)*0.66, replace=FALSE))"
+"0","# dividir en una conjunto de  training y test set"
+"0","credit_train <- dataset[d, ]"
+"0","credit_test  <- dataset[-d, ]"

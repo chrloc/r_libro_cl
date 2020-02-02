@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Ejercicio más avanzado - procesando datos búrsatiles con pipes (%&gt;%) | Una breve introducción a R con un enfoque financiero y administrativo</title>
+  <meta name="description" content="Una breve introducción al lenguaje de programación R. Con unos ejemplos del área administrativo y de las finanzas." />
+  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Ejercicio más avanzado - procesando datos búrsatiles con pipes (%&gt;%) | Una breve introducción a R con un enfoque financiero y administrativo" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Una breve introducción al lenguaje de programación R. Con unos ejemplos del área administrativo y de las finanzas." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Ejercicio más avanzado - procesando datos búrsatiles con pipes (%&gt;%) | Una breve introducción a R con un enfoque financiero y administrativo" />
+  
+  <meta name="twitter:description" content="Una breve introducción al lenguaje de programación R. Con unos ejemplos del área administrativo y de las finanzas." />
+  
+
+<meta name="author" content="Christian Lochmuller" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="tidy.html"/>
+<link rel="next" href="bucles.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/viz-1.8.2/viz.js"></script>
+<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
+<script src="libs/grViz-binding-1.0.5/grViz.js"></script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisitos</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introducción</a><ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#r-como-calculadora"><i class="fa fa-check"></i><b>2.1</b> R como “calculadora”</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#asignacion-de-un-valor-numerico-a-una-variable"><i class="fa fa-check"></i><b>2.2</b> Asignación de un valor numérico a una variable</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#buscar-ayuda"><i class="fa fa-check"></i><b>2.3</b> Buscar ayuda</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="intro.html"><a href="intro.html#un-ejemplo"><i class="fa fa-check"></i><b>2.3.1</b> Un ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#estilos-para-organizar-el-codigo-en-r-style-guides"><i class="fa fa-check"></i><b>2.4</b> Estilos para organizar el código en R (“style guides”)</a></li>
+<li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#una-opcion-para-explorar-swirl"><i class="fa fa-check"></i><b>2.5</b> Una opción para explorar: Swirl</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>3</b> Tipos de datos</a><ul>
+<li class="chapter" data-level="3.1" data-path="tipos.html"><a href="tipos.html#datos-booleanos-y-operadores-de-logica"><i class="fa fa-check"></i><b>3.1</b> Datos booleanos y operadores de lógica</a></li>
+<li class="chapter" data-level="3.2" data-path="tipos.html"><a href="tipos.html#tipo-de-dato-fecha"><i class="fa fa-check"></i><b>3.2</b> Tipo de dato Fecha</a></li>
+<li class="chapter" data-level="3.3" data-path="tipos.html"><a href="tipos.html#tipo-de-dato-vector"><i class="fa fa-check"></i><b>3.3</b> Tipo de dato Vector</a></li>
+<li class="chapter" data-level="3.4" data-path="tipos.html"><a href="tipos.html#vectores-de-caracteres-strings"><i class="fa fa-check"></i><b>3.4</b> Vectores de caracteres (strings)</a></li>
+<li class="chapter" data-level="3.5" data-path="tipos.html"><a href="tipos.html#accediendo-a-elementos-de-un-vector"><i class="fa fa-check"></i><b>3.5</b> Accediendo a elementos de un vector</a></li>
+<li class="chapter" data-level="3.6" data-path="tipos.html"><a href="tipos.html#factors-variables-categoricas"><i class="fa fa-check"></i><b>3.6</b> Factors (variables categóricas)</a></li>
+<li class="chapter" data-level="3.7" data-path="tipos.html"><a href="tipos.html#algunas-funciones-matematicas-con-respecto-a-vectores"><i class="fa fa-check"></i><b>3.7</b> Algunas funciones matemáticas con respecto a vectores</a></li>
+<li class="chapter" data-level="3.8" data-path="tipos.html"><a href="tipos.html#pipes-un-concepto-novedoso-en-r"><i class="fa fa-check"></i><b>3.8</b> Pipes %&gt;% (… un concepto “novedoso” en R)</a></li>
+<li class="chapter" data-level="3.9" data-path="tipos.html"><a href="tipos.html#data-frames-parecido-a-una-hoja-de-calculo-en-excel"><i class="fa fa-check"></i><b>3.9</b> Data frames (parecido a una hoja de cálculo en Excel)</a></li>
+<li class="chapter" data-level="3.10" data-path="tipos.html"><a href="tipos.html#listas"><i class="fa fa-check"></i><b>3.10</b> Listas</a><ul>
+<li class="chapter" data-level="3.10.1" data-path="tipos.html"><a href="tipos.html#una-lista-de-listas"><i class="fa fa-check"></i><b>3.10.1</b> Una lista de listas</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="cargar.html"><a href="cargar.html"><i class="fa fa-check"></i><b>4</b> Cargar datos a R/RStudio</a><ul>
+<li class="chapter" data-level="4.1" data-path="cargar.html"><a href="cargar.html#leer-datos-desde-un-archivo-de-tipo-csv-y-xlsx"><i class="fa fa-check"></i><b>4.1</b> Leer datos desde un archivo de tipo csv y xlsx</a></li>
+<li class="chapter" data-level="4.2" data-path="cargar.html"><a href="cargar.html#leer-datos-desde-un-archivo-csv-de-una-pagina-web-url"><i class="fa fa-check"></i><b>4.2</b> Leer datos desde un archivo csv de una página web (url)</a></li>
+<li class="chapter" data-level="4.3" data-path="cargar.html"><a href="cargar.html#leer-datos-de-acciones-utilizando-el-paquete-quandmod"><i class="fa fa-check"></i><b>4.3</b> Leer datos de acciones, utilizando el paquete quandmod</a></li>
+<li class="chapter" data-level="4.4" data-path="cargar.html"><a href="cargar.html#leer-datos-de-una-tabla-de-una-pagina-web-wikipedia"><i class="fa fa-check"></i><b>4.4</b> Leer datos de una tabla de una página web: wikipedia</a></li>
+<li class="chapter" data-level="4.5" data-path="cargar.html"><a href="cargar.html#cargar-un-conjunto-de-datos-que-viene-con-r-pre-loaded-datasets-in-r"><i class="fa fa-check"></i><b>4.5</b> Cargar un conjunto de datos, que viene con R (pre-loaded datasets in R)</a></li>
+<li class="chapter" data-level="4.6" data-path="cargar.html"><a href="cargar.html#cargar-datos-financieros-con-el-paquete-tidyquant"><i class="fa fa-check"></i><b>4.6</b> Cargar datos financieros con el paquete tidyquant</a><ul>
+<li class="chapter" data-level="4.6.1" data-path="cargar.html"><a href="cargar.html#renta-variable---precio-de-acciones"><i class="fa fa-check"></i><b>4.6.1</b> Renta variable - precio de acciones</a></li>
+<li class="chapter" data-level="4.6.2" data-path="cargar.html"><a href="cargar.html#renta-fija---cargar-1-y-y-3-m-bonos-libre-de-riesgos-ee.uu.-treasury-bills-desde-r"><i class="fa fa-check"></i><b>4.6.2</b> Renta fija - Cargar 1-Y y 3-M bonos libre de riesgos (EE.UU. treasury bills) desde R</a></li>
+</ul></li>
+<li class="chapter" data-level="4.7" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-criptomonedas"><i class="fa fa-check"></i><b>4.7</b> Cargar datos de criptomonedas</a></li>
+<li class="chapter" data-level="4.8" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-eurostat-con-r"><i class="fa fa-check"></i><b>4.8</b> Cargar datos de Eurostat con R</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="explorar.html"><a href="explorar.html"><i class="fa fa-check"></i><b>5</b> Explorar datos</a><ul>
+<li class="chapter" data-level="5.1" data-path="explorar.html"><a href="explorar.html#desarrollar-un-entendimiento-inicial-del-conjunto-de-datos"><i class="fa fa-check"></i><b>5.1</b> Desarrollar un entendimiento inicial del conjunto de datos</a></li>
+<li class="chapter" data-level="5.2" data-path="explorar.html"><a href="explorar.html#comprobar-si-existen-datos-faltantes-en-el-conjunto-de-datos-dataset"><i class="fa fa-check"></i><b>5.2</b> Comprobar, si existen datos faltantes en el conjunto de datos (dataset)</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="explorar.html"><a href="explorar.html#opcion-1"><i class="fa fa-check"></i><b>5.2.1</b> Opción 1</a></li>
+<li class="chapter" data-level="5.2.2" data-path="explorar.html"><a href="explorar.html#opcion-2"><i class="fa fa-check"></i><b>5.2.2</b> Opción 2</a></li>
+<li class="chapter" data-level="5.2.3" data-path="explorar.html"><a href="explorar.html#opcion-3"><i class="fa fa-check"></i><b>5.2.3</b> Opción 3</a></li>
+<li class="chapter" data-level="5.2.4" data-path="explorar.html"><a href="explorar.html#opcion-4"><i class="fa fa-check"></i><b>5.2.4</b> Opción 4</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="explorar.html"><a href="explorar.html#visualizaciones-para-explorar-un-conjunto-de-datos"><i class="fa fa-check"></i><b>5.3</b> Visualizaciones para explorar un conjunto de datos</a></li>
+<li class="chapter" data-level="5.4" data-path="explorar.html"><a href="explorar.html#guardar-el-histograma-en-un-archivo-de-tipo-png-en-el-directorio-de-trabajo"><i class="fa fa-check"></i><b>5.4</b> Guardar el histograma en un archivo de tipo “png” en el directorio de trabajo</a></li>
+<li class="chapter" data-level="5.5" data-path="explorar.html"><a href="explorar.html#tambien-el-paquete-desctools-es-de-ayuda"><i class="fa fa-check"></i><b>5.5</b> También el paquete DescTools es de ayuda</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="tidy.html"><a href="tidy.html"><i class="fa fa-check"></i><b>6</b> El paquete tidyverse y su funcionalidad</a><ul>
+<li class="chapter" data-level="6.1" data-path="tidy.html"><a href="tidy.html#tibble-parte-del-ecosistema-tidyverse"><i class="fa fa-check"></i><b>6.1</b> tibble (parte del ecosistema tidyverse)</a></li>
+<li class="chapter" data-level="6.2" data-path="tidy.html"><a href="tidy.html#utilizar-y-aplicar-funciones-del-tidyverse"><i class="fa fa-check"></i><b>6.2</b> Utilizar y aplicar funciones del tidyverse</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="ejercicio-mas-avanzado-procesando-datos-bursatiles-con-pipes.html"><a href="ejercicio-mas-avanzado-procesando-datos-bursatiles-con-pipes.html"><i class="fa fa-check"></i><b>7</b> Ejercicio más avanzado - procesando datos búrsatiles con pipes (%&gt;%)</a></li>
+<li class="chapter" data-level="8" data-path="bucles.html"><a href="bucles.html"><i class="fa fa-check"></i><b>8</b> Bucles</a><ul>
+<li class="chapter" data-level="8.1" data-path="bucles.html"><a href="bucles.html#que-son-las-funciones-del-tipo-apply-respuesta-bucles-o-loops"><i class="fa fa-check"></i><b>8.1</b> ¿Qué son las funciones del tipo “apply()”? Respuesta: bucles o loops</a></li>
+<li class="chapter" data-level="8.2" data-path="bucles.html"><a href="bucles.html#apply"><i class="fa fa-check"></i><b>8.2</b> 1. apply</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="bucles.html"><a href="bucles.html#apply-vs-for-for-loop"><i class="fa fa-check"></i><b>8.2.1</b> apply vs for (for loop)</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="bucles.html"><a href="bucles.html#lapply"><i class="fa fa-check"></i><b>8.3</b> 2. lapply</a></li>
+<li class="chapter" data-level="8.4" data-path="bucles.html"><a href="bucles.html#sapply"><i class="fa fa-check"></i><b>8.4</b> 3. sapply</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="ajusteDistri.html"><a href="ajusteDistri.html"><i class="fa fa-check"></i><b>9</b> Ajuste de datos a una distribución</a><ul>
+<li class="chapter" data-level="9.1" data-path="ajusteDistri.html"><a href="ajusteDistri.html#generar-datos-aleatorios-distribucion-normal"><i class="fa fa-check"></i><b>9.1</b> Generar datos (aleatorios): Distribución normal</a></li>
+<li class="chapter" data-level="9.2" data-path="ajusteDistri.html"><a href="ajusteDistri.html#generar-1000-datos-aleatorios-distribucion-exponencial"><i class="fa fa-check"></i><b>9.2</b> Generar 1000 datos aleatorios: Distribución exponencial</a></li>
+<li class="chapter" data-level="9.3" data-path="ajusteDistri.html"><a href="ajusteDistri.html#generar-1000-datos-aleatorios-distribucion-uniforme"><i class="fa fa-check"></i><b>9.3</b> Generar 1000 datos aleatorios: Distribución uniforme</a></li>
+<li class="chapter" data-level="9.4" data-path="ajusteDistri.html"><a href="ajusteDistri.html#generar-1000-datos-aleatorios-distribucion-lognormal"><i class="fa fa-check"></i><b>9.4</b> Generar 1000 datos aleatorios: Distribución lognormal</a></li>
+<li class="chapter" data-level="9.5" data-path="ajusteDistri.html"><a href="ajusteDistri.html#generar-1000-datos-aleatorios-distribucion-poisson-discreta"><i class="fa fa-check"></i><b>9.5</b> Generar 1000 datos aleatorios: Distribución Poisson (discreta)</a></li>
+<li class="chapter" data-level="9.6" data-path="ajusteDistri.html"><a href="ajusteDistri.html#generar-1000-datos-aleatorios-distribucion-binomial"><i class="fa fa-check"></i><b>9.6</b> Generar 1000 datos aleatorios: Distribución binomial</a></li>
+<li class="chapter" data-level="9.7" data-path="ajusteDistri.html"><a href="ajusteDistri.html#unir-todo-en-un-data-frame"><i class="fa fa-check"></i><b>9.7</b> Unir todo en un data frame</a></li>
+<li class="chapter" data-level="9.8" data-path="ajusteDistri.html"><a href="ajusteDistri.html#realizar-el-ajuste"><i class="fa fa-check"></i><b>9.8</b> Realizar el ajuste</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="regLineal.html"><a href="regLineal.html"><i class="fa fa-check"></i><b>10</b> Un modelo lineal sencillo (regresión lineal)</a><ul>
+<li class="chapter" data-level="10.1" data-path="regLineal.html"><a href="regLineal.html#cargar-datos-sobre-carros"><i class="fa fa-check"></i><b>10.1</b> Cargar datos sobre carros</a></li>
+<li class="chapter" data-level="10.2" data-path="regLineal.html"><a href="regLineal.html#crear-el-modelo-lineal-regresion-lineal"><i class="fa fa-check"></i><b>10.2</b> Crear el modelo: lineal (regresión lineal)</a></li>
+<li class="chapter" data-level="10.3" data-path="regLineal.html"><a href="regLineal.html#realizar-una-prediccion-utilizando-el-modelo-generado"><i class="fa fa-check"></i><b>10.3</b> Realizar una predicción, utilizando el modelo generado</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="electre1.html"><a href="electre1.html"><i class="fa fa-check"></i><b>11</b> MCDA: Outranking: sobre calificación</a><ul>
+<li class="chapter" data-level="11.1" data-path="electre1.html"><a href="electre1.html#datos"><i class="fa fa-check"></i><b>11.1</b> Datos</a></li>
+<li class="chapter" data-level="11.2" data-path="electre1.html"><a href="electre1.html#leer-los-datos-desde-un-archivo-de-excel"><i class="fa fa-check"></i><b>11.2</b> Leer los datos desde un archivo de Excel</a></li>
+<li class="chapter" data-level="11.3" data-path="electre1.html"><a href="electre1.html#analizar-el-paquete-outranking-tools-y-la-funcion-electre_1"><i class="fa fa-check"></i><b>11.3</b> Analizar el paquete Outranking Tools y la función electre_1()</a></li>
+<li class="chapter" data-level="11.4" data-path="electre1.html"><a href="electre1.html#transformar-los-datos-al-formato-que-la-fucion-electre_1-espera"><i class="fa fa-check"></i><b>11.4</b> Transformar los datos al formato, que la fución Electre_1() espera</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="ahp.html"><a href="ahp.html"><i class="fa fa-check"></i><b>12</b> Modelo AHP (Analytical Hierarchy Process)</a><ul>
+<li class="chapter" data-level="12.1" data-path="ahp.html"><a href="ahp.html#cargar-los-paquetes-ahp-y-data.tree"><i class="fa fa-check"></i><b>12.1</b> Cargar los paquetes ahp y data.tree</a></li>
+<li class="chapter" data-level="12.2" data-path="ahp.html"><a href="ahp.html#mostrar-los-archivos-ejemplos-que-vienen-con-este-paquete-ahp-y-cargar-uno-de-estos"><i class="fa fa-check"></i><b>12.2</b> Mostrar los archivos (ejemplos), que vienen con este paquete ahp y cargar uno de estos</a></li>
+<li class="chapter" data-level="12.3" data-path="ahp.html"><a href="ahp.html#aplicar-ahp-utilizando-la-funcion-calculate"><i class="fa fa-check"></i><b>12.3</b> Aplicar ahp, utilizando la función calculate()</a></li>
+<li class="chapter" data-level="12.4" data-path="ahp.html"><a href="ahp.html#mostrar-el-problema-de-decision-graficamente-como-un-arbol"><i class="fa fa-check"></i><b>12.4</b> Mostrar el problema de decisión graficamente (como un árbol)</a></li>
+<li class="chapter" data-level="12.5" data-path="ahp.html"><a href="ahp.html#analizar-los-resultados-de-ahp"><i class="fa fa-check"></i><b>12.5</b> Analizar los resultados de ahp</a><ul>
+<li class="chapter" data-level="12.5.1" data-path="ahp.html"><a href="ahp.html#nota-solucion-alternativa"><i class="fa fa-check"></i><b>12.5.1</b> Nota: solución alternativa</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="fuzzy.html"><a href="fuzzy.html"><i class="fa fa-check"></i><b>13</b> Modelo fuzzy (borroso)</a><ul>
+<li class="chapter" data-level="13.1" data-path="fuzzy.html"><a href="fuzzy.html#definir-el-universo-universe"><i class="fa fa-check"></i><b>13.1</b> Definir el universo (universe)</a></li>
+<li class="chapter" data-level="13.2" data-path="fuzzy.html"><a href="fuzzy.html#definir-tres-variables-linguisticas-de-entrada-y-una-variable-de-salida-aqui-aptitud"><i class="fa fa-check"></i><b>13.2</b> Definir tres variables linguisticas de entrada y una variable de salida (aquí aptitud )</a></li>
+<li class="chapter" data-level="13.3" data-path="fuzzy.html"><a href="fuzzy.html#fuzzy-rules---reglas-borrosas"><i class="fa fa-check"></i><b>13.3</b> Fuzzy rules - reglas borrosas</a></li>
+<li class="chapter" data-level="13.4" data-path="fuzzy.html"><a href="fuzzy.html#definir-el-modelo-borroso"><i class="fa fa-check"></i><b>13.4</b> Definir el modelo borroso</a></li>
+<li class="chapter" data-level="13.5" data-path="fuzzy.html"><a href="fuzzy.html#dos-ejemplos-fuzzy"><i class="fa fa-check"></i><b>13.5</b> Dos ejemplos fuzzy</a></li>
+<li class="chapter" data-level="13.6" data-path="fuzzy.html"><a href="fuzzy.html#finalmente-se-debe-resetear-el-universo---reset-universe"><i class="fa fa-check"></i><b>13.6</b> Finalmente se debe resetear el universo - Reset universe</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="muestreo.html"><a href="muestreo.html"><i class="fa fa-check"></i><b>14</b> Muestreo - sampling</a><ul>
+<li class="chapter" data-level="14.1" data-path="muestreo.html"><a href="muestreo.html#muestreo-aleatorio-simple---simple-random-sampling"><i class="fa fa-check"></i><b>14.1</b> Muestreo aleatorio simple - Simple Random Sampling</a></li>
+<li class="chapter" data-level="14.2" data-path="muestreo.html"><a href="muestreo.html#proceso-de-muestreo-para-determinar-la-muestra-para-realizar-una-encuesta"><i class="fa fa-check"></i><b>14.2</b> Proceso de muestreo para determinar la muestra para realizar una encuesta</a><ul>
+<li class="chapter" data-level="14.2.1" data-path="muestreo.html"><a href="muestreo.html#creamos-nuestra-propia-funcion-en-r"><i class="fa fa-check"></i><b>14.2.1</b> Creamos “nuestra propia función” en R</a></li>
+<li class="chapter" data-level="14.2.2" data-path="muestreo.html"><a href="muestreo.html#definir-los-valores-para-los-parametros-de-la-funcion-muestra.n"><i class="fa fa-check"></i><b>14.2.2</b> Definir los valores para los parámetros de la función “muestra.n”</a></li>
+<li class="chapter" data-level="14.2.3" data-path="muestreo.html"><a href="muestreo.html#llamar-la-funcion-muestra.n-y-observar-el-resultado."><i class="fa fa-check"></i><b>14.2.3</b> Llamar la función “muestra.n” y observar el resultado.</a></li>
+<li class="chapter" data-level="14.2.4" data-path="muestreo.html"><a href="muestreo.html#para-poblaciones-mayor-que-100.000-la-funcion-es"><i class="fa fa-check"></i><b>14.2.4</b> Para poblaciones mayor que 100.000 la función es:</a></li>
+<li class="chapter" data-level="14.2.5" data-path="muestreo.html"><a href="muestreo.html#definir-los-valores-para-los-parametros-de-la-funcion-muestra.n.2"><i class="fa fa-check"></i><b>14.2.5</b> Definir los valores para los parámetros de la función “muestra.n.2”</a></li>
+<li class="chapter" data-level="14.2.6" data-path="muestreo.html"><a href="muestreo.html#llamar-la-funcion"><i class="fa fa-check"></i><b>14.2.6</b> Llamar la función</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="muestreo.html"><a href="muestreo.html#muestreo-para-un-problema-de-datos-masivos-big-data"><i class="fa fa-check"></i><b>14.3</b> Muestreo para un problema de datos masivos (big data)</a></li>
+<li class="chapter" data-level="14.4" data-path="muestreo.html"><a href="muestreo.html#muestreo-estratificado---stratified-sampling"><i class="fa fa-check"></i><b>14.4</b> Muestreo estratificado - Stratified sampling</a></li>
+<li class="chapter" data-level="14.5" data-path="muestreo.html"><a href="muestreo.html#trabajar-con-potencia-power-analysis"><i class="fa fa-check"></i><b>14.5</b> Trabajar con <em>potencia</em> (power analysis)</a><ul>
+<li class="chapter" data-level="14.5.1" data-path="muestreo.html"><a href="muestreo.html#utilziar-la-funcion-pwr.t.test---power-calculations-for-t-tests-of-means"><i class="fa fa-check"></i><b>14.5.1</b> Utilziar la función pwr.t.test() - Power calculations for t-tests of means</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="arbolDec.html"><a href="arbolDec.html"><i class="fa fa-check"></i><b>15</b> Árbol de decisión - Decision Tree (DT)</a><ul>
+<li class="chapter" data-level="15.1" data-path="arbolDec.html"><a href="arbolDec.html#objetivo"><i class="fa fa-check"></i><b>15.1</b> Objetivo</a></li>
+<li class="chapter" data-level="15.2" data-path="arbolDec.html"><a href="arbolDec.html#cargar-los-datos"><i class="fa fa-check"></i><b>15.2</b> Cargar los datos</a></li>
+<li class="chapter" data-level="15.3" data-path="arbolDec.html"><a href="arbolDec.html#explorar-los-datos"><i class="fa fa-check"></i><b>15.3</b> Explorar los datos</a></li>
+<li class="chapter" data-level="15.4" data-path="arbolDec.html"><a href="arbolDec.html#mejorar-los-nombres-etiquetas-de-las-columnas-del-dataset"><i class="fa fa-check"></i><b>15.4</b> Mejorar los nombres (etiquetas) de las columnas del dataset</a></li>
+<li class="chapter" data-level="15.5" data-path="arbolDec.html"><a href="arbolDec.html#transformar-algunos-datos"><i class="fa fa-check"></i><b>15.5</b> Transformar algunos datos</a></li>
+<li class="chapter" data-level="15.6" data-path="arbolDec.html"><a href="arbolDec.html#particionar-los-datos"><i class="fa fa-check"></i><b>15.6</b> Particionar los datos</a></li>
+<li class="chapter" data-level="15.7" data-path="arbolDec.html"><a href="arbolDec.html#construir-el-modelo-arbol-de-decision-ad"><i class="fa fa-check"></i><b>15.7</b> Construir el modelo (árbol de decisión, AD)</a></li>
+<li class="chapter" data-level="15.8" data-path="arbolDec.html"><a href="arbolDec.html#realizar-la-prediccion-con-base-en-el-modelo"><i class="fa fa-check"></i><b>15.8</b> Realizar la predicción con base en el modelo</a></li>
+<li class="chapter" data-level="15.9" data-path="arbolDec.html"><a href="arbolDec.html#evaluar-el-desempeno-del-modelo-arbol-de-decision"><i class="fa fa-check"></i><b>15.9</b> Evaluar el desempeño del modelo (árbol de decisión)</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="regrLog.html"><a href="regrLog.html"><i class="fa fa-check"></i><b>16</b> Regresión logistica (modelo logit)</a><ul>
+<li class="chapter" data-level="16.1" data-path="regrLog.html"><a href="regrLog.html#cargar-los-datos-historicos-de-un-archivo-csv"><i class="fa fa-check"></i><b>16.1</b> Cargar los datos históricos de un archivo csv</a></li>
+<li class="chapter" data-level="16.2" data-path="regrLog.html"><a href="regrLog.html#explorar-los-datos-1"><i class="fa fa-check"></i><b>16.2</b> Explorar los datos</a></li>
+<li class="chapter" data-level="16.3" data-path="regrLog.html"><a href="regrLog.html#mejorar-los-nombres-etiquetas-de-las-columnas-del-dataset-1"><i class="fa fa-check"></i><b>16.3</b> Mejorar los nombres (etiquetas) de las columnas del dataset</a></li>
+<li class="chapter" data-level="16.4" data-path="regrLog.html"><a href="regrLog.html#transformar-algunos-datos-1"><i class="fa fa-check"></i><b>16.4</b> Transformar algunos datos</a></li>
+<li class="chapter" data-level="16.5" data-path="regrLog.html"><a href="regrLog.html#particionar-los-datos-1"><i class="fa fa-check"></i><b>16.5</b> Particionar los datos</a></li>
+<li class="chapter" data-level="16.6" data-path="regrLog.html"><a href="regrLog.html#construir-el-modelo-logit-regresion-logistica"><i class="fa fa-check"></i><b>16.6</b> Construir el modelo logit (regresión logística)</a></li>
+<li class="chapter" data-level="16.7" data-path="regrLog.html"><a href="regrLog.html#generar-el-modelo-mejorado-unicamente-con-las-variables-de-train_data2"><i class="fa fa-check"></i><b>16.7</b> Generar el modelo “mejorado”, únicamente con las variables de “train_data2”</a></li>
+<li class="chapter" data-level="16.8" data-path="regrLog.html"><a href="regrLog.html#realizar-una-prediccion-con-el-modelo-logit-mejorado"><i class="fa fa-check"></i><b>16.8</b> Realizar una predicción con el modelo logit mejorado</a></li>
+<li class="chapter" data-level="16.9" data-path="regrLog.html"><a href="regrLog.html#convertir-estas-probabilidades-en-dos-clases-1-y-0-buena-paga-y-mala-paga"><i class="fa fa-check"></i><b>16.9</b> Convertir estas probabilidades en dos clases: 1 y 0 (“buena paga” y “mala paga”)</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="normalizar.html"><a href="normalizar.html"><i class="fa fa-check"></i><b>17</b> Normalizar y estandarizar datos</a><ul>
+<li class="chapter" data-level="17.1" data-path="normalizar.html"><a href="normalizar.html#cargar-los-datos-historicos-de-un-archivo-csv-1"><i class="fa fa-check"></i><b>17.1</b> Cargar los datos históricos de un archivo csv</a></li>
+<li class="chapter" data-level="17.2" data-path="normalizar.html"><a href="normalizar.html#analizar-los-datos-de-la-columna-credit.amount-monto-del-credito"><i class="fa fa-check"></i><b>17.2</b> Analizar los datos de la columna “Credit.Amount” (monto del crédito)</a></li>
+<li class="chapter" data-level="17.3" data-path="normalizar.html"><a href="normalizar.html#escalar-los-datos"><i class="fa fa-check"></i><b>17.3</b> Escalar los datos</a></li>
+<li class="chapter" data-level="17.4" data-path="normalizar.html"><a href="normalizar.html#la-normalizacion-de-los-datos"><i class="fa fa-check"></i><b>17.4</b> La normalización de los datos</a><ul>
+<li class="chapter" data-level="17.4.1" data-path="normalizar.html"><a href="normalizar.html#comprobar-que-el-resultado-tiene-una-media-de-0-y-una-desviacion-estandar-sd-de-1"><i class="fa fa-check"></i><b>17.4.1</b> Comprobar que el resultado tiene una media de 0 y una desviación estandar (sd) de 1</a></li>
+</ul></li>
+<li class="chapter" data-level="17.5" data-path="normalizar.html"><a href="normalizar.html#escala-logaritmica"><i class="fa fa-check"></i><b>17.5</b> Escala logarítmica</a><ul>
+<li class="chapter" data-level="17.5.1" data-path="normalizar.html"><a href="normalizar.html#un-ejemplo---retornos-logaritmicos"><i class="fa fa-check"></i><b>17.5.1</b> Un ejemplo - retornos logarítmicos</a></li>
+</ul></li>
+<li class="chapter" data-level="17.6" data-path="normalizar.html"><a href="normalizar.html#creando-variables-dummy-one-hot-encoding"><i class="fa fa-check"></i><b>17.6</b> Creando variables dummy (one-hot encoding)</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>18</b> Final Words</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Una breve introducción a R con un enfoque financiero y administrativo</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ejercicio-mas-avanzado---procesando-datos-bursatiles-con-pipes" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> Ejercicio más avanzado - procesando datos búrsatiles con pipes (%&gt;%)</h1>
+<ul>
+<li>Cargar el paquete (library) tidyverse</li>
+<li>Bajar los datos de la bolsa New York Stock Exchange (NYSE), mediante la función tq_exchange(“NYSE”) y asignar el resultado a la variable “nyse”</li>
+<li>Bajar los datos de la bolsa NASDAQ, mediante la función tq_exchange(“NASDAQ”) y asignar el resultado a la variable “nasdaq”</li>
+<li>Unir los registros de las dos fuentes de datos (variables) “nyse” y “nasdaq”, utlizando la función rbind(), creando una variable nueva “nyse_nasdaq”</li>
+<li>Bajar los datos del indice búrsatil S&amp;P500 (SP500), mediante la función tq_index(“SP500”) y asignar el resultado a la variable “sp500”</li>
+<li>Une “sp500” y “nyse_nasdaq”, utilizando un “inner join” (función inner_join()) y tomando el atributo (columna) “symbol”, dado que estas dos fuentes tienen este atributo en común</li>
+<li>Filtrar por registros, donde el año del IPO (“ipo.year”) es menor al año 2000 y donde el campo “market.cap” <em>no</em> tiene datos faltantes (NA)</li>
+<li>Ordenar por el campo (columna) “weight” de forma descendente</li>
+<li>y mostrar únicamente las primeras 10 filas, utilizando la función slice()</li>
+<li>Mostrar el resultado en la pantalla</li>
+</ul>
+<p>Es decir, lo que se hace aquí es que queremos utilizar el conjunto de datos que consiste, por un lado, en las diez acciones más grandes dentro del indice S&amp;P500, que tuvieron su IPO antes de enero de 2000. Por otro lado, debemos combinar ambos conjuntos de datos (“S&amp;P500” y “NYSE más NASDAQ”, usando un inner join, porque solo queremos mantener los símbolos del S&amp;P500, que también se negocian en NYSE o NASDAQ <a href="https://bookdown.org/sstoeckl/Tidy_Portfoliomanagement_in_R/s-2Data.html#fnref1">Stöckl, S. (21/09/2018). Tidy Portfoliomanagement in R</a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(tidyquant) <span class="co"># debe ser la versión actual (&gt;=0.5.9)</span>
+<span class="kw">tq_exchange_options</span>() <span class="co"># &quot;AMEX&quot;   &quot;NASDAQ&quot; &quot;NYSE&quot;</span></code></pre></div>
+<pre><code>## [1] &quot;AMEX&quot;   &quot;NASDAQ&quot; &quot;NYSE&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nyse &lt;-<span class="st"> </span><span class="kw">tq_exchange</span>(<span class="st">&quot;NYSE&quot;</span>)</code></pre></div>
+<pre><code>## Getting data...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nasdaq &lt;-<span class="st"> </span><span class="kw">tq_exchange</span>(<span class="st">&quot;NASDAQ&quot;</span>)</code></pre></div>
+<pre><code>## Getting data...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nyse_nasdaq &lt;-<span class="st"> </span><span class="kw">rbind</span>(nyse,nasdaq)
+sp500 &lt;-<span class="st"> </span><span class="kw">tq_index</span>(<span class="st">&quot;SP500&quot;</span>)</code></pre></div>
+<pre><code>## Getting holdings for SP500</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">acciones.seleccion &lt;-<span class="st"> </span>sp500 <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">inner_join</span>(nyse_nasdaq, <span class="dt">by=</span><span class="kw">c</span>(<span class="st">&quot;symbol&quot;</span>)) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(symbol,last.sale.price, market.cap, weight, ipo.year)<span class="op">%&gt;%</span><span class="st"> </span><span class="co"># join datasets</span>
+<span class="st">  </span><span class="kw">filter</span>(ipo.year<span class="op">&lt;</span><span class="dv">2000</span> <span class="op">&amp;</span><span class="st"> </span><span class="op">!</span><span class="kw">is.na</span>(market.cap)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># filtrar años con año del ipo&lt;2000 o ipo=NA</span>
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(weight)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># ordenar en orden descendente</span>
+<span class="st">  </span><span class="kw">slice</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)
+
+<span class="kw">print</span>(acciones.seleccion) <span class="co"># se puede observar que AAPL (Apple) es la empresa &quot;más grande&quot;...</span></code></pre></div>
+<pre><code>## # A tibble: 10 x 5
+##    symbol last.sale.price market.cap  weight ipo.year
+##    &lt;chr&gt;            &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;
+##  1 AAPL             319.  $1397.32B  0.0483      1980
+##  2 MSFT             167.  $1274.77B  0.0462      1986
+##  3 AMZN            1865.  $924.52B   0.0282      1997
+##  4 CSCO              49.0 $207.96B   0.00754     1990
+##  5 ADBE             350.  $168.69B   0.00613     1986
+##  6 NVDA             249.  $152.56B   0.00553     1999
+##  7 AMGN             241.  $143.49B   0.00520     1983
+##  8 ORCL              55.1 $176.84B   0.00433     1986
+##  9 SBUX              93.6 $110.57B   0.00401     1992
+## 10 QCOM              95.9 $109.51B   0.00396     1991</code></pre>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="tidy.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="bucles.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["r_libro_cl.pdf", "r_libro_cl.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

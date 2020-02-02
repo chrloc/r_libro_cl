@@ -1,0 +1,2 @@
+"0","df <- cbind(modelos = rownames(df), df)"
+"0","head(df)"

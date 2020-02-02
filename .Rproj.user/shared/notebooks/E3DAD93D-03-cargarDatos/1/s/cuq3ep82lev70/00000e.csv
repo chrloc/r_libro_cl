@@ -1,0 +1,3 @@
+"0","a2 <- acciones[acciones$symbol==""MSFT"", ] "
+"0","# acciones[[2, ""stock.prices""]]"
+"0","head(a2)"

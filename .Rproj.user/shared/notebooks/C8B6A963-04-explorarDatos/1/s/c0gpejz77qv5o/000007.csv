@@ -1,0 +1,2 @@
+"0","# y utilizar etiquetas adecuadas mediante la función labs()"
+"0","dataset.boxplot + geom_boxplot() + labs(x=""Default (0 or 1)"", y = ""Amount"")"

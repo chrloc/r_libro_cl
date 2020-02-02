@@ -1,0 +1,20 @@
+"0","library(quantmod)
+"
+"2","package ‘quantmod’ was built under R version 3.5.3"
+"2","Loading required package: xts
+"
+"2","Loading required package: zoo
+"
+"2","
+Attaching package: ‘zoo’
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    as.Date, as.Date.numeric
+
+"
+"2","Loading required package: TTR
+"
+"2","Version 0.4-0 included new data defaults. See ?getSymbols.
+"
