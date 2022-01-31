@@ -1,0 +1,5 @@
+"0","url <- ""http://freakonometrics.free.fr/german_credit.csv"""
+"0","mis.datos <- read.csv(url, header = TRUE, sep = "","")"
+"0","# Estos mismos datos también se pueden bajar de la siguiente dirección:"
+"0","# url <-  ""https://newonlinecourses.science.psu.edu/onlinecourses/sites/stat508/files/german_credit.csv"""
+"0","# mis.datos <- read.csv(url(direccion))"

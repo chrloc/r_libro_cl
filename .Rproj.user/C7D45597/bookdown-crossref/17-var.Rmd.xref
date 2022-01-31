@@ -1,0 +1,14 @@
+h1:VaR Determinar el VaR
+h2:objetivo Objetivo
+h3:obtener-unos-datos-serie-de-tiempo-st Obtener unos datos (Serie de tiempo, ST)
+h2:determinar-retornos-log Determinar retornos log
+h2:generar-estadística-de-datos Generar estadística de datos
+h3:volatilidad Volatilidad
+h3:retorno-diario Retorno diario
+h3:supuestos-para-el-cálculo-del-var Supuestos para el cálculo del VaR
+h2:var VaR
+h3:var-paramétrico VaR paramétrico
+h3:var-histórico VaR histórico
+h3:var-montecarlo VaR Montecarlo
+h3:comparativo-de-los-tres-vars Comparativo de los tres VaRs
+

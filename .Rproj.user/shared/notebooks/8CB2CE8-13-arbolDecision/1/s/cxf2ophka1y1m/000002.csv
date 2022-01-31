@@ -1,0 +1,191 @@
+"0","if(!require(C50)) install.packages('C50'); library(C50)"
+"0","?C5.0"
+"0","# create the DT"
+"0","credit_DT_model <- C5.0(credit_train[ , -c(1,20)], credit_train$Creditability_Default) # -1 excluye la columna Creditability_Default y -20 la columna del Telephone"
+"0","summary(credit_DT_model)                       "
+"1","
+Call:
+"
+"1",""
+"1","C5.0.default(x = credit_train[, -c(1, 20)], y
+ = credit_train$Creditability_Default)"
+"1",""
+"1","
+
+"
+"1","
+C5.0 [Release 2.07 GPL Edition]  	Thu Jan 20 16:08:42 2022
+-------------------------------
+
+Class specified by attribute `outcome'
+
+Read 660 cases (20 attributes) from undefined.data
+
+Decision tree:
+
+Account_Balance > 2:
+:...Concurrent_Credits <= 2:
+:   :...No_of_Credits_at_this_Bank <= 1:
+:   :   :...Most_value_avail_asset > 1: 1 (18/1)
+:   :   :   Most_value_avail_asset <= 1:
+:   :   :   :...Length_current_employment <= 2: 0 (2)
+:   :   :       Length_current_employment > 2: 1 (2)
+:   :   No_of_Credits_at_this_Bank > 1:
+:   :   :...Pmt_Status_Prev_Cred <= 1: 0 (3)
+:   :       Pmt_Status_Prev_Cred > 1:
+:   :       :...Credit_Amount <= 6527: 1 (15/2)
+:   :           Credit_Amount > 6527: 0 (4/1)
+:   Concurrent_Credits > 2:
+:   :...Age_years > 34: 1 (127/4)
+:       Age_years <= 34:
+:       :...Credit_Amount <= 7511: 1 (129/19)
+:           Credit_Amount > 7511:
+:           :...Duration_Credit_Month <= 54: 0 (4)
+:               Duration_Credit_Month > 54: 1 (2)
+Account_Balance <= 2:
+:...Duration_Credit_Month <= 11:
+    :...Pmt_Status_Prev_Cred <= 1: 0 (5/1)
+    :   Pmt_Status_Prev_Cred > 1: 1 (49/4)
+    Duration_Credit_Month > 11:
+    :...Value_Savings_Stocks > 1:
+        :...Pmt_Status_Prev_Cred > 2: 1 (27/3)
+        :   Pmt_Status_Prev_Cred <= 2:
+        :   :...Type_of_apartment <= 1:
+        :       :...Instalment_per_cent <= 1: 1 (2)
+        :       :   Instalment_per_cent > 1:
+        :       :   :...Account_Balance > 1: 0 (8)
+        :       :       Account_Balance <= 1:
+        :       :       :...Most_value_avail_asset <= 2: 1 (2)
+        :       :           Most_value_avail_asset > 2: 0 (3/1)
+        :       Type_of_apartment > 1:
+        :       :...Occupation > 3:
+        :           :...Length_current_employment > 4: 0 (3)
+        :           :   Length_current_employment <= 4:
+        :           :   :...Age_years <= 35: 0 (4/1)
+        :           :       Age_years > 35: 1 (3)
+        :           Occupation <= 3:
+        :           :...Type_of_apartment <= 2: 1 (38/6)
+        :               Type_of_apartment > 2:
+        :               :...Concurrent_Credits <= 2: 1 (2)
+        :                   Concurrent_Credits > 2:
+        :                   :...Account_Balance <= 1: 0 (3)
+        :                       Account_Balance > 1: 1 (3/1)
+        Value_Savings_Stocks <= 1:
+        :...Guarantors > 2:
+            :...Purpose <= 0: 0 (4)
+            :   Purpose > 0: 1 (14/1)
+            Guarantors <= 2:
+            :...Duration_Credit_Month <= 22:
+                :...Pmt_Status_Prev_Cred > 2:
+                :   :...Most_value_avail_asset > 1: 1 (22/3)
+                :   :   Most_value_avail_asset <= 1:
+                :   :   :...Age_years <= 38: 0 (3)
+                :   :       Age_years > 38: 1 (4)
+                :   Pmt_Status_Prev_Cred <= 2:
+                :   :...Guarantors > 1: 1 (3)
+                :       Guarantors <= 1:
+                :       :...No_of_Credits_at_this_Bank > 1:
+                :           :...Account_Balance <= 1: 0 (6)
+                :           :   Account_Balance > 1:
+                :           :   :...Type_of_apartment <= 1: 0 (3)
+                :           :       Type_of_apartment > 1: 1 (2)
+                :           No_of_Credits_at_this_Bank <= 1:
+                :           :...Account_Balance > 1:
+                :               :...Credit_Amount <= 1546: 0 (5/1)
+                :               :   Credit_Amount > 1546: 1 (8)
+                :               Account_Balance <= 1:
+                :               :...Type_of_apartment > 2: 0 (2)
+                :                   Type_of_apartment <= 2:
+                :                   :...Type_of_apartment <= 1:
+                :                       :...Instalment_per_cent <= 3: 1 (6/1)
+                :                       :   Instalment_per_cent > 3: 0 (3)
+                :                       Type_of_apartment > 1:
+                :                       :...Purpose > 6: 1 (3)
+                :                           Purpose <= 6: [S1]
+                Duration_Credit_Month > 22:
+                :...Type_of_apartment <= 1: 0 (19/2)
+                    Type_of_apartment > 1:
+                    :...Purpose <= 0: 0 (17/2)
+                        Purpose > 0:
+                        :...Concurrent_Credits <= 2:
+                            :...Duration_current_address <= 1: 1 (3/1)
+                            :   Duration_current_address > 1:
+                            :   :...Age_years <= 42: 0 (11)
+                            :       Age_years > 42: 1 (3/1)
+                            Concurrent_Credits > 2:
+                            :...Pmt_Status_Prev_Cred <= 1: 0 (5/1)
+                                Pmt_Status_Prev_Cred > 1:
+                                :...Purpose > 6: 0 (3)
+                                    Purpose <= 6:
+                                    :...Duration_current_address <= 1: 1 (4)
+                                        Duration_current_address > 1:
+                                        :...Type_of_apartment > 2:
+                                            :...Occupation <= 3: 0 (3)
+                                            :   Occupation > 3: 1 (3/1)
+                                            Type_of_apartment <= 2: [S2]
+
+SubTree [S1]
+
+Sex_Marital_Status > 3: 1 (4/1)
+Sex_Marital_Status <= 3:
+:...Occupation <= 2: 0 (5)
+    Occupation > 2:
+    :...Duration_current_address <= 1: 1 (2)
+        Duration_current_address > 1: 0 (8/1)
+
+SubTree [S2]
+
+Length_current_employment > 4: 1 (5)
+Length_current_employment <= 4:
+:...No_of_Credits_at_this_Bank > 1: 1 (4/1)
+    No_of_Credits_at_this_Bank <= 1:
+    :...Occupation > 3:
+        :...Account_Balance <= 1: 1 (3)
+        :   Account_Balance > 1: 0 (2)
+        Occupation <= 3:
+        :...Age_years > 33: 0 (5)
+            Age_years <= 33:
+            :...Most_value_avail_asset <= 2: 0 (3/1)
+                Most_value_avail_asset > 2: 1 (2)
+
+
+Evaluation on training data (660 cases):
+
+	    Decision Tree   
+	  ----------------  
+	  Size      Errors  
+
+	    60   62( 9.4%)   <<
+
+
+	   (a)   (b)    <-classified as
+	  ----  ----
+	   134    50    (a): class 0
+	    12   464    (b): class 1
+
+
+	Attribute usage:
+
+	100.00%	Account_Balance
+	 56.52%	Concurrent_Credits
+	 54.55%	Duration_Credit_Month
+	 46.21%	Pmt_Status_Prev_Cred
+	 45.45%	Value_Savings_Stocks
+	 45.45%	Age_years
+	 30.91%	Type_of_apartment
+	 30.61%	Guarantors
+	 25.30%	Credit_Amount
+	 18.18%	No_of_Credits_at_this_Bank
+	 17.58%	Purpose
+	 13.94%	Occupation
+	  9.24%	Duration_current_address
+	  9.24%	Most_value_avail_asset
+	  5.76%	Length_current_employment
+	  3.64%	Instalment_per_cent
+	  2.88%	Sex_Marital_Status
+
+
+Time: 0.0 secs
+"
+"1","
+"

@@ -1,0 +1,3 @@
+"0","lapply(dataset.list, function(z) z[1,] - z[2,]) # Ingresos y Egresos: 5e+05 Cali. 60"
+"1","[[1]]
+"

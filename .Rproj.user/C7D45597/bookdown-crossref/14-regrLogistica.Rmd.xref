@@ -1,0 +1,13 @@
+h1:regrLog Regresión logística (modelo logit)
+h2:objetivo Objetivo
+h2:cargar-los-datos-históricos-de-un-archivo-csv Cargar los datos históricos de un archivo csv
+h2:explorar-los-datos Explorar los datos
+h2:mejorar-los-nombres-etiquetas-de-las-columnas-del-dataset Mejorar los nombres (etiquetas) de las columnas del dataset
+h2:transformar-algunos-datos Transformar algunos datos
+h2:particionar-los-datos Particionar los datos
+h2:construir-el-modelo-logit-regresión-logística Construir el modelo logit (regresión logística)
+h2:generar-el-modelo-mejorado Generar el modelo 
+h2:realizar-una-predicción-con-el-modelo-logit-mejorado Realizar una predicción con el modelo logit mejorado
+h2:convertir-estas-probabilidades-en-dos-clases-1-y-0-buena-paga-y-mala-paga Convertir estas probabilidades en dos clases: 1 y 0 ( y )
+h2:ejercicio-10 Ejercicio 10
+

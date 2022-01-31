@@ -1,0 +1,2 @@
+"0","# Multi-Steps Forecast"
+"0","plot(forecast(modelo, h=5), main = ""ARIMA(0,1,0), pronóstico para 5 días"", ylab=""Precio"", xlab= ""Fecha"")"

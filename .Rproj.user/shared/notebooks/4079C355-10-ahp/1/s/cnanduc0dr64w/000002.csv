@@ -1,0 +1,1 @@
+"0","criteria.calif[is.na(criteria.calif)] = 1.0"

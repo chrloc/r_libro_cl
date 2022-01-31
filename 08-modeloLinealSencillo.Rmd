@@ -12,7 +12,7 @@ Construir un modelo lineal para realizar una predicción. Aquí esta predicción
 - Mostrar las primeras seis filas de df y adicionalmente
 - mostrar la clase de "df"
 
-```{r}
+```{r lmStart}
 data("mtcars")
 View(mtcars)
 df <- mtcars
@@ -20,8 +20,8 @@ head(df)
 class(df) # data.frame
 ```
 
-- Colocar los nombres de los modelos de los carros en una primera columna (columna adicional) del data frame "df". Esta columna debe tener el nombre (título) "modelos"
-- Esto se puede lograr combinando la función cbind(), que une columnas, y rownames(), que devuelve los nombre de las filas de un data frame
+- Colocar los nombres de los modelos de los carros en una primera columna (columna adicional) del data frame "df". Esta nueva columna debe tener el nombre (título) "modelos"
+- Esto se puede lograr combinando la función cbind(), que une columnas, con la función rownames(), que devuelve los nombre de las filas de un data frame
 - Luego, analizar las primeras seis filas de "df"
 
 ```{r}
@@ -31,7 +31,7 @@ head(df)
 
 ## Crear el modelo lineal (regresión lineal)
 
-- Generar un modelo de una regresión lineal, utilizando la función lm(), y 
+- Generar un modelo de una regresión lineal, utilizando la función lm() y 
 - asignar el resultado del modelo a una variable (objeto) "lin.mod"
 - Generar el modelo con las siguientes variables de entrada: cyl + wt + hp
 - Investigar primero sobre esta función "lm" (con F1) antes de utilizarla.
@@ -41,6 +41,14 @@ head(df)
 lin.mod <- lm(mpg ~ cyl + wt + hp, data = df)
 print(lin.mod)
 ```
+
+- Revisar el resumen (estadístico) del modelo lineal generado, que arroja los coeficientes y el "valor p" para cada variable.
+- ¿Cómo se interpretan los "valores p"?
+
+```{r}
+summary(lin.mod)
+```
+
 
 ## Realizar una predicción
 
@@ -53,5 +61,56 @@ print(lin.mod)
 ```{r}
 df$mpgScore <- predict(lin.mod, df)
 head(df)
+```
+
+## Un segundo ejemplo sencillo
+
+### Utilidad en función del gasto para publicidad
+
+Los datos:
+
+- utilidades: 13, 14, 12, 14, 15 (millones $)
+- publicadad: 5, 9, 5, 8, 9 (millones $)
+
+- Generar un data frame con estos datos
+
+```{r}
+utilidad <- c(13, 14, 12, 14, 15)
+publicidad <-  c(5, 9, 5, 8, 9)
+datosPubl <- data.frame(utilidad, publicidad)
+print(datosPubl)
+```
+
+- Graficar, utilizando el paquete ggplot2, la dispersión de los datos (publicidad vs utilidad)
+
+```{r}
+library(ggplot2)
+ggplot(datosPubl, aes(x = publicidad, y = utilidad)) + geom_point()
+```
+
+- Generar el modelo de una regresión lineal con la función lm() y asignar el resultado a una variable modelo.lineal
+
+```{r}
+modelo.lineal <- lm(utilidad ~ publicidad, data = datosPubl)
+```
+
+- Generar el resumen estadístico del modelo generado
+
+```{r}
+summary(modelo.lineal)
+```
+
+- Mostrar los coeficientes para el modelo generado
+
+```{r}
+modelo.lineal$coefficients
+```
+
+- Supuesto: $ 12 (millones) de gasto para publicidad
+- Ahora, utilizar los coefficientes para indicar, cuánta utilidad generan estos 12 millones de publicidad, segun este modelo lineal
+
+```{r lmEnd}
+10 + 0.5 * 12  # 16
+# Es decir, con 12 millones de publicidad se generan 16 millones de utilidad
 ```
 

@@ -1,0 +1,7 @@
+"0","# normalizar los valores entre 0 y 1"
+"0","# aquí las columnas con valores númericas. Es decir, las columnas 3, 6 y 14"
+"0","mis.datos[, c(3,6,14)] <- apply(mis.datos[, c(3,6,14)], MARGIN = 2, FUN = function(X) (X - min(X))/diff(range(X)))"
+"0","# también:"
+"0","# maxs <- apply(mis.datos[, c(3,6,14)], 2, max)"
+"0","# mins <- apply(mis.datos[, c(3,6,14)], 2, min)"
+"0","# mis.datos[,c(3,6,14)] <- scale(mis.datos[, c(3,6,14)], center = mins, scale = maxs - mins)"

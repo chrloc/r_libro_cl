@@ -1,0 +1,2 @@
+"0","startDate = Sys.Date() - 30  # o as.Date(""2019-07-01"")"
+"0","endDate = Sys.Date()"

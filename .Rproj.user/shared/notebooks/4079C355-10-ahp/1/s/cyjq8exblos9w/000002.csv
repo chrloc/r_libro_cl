@@ -1,0 +1,6 @@
+"0","alternativesPairwiseComparisonsList <- list(Experiencia=experiencia, "
+"0","																						Educacion=edu, "
+"0","																						Carisma=carisma,"
+"0","																						Edad=edad)"
+"0",""
+"0","# str(alternativesPairwiseComparisonsList)"

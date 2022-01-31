@@ -1,0 +1,6 @@
+"0","library(ggplot2)"
+"2","non-uniform 'Rounding' sampler used"
+"0","library(farver)"
+"0","dataset.boxplot <- ggplot(data=dataset, aes(x = as.factor(Creditability), y = Credit.Amount))"
+"0","# agregar la capa del boxplot mediante la función geom_boxplot()"
+"0","dataset.boxplot + geom_boxplot()"

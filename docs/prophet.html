@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Sección 20 Serie de tiempo con Prophet | Una breve introducción a R con un enfoque financiero y administrativo</title>
+  <meta name="description" content="Una breve introducción al lenguaje de programación R. Con unos ejemplos del área administrativo y de las finanzas." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Sección 20 Serie de tiempo con Prophet | Una breve introducción a R con un enfoque financiero y administrativo" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Una breve introducción al lenguaje de programación R. Con unos ejemplos del área administrativo y de las finanzas." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Sección 20 Serie de tiempo con Prophet | Una breve introducción a R con un enfoque financiero y administrativo" />
+  
+  <meta name="twitter:description" content="Una breve introducción al lenguaje de programación R. Con unos ejemplos del área administrativo y de las finanzas." />
+  
+
+<meta name="author" content="Christian Lochmuller" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="ST.html"/>
+<link rel="next" href="posibles-soluciones.html"/>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<script src="libs/Dygraph.Plugins.Unzoom-1.0/unzoom.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Una breve introducción a R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisitos</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introducción</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#objetivo"><i class="fa fa-check"></i><b>2.1</b> Objetivo</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#usar-r-como-calculadora"><i class="fa fa-check"></i><b>2.2</b> Usar R como “calculadora”</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#asignar-un-valor-numérico-a-una-variable"><i class="fa fa-check"></i><b>2.3</b> Asignar un valor numérico a una variable</a></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#buscar-ayuda"><i class="fa fa-check"></i><b>2.4</b> Buscar ayuda</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="intro.html"><a href="intro.html#un-ejemplo"><i class="fa fa-check"></i><b>2.4.1</b> Un ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#organizar-el-código"><i class="fa fa-check"></i><b>2.5</b> Organizar el código</a></li>
+<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#una-opción-para-explorar-swirl"><i class="fa fa-check"></i><b>2.6</b> Una opción para explorar: Swirl</a></li>
+<li class="chapter" data-level="2.7" data-path="intro.html"><a href="intro.html#ejercicio-1"><i class="fa fa-check"></i><b>2.7</b> Ejercicio 1</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>3</b> Usar tipos de datos</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="tipos.html"><a href="tipos.html#objetivo-1"><i class="fa fa-check"></i><b>3.1</b> Objetivo</a></li>
+<li class="chapter" data-level="3.2" data-path="tipos.html"><a href="tipos.html#datos-booleanos-y-operadores-de-lógica"><i class="fa fa-check"></i><b>3.2</b> Datos booleanos y operadores de lógica</a></li>
+<li class="chapter" data-level="3.3" data-path="tipos.html"><a href="tipos.html#tipo-de-dato-fecha"><i class="fa fa-check"></i><b>3.3</b> Tipo de dato fecha</a></li>
+<li class="chapter" data-level="3.4" data-path="tipos.html"><a href="tipos.html#tipo-de-dato-vector"><i class="fa fa-check"></i><b>3.4</b> Tipo de dato vector</a></li>
+<li class="chapter" data-level="3.5" data-path="tipos.html"><a href="tipos.html#vectores-de-carácteres-strings"><i class="fa fa-check"></i><b>3.5</b> Vectores de carácteres (strings)</a></li>
+<li class="chapter" data-level="3.6" data-path="tipos.html"><a href="tipos.html#acceder-a-elementos-de-un-vector"><i class="fa fa-check"></i><b>3.6</b> Acceder a elementos de un vector</a></li>
+<li class="chapter" data-level="3.7" data-path="tipos.html"><a href="tipos.html#factors-variables-categóricas"><i class="fa fa-check"></i><b>3.7</b> Factors (variables categóricas)</a></li>
+<li class="chapter" data-level="3.8" data-path="tipos.html"><a href="tipos.html#funciones-matemáticas-para-vectores"><i class="fa fa-check"></i><b>3.8</b> Funciones matemáticas para vectores</a></li>
+<li class="chapter" data-level="3.9" data-path="tipos.html"><a href="tipos.html#usar-pipes-un-concepto-interesante"><i class="fa fa-check"></i><b>3.9</b> Usar pipes (un concepto “interesante”)</a></li>
+<li class="chapter" data-level="3.10" data-path="tipos.html"><a href="tipos.html#data-frames"><i class="fa fa-check"></i><b>3.10</b> Data frames</a></li>
+<li class="chapter" data-level="3.11" data-path="tipos.html"><a href="tipos.html#listas"><i class="fa fa-check"></i><b>3.11</b> Listas</a>
+<ul>
+<li class="chapter" data-level="3.11.1" data-path="tipos.html"><a href="tipos.html#una-lista-de-listas"><i class="fa fa-check"></i><b>3.11.1</b> Una lista de listas</a></li>
+</ul></li>
+<li class="chapter" data-level="3.12" data-path="tipos.html"><a href="tipos.html#ejercicio-2"><i class="fa fa-check"></i><b>3.12</b> Ejercicio 2</a>
+<ul>
+<li class="chapter" data-level="3.12.1" data-path="tipos.html"><a href="tipos.html#parte-a"><i class="fa fa-check"></i><b>3.12.1</b> Parte a</a></li>
+<li class="chapter" data-level="3.12.2" data-path="tipos.html"><a href="tipos.html#parte-b"><i class="fa fa-check"></i><b>3.12.2</b> Parte b</a></li>
+<li class="chapter" data-level="3.12.3" data-path="tipos.html"><a href="tipos.html#parte-c"><i class="fa fa-check"></i><b>3.12.3</b> Parte c</a></li>
+<li class="chapter" data-level="3.12.4" data-path="tipos.html"><a href="tipos.html#parte-d"><i class="fa fa-check"></i><b>3.12.4</b> Parte d</a></li>
+<li class="chapter" data-level="3.12.5" data-path="tipos.html"><a href="tipos.html#parte-e"><i class="fa fa-check"></i><b>3.12.5</b> Parte e</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="cargar.html"><a href="cargar.html"><i class="fa fa-check"></i><b>4</b> Cargar datos a R/RStudio</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="cargar.html"><a href="cargar.html#objetivo-2"><i class="fa fa-check"></i><b>4.1</b> Objetivo</a></li>
+<li class="chapter" data-level="4.2" data-path="cargar.html"><a href="cargar.html#leer-datos-desde-un-archivo-de-tipo-csv-y-xlsx"><i class="fa fa-check"></i><b>4.2</b> Leer datos desde un archivo de tipo csv y xlsx</a></li>
+<li class="chapter" data-level="4.3" data-path="cargar.html"><a href="cargar.html#leer-datos-desde-un-archivo-csv-de-una-página-web-url"><i class="fa fa-check"></i><b>4.3</b> Leer datos desde un archivo csv de una página web (url)</a></li>
+<li class="chapter" data-level="4.4" data-path="cargar.html"><a href="cargar.html#leer-datos-de-acciones-utilizando-el-paquete-quantmod"><i class="fa fa-check"></i><b>4.4</b> Leer datos de acciones, utilizando el paquete quantmod</a></li>
+<li class="chapter" data-level="4.5" data-path="cargar.html"><a href="cargar.html#leer-datos-de-una-tabla-de-una-página-web-wikipedia"><i class="fa fa-check"></i><b>4.5</b> Leer datos de una tabla de una página web: wikipedia</a></li>
+<li class="chapter" data-level="4.6" data-path="cargar.html"><a href="cargar.html#cargar-un-conjunto-de-datos-que-viene-con-r"><i class="fa fa-check"></i><b>4.6</b> Cargar un conjunto de datos, que viene con R</a></li>
+<li class="chapter" data-level="4.7" data-path="cargar.html"><a href="cargar.html#cargar-datos-financieros-con-el-paquete-tidyquant"><i class="fa fa-check"></i><b>4.7</b> Cargar datos financieros con el paquete tidyquant</a>
+<ul>
+<li class="chapter" data-level="4.7.1" data-path="cargar.html"><a href="cargar.html#renta-variable---precio-de-acciones"><i class="fa fa-check"></i><b>4.7.1</b> Renta variable - precio de acciones</a></li>
+<li class="chapter" data-level="4.7.2" data-path="cargar.html"><a href="cargar.html#renta-fija"><i class="fa fa-check"></i><b>4.7.2</b> Renta fija</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8</b> Cargar datos de criptomonedas</a>
+<ul>
+<li class="chapter" data-level="4.8.1" data-path="cargar.html"><a href="cargar.html#para-cargar-datos-históricos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8.1</b> Para cargar datos históricos de criptomonedas</a></li>
+</ul></li>
+<li class="chapter" data-level="4.9" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-eurostat-con-r"><i class="fa fa-check"></i><b>4.9</b> Cargar datos de Eurostat con R</a></li>
+<li class="chapter" data-level="4.10" data-path="cargar.html"><a href="cargar.html#ejercicio-3"><i class="fa fa-check"></i><b>4.10</b> Ejercicio 3</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="explorar.html"><a href="explorar.html"><i class="fa fa-check"></i><b>5</b> Explorar datos</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="explorar.html"><a href="explorar.html#objetivo-3"><i class="fa fa-check"></i><b>5.1</b> Objetivo</a></li>
+<li class="chapter" data-level="5.2" data-path="explorar.html"><a href="explorar.html#desarrollar-un-entendimiento-inicial-del-conjunto-de-datos"><i class="fa fa-check"></i><b>5.2</b> Desarrollar un entendimiento inicial del conjunto de datos</a></li>
+<li class="chapter" data-level="5.3" data-path="explorar.html"><a href="explorar.html#comprobar-si-existen-datos-faltantes"><i class="fa fa-check"></i><b>5.3</b> Comprobar, si existen datos faltantes</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="explorar.html"><a href="explorar.html#opción-1"><i class="fa fa-check"></i><b>5.3.1</b> Opción 1</a></li>
+<li class="chapter" data-level="5.3.2" data-path="explorar.html"><a href="explorar.html#opción-2"><i class="fa fa-check"></i><b>5.3.2</b> Opción 2</a></li>
+<li class="chapter" data-level="5.3.3" data-path="explorar.html"><a href="explorar.html#opción-3"><i class="fa fa-check"></i><b>5.3.3</b> Opción 3</a></li>
+<li class="chapter" data-level="5.3.4" data-path="explorar.html"><a href="explorar.html#opción-4"><i class="fa fa-check"></i><b>5.3.4</b> Opción 4</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="explorar.html"><a href="explorar.html#visualizaciones-para-explorar-datos"><i class="fa fa-check"></i><b>5.4</b> Visualizaciones para explorar datos</a></li>
+<li class="chapter" data-level="5.5" data-path="explorar.html"><a href="explorar.html#guardar-un-histograma"><i class="fa fa-check"></i><b>5.5</b> Guardar un histograma</a></li>
+<li class="chapter" data-level="5.6" data-path="explorar.html"><a href="explorar.html#apalancarse-por-el-paquete-desctools"><i class="fa fa-check"></i><b>5.6</b> Apalancarse por el paquete DescTools</a></li>
+<li class="chapter" data-level="5.7" data-path="explorar.html"><a href="explorar.html#ejercicio-4"><i class="fa fa-check"></i><b>5.7</b> Ejercicio 4</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="tidy.html"><a href="tidy.html"><i class="fa fa-check"></i><b>6</b> El paquete tidyverse y su funcionalidad</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="tidy.html"><a href="tidy.html#objetivo-y-contextualización"><i class="fa fa-check"></i><b>6.1</b> Objetivo y contextualización</a></li>
+<li class="chapter" data-level="6.2" data-path="tidy.html"><a href="tidy.html#tibble-parte-del-ecosistema-tidyverse"><i class="fa fa-check"></i><b>6.2</b> tibble (parte del ecosistema tidyverse)</a></li>
+<li class="chapter" data-level="6.3" data-path="tidy.html"><a href="tidy.html#utilizar-y-aplicar-funciones-del-tidyverse"><i class="fa fa-check"></i><b>6.3</b> Utilizar y aplicar funciones del tidyverse</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="tidy.html"><a href="tidy.html#filter"><i class="fa fa-check"></i><b>6.3.1</b> filter</a></li>
+<li class="chapter" data-level="6.3.2" data-path="tidy.html"><a href="tidy.html#arrange-para-ordenar-datos"><i class="fa fa-check"></i><b>6.3.2</b> arrange (para ordenar datos)</a></li>
+<li class="chapter" data-level="6.3.3" data-path="tidy.html"><a href="tidy.html#group_by-y-summarize-contar-registros"><i class="fa fa-check"></i><b>6.3.3</b> group_by y summarize (contar registros)</a></li>
+<li class="chapter" data-level="6.3.4" data-path="tidy.html"><a href="tidy.html#select"><i class="fa fa-check"></i><b>6.3.4</b> select</a></li>
+<li class="chapter" data-level="6.3.5" data-path="tidy.html"><a href="tidy.html#mutate"><i class="fa fa-check"></i><b>6.3.5</b> mutate</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="tidy.html"><a href="tidy.html#ejercicio-más-avanzado"><i class="fa fa-check"></i><b>6.4</b> Ejercicio más avanzado</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="tidy.html"><a href="tidy.html#procesar-datos-bursátiles-con-pipes"><i class="fa fa-check"></i><b>6.4.1</b> Procesar datos bursátiles con pipes (%&gt;%)</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="tidy.html"><a href="tidy.html#ejercicio-5"><i class="fa fa-check"></i><b>6.5</b> Ejercicio 5</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="bucles.html"><a href="bucles.html"><i class="fa fa-check"></i><b>7</b> Bucles / ciclos</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="bucles.html"><a href="bucles.html#objetivo-4"><i class="fa fa-check"></i><b>7.1</b> Objetivo</a></li>
+<li class="chapter" data-level="7.2" data-path="bucles.html"><a href="bucles.html#qué-son-las-funciones-del-tipo-apply"><i class="fa fa-check"></i><b>7.2</b> ¿Qué son las funciones del tipo “apply()?”</a></li>
+<li class="chapter" data-level="7.3" data-path="bucles.html"><a href="bucles.html#apply"><i class="fa fa-check"></i><b>7.3</b> apply</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="bucles.html"><a href="bucles.html#apply-vs-for-for-loop"><i class="fa fa-check"></i><b>7.3.1</b> apply vs for (for loop)</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="bucles.html"><a href="bucles.html#lapply"><i class="fa fa-check"></i><b>7.4</b> lapply</a></li>
+<li class="chapter" data-level="7.5" data-path="bucles.html"><a href="bucles.html#sapply"><i class="fa fa-check"></i><b>7.5</b> sapply</a></li>
+<li class="chapter" data-level="7.6" data-path="bucles.html"><a href="bucles.html#ejercicio-6"><i class="fa fa-check"></i><b>7.6</b> Ejercicio 6</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ajusteDistri.html"><a href="ajusteDistri.html"><i class="fa fa-check"></i><b>8</b> Ajuste de datos a una distribución</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ajusteDistri.html"><a href="ajusteDistri.html#objetivo-5"><i class="fa fa-check"></i><b>8.1</b> Objetivo</a></li>
+<li class="chapter" data-level="8.2" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-normal"><i class="fa fa-check"></i><b>8.2</b> Distribución normal</a></li>
+<li class="chapter" data-level="8.3" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-exponencial"><i class="fa fa-check"></i><b>8.3</b> Distribución exponencial</a></li>
+<li class="chapter" data-level="8.4" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-uniforme"><i class="fa fa-check"></i><b>8.4</b> Distribución uniforme</a></li>
+<li class="chapter" data-level="8.5" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-lognormal"><i class="fa fa-check"></i><b>8.5</b> Distribución lognormal</a></li>
+<li class="chapter" data-level="8.6" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-poisson-discreta"><i class="fa fa-check"></i><b>8.6</b> Distribución Poisson (discreta)</a></li>
+<li class="chapter" data-level="8.7" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-binomial"><i class="fa fa-check"></i><b>8.7</b> Distribución binomial</a></li>
+<li class="chapter" data-level="8.8" data-path="ajusteDistri.html"><a href="ajusteDistri.html#unir-todo-en-un-solo-data-frame"><i class="fa fa-check"></i><b>8.8</b> Unir todo en un solo data frame</a></li>
+<li class="chapter" data-level="8.9" data-path="ajusteDistri.html"><a href="ajusteDistri.html#realizar-el-ajuste"><i class="fa fa-check"></i><b>8.9</b> Realizar el ajuste</a></li>
+<li class="chapter" data-level="8.10" data-path="ajusteDistri.html"><a href="ajusteDistri.html#ejercicio-7"><i class="fa fa-check"></i><b>8.10</b> Ejercicio 7</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="regLineal.html"><a href="regLineal.html"><i class="fa fa-check"></i><b>9</b> Un modelo lineal “sencillo” (regresión lineal)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="regLineal.html"><a href="regLineal.html#objetivo-6"><i class="fa fa-check"></i><b>9.1</b> Objetivo</a></li>
+<li class="chapter" data-level="9.2" data-path="regLineal.html"><a href="regLineal.html#cargar-datos-sobre-carros"><i class="fa fa-check"></i><b>9.2</b> Cargar datos sobre carros</a></li>
+<li class="chapter" data-level="9.3" data-path="regLineal.html"><a href="regLineal.html#crear-el-modelo-lineal-regresión-lineal"><i class="fa fa-check"></i><b>9.3</b> Crear el modelo lineal (regresión lineal)</a></li>
+<li class="chapter" data-level="9.4" data-path="regLineal.html"><a href="regLineal.html#realizar-una-predicción"><i class="fa fa-check"></i><b>9.4</b> Realizar una predicción</a></li>
+<li class="chapter" data-level="9.5" data-path="regLineal.html"><a href="regLineal.html#un-segundo-ejemplo-sencillo"><i class="fa fa-check"></i><b>9.5</b> Un segundo ejemplo sencillo</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="regLineal.html"><a href="regLineal.html#utilidad-en-función-del-gasto-para-publicidad"><i class="fa fa-check"></i><b>9.5.1</b> Utilidad en función del gasto para publicidad</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="electre1.html"><a href="electre1.html"><i class="fa fa-check"></i><b>10</b> MCDA: Outranking - sobre calificación</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="electre1.html"><a href="electre1.html#objetivo-y-contextualización-1"><i class="fa fa-check"></i><b>10.1</b> Objetivo y contextualización</a></li>
+<li class="chapter" data-level="10.2" data-path="electre1.html"><a href="electre1.html#generar-datos"><i class="fa fa-check"></i><b>10.2</b> Generar datos</a></li>
+<li class="chapter" data-level="10.3" data-path="electre1.html"><a href="electre1.html#leer-los-datos-desde-un-archivo-de-excel"><i class="fa fa-check"></i><b>10.3</b> Leer los datos desde un archivo de Excel</a></li>
+<li class="chapter" data-level="10.4" data-path="electre1.html"><a href="electre1.html#analizar-el-paquete-outranking-tools-y-la-función-electre_1"><i class="fa fa-check"></i><b>10.4</b> Analizar el paquete Outranking Tools y la función electre_1()</a></li>
+<li class="chapter" data-level="10.5" data-path="electre1.html"><a href="electre1.html#transformar-los-datos-al-formato-requerido"><i class="fa fa-check"></i><b>10.5</b> Transformar los datos al formato requerido</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ahp.html"><a href="ahp.html"><i class="fa fa-check"></i><b>11</b> Modelo AHP (Analytical Hierarchy Process)</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="ahp.html"><a href="ahp.html#objetivo-7"><i class="fa fa-check"></i><b>11.1</b> Objetivo</a></li>
+<li class="chapter" data-level="11.2" data-path="ahp.html"><a href="ahp.html#cargar-el-paquete-mcda"><i class="fa fa-check"></i><b>11.2</b> Cargar el paquete MCDA</a></li>
+<li class="chapter" data-level="11.3" data-path="ahp.html"><a href="ahp.html#alternativespairwisecomparisonslist"><i class="fa fa-check"></i><b>11.3</b> alternativesPairwiseComparisonsList</a></li>
+<li class="chapter" data-level="11.4" data-path="ahp.html"><a href="ahp.html#mostrar-resultado-con-ahp"><i class="fa fa-check"></i><b>11.4</b> Mostrar resultado con AHP</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="fuzzy.html"><a href="fuzzy.html"><i class="fa fa-check"></i><b>12</b> Modelo fuzzy (borroso)</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="fuzzy.html"><a href="fuzzy.html#objetivo-y-contextualización-2"><i class="fa fa-check"></i><b>12.1</b> Objetivo y contextualización</a></li>
+<li class="chapter" data-level="12.2" data-path="fuzzy.html"><a href="fuzzy.html#definir-el-universo-universe"><i class="fa fa-check"></i><b>12.2</b> Definir el universo (universe)</a></li>
+<li class="chapter" data-level="12.3" data-path="fuzzy.html"><a href="fuzzy.html#definir-las-variables"><i class="fa fa-check"></i><b>12.3</b> Definir las variables</a></li>
+<li class="chapter" data-level="12.4" data-path="fuzzy.html"><a href="fuzzy.html#fuzzy-rules---reglas-borrosas"><i class="fa fa-check"></i><b>12.4</b> Fuzzy rules - reglas borrosas</a></li>
+<li class="chapter" data-level="12.5" data-path="fuzzy.html"><a href="fuzzy.html#definir-el-modelo-borroso"><i class="fa fa-check"></i><b>12.5</b> Definir el modelo borroso</a></li>
+<li class="chapter" data-level="12.6" data-path="fuzzy.html"><a href="fuzzy.html#dos-ejemplos-fuzzy"><i class="fa fa-check"></i><b>12.6</b> Dos ejemplos fuzzy</a></li>
+<li class="chapter" data-level="12.7" data-path="fuzzy.html"><a href="fuzzy.html#finalmente-se-debe-resetear-el-universo"><i class="fa fa-check"></i><b>12.7</b> Finalmente se debe “resetear” el universo</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="muestreo.html"><a href="muestreo.html"><i class="fa fa-check"></i><b>13</b> Muestreo - sampling</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="muestreo.html"><a href="muestreo.html#objetivo-8"><i class="fa fa-check"></i><b>13.1</b> Objetivo</a></li>
+<li class="chapter" data-level="13.2" data-path="muestreo.html"><a href="muestreo.html#muestreo-aleatorio-simple---simple-random-sampling"><i class="fa fa-check"></i><b>13.2</b> Muestreo aleatorio simple - Simple Random Sampling</a></li>
+<li class="chapter" data-level="13.3" data-path="muestreo.html"><a href="muestreo.html#proceso-de-muestreo-para-realizar-una-encuesta"><i class="fa fa-check"></i><b>13.3</b> Proceso de muestreo para realizar una encuesta</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="muestreo.html"><a href="muestreo.html#creamos-nuestra-propia-función-en-r"><i class="fa fa-check"></i><b>13.3.1</b> Creamos “nuestra propia función” en R</a></li>
+<li class="chapter" data-level="13.3.2" data-path="muestreo.html"><a href="muestreo.html#definir-los-valores-para-los-parámetros-de-la-función-muestra.n"><i class="fa fa-check"></i><b>13.3.2</b> Definir los valores para los parámetros de la función “muestra.n”</a></li>
+<li class="chapter" data-level="13.3.3" data-path="muestreo.html"><a href="muestreo.html#llamar-la-función-muestra.n-y-observar-el-resultado"><i class="fa fa-check"></i><b>13.3.3</b> Llamar la función “muestra.n” y observar el resultado</a></li>
+<li class="chapter" data-level="13.3.4" data-path="muestreo.html"><a href="muestreo.html#para-poblaciones-mayor-que-100.000-personas"><i class="fa fa-check"></i><b>13.3.4</b> Para poblaciones mayor que 100.000 personas</a></li>
+<li class="chapter" data-level="13.3.5" data-path="muestreo.html"><a href="muestreo.html#definir-los-valores-para-los-parámetros-de-la-función-muestra.n.2"><i class="fa fa-check"></i><b>13.3.5</b> Definir los valores para los parámetros de la función “muestra.n.2”</a></li>
+<li class="chapter" data-level="13.3.6" data-path="muestreo.html"><a href="muestreo.html#llamar-usar-la-función"><i class="fa fa-check"></i><b>13.3.6</b> Llamar (usar) la función</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="muestreo.html"><a href="muestreo.html#muestreo-para-un-problema-de-datos-masivos-big-data"><i class="fa fa-check"></i><b>13.4</b> Muestreo para un problema de datos masivos (big data)</a></li>
+<li class="chapter" data-level="13.5" data-path="muestreo.html"><a href="muestreo.html#muestreo-estratificado---stratified-sampling"><i class="fa fa-check"></i><b>13.5</b> Muestreo estratificado - Stratified sampling</a></li>
+<li class="chapter" data-level="13.6" data-path="muestreo.html"><a href="muestreo.html#trabajar-con-potencia-power-analysis"><i class="fa fa-check"></i><b>13.6</b> Trabajar con potencia (power analysis)</a>
+<ul>
+<li class="chapter" data-level="13.6.1" data-path="muestreo.html"><a href="muestreo.html#utilziar-la-función-pwr.t.test---power-calculations-for-t-tests-of-means"><i class="fa fa-check"></i><b>13.6.1</b> Utilziar la función pwr.t.test() - Power calculations for t-tests of means</a></li>
+</ul></li>
+<li class="chapter" data-level="13.7" data-path="muestreo.html"><a href="muestreo.html#ejercicio-8"><i class="fa fa-check"></i><b>13.7</b> Ejercicio 8</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="arbolDec.html"><a href="arbolDec.html"><i class="fa fa-check"></i><b>14</b> Árbol de decisión - Decision Tree</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="arbolDec.html"><a href="arbolDec.html#objetivo-9"><i class="fa fa-check"></i><b>14.1</b> Objetivo</a></li>
+<li class="chapter" data-level="14.2" data-path="arbolDec.html"><a href="arbolDec.html#cargar-los-datos"><i class="fa fa-check"></i><b>14.2</b> Cargar los datos</a></li>
+<li class="chapter" data-level="14.3" data-path="arbolDec.html"><a href="arbolDec.html#explorar-los-datos"><i class="fa fa-check"></i><b>14.3</b> Explorar los datos</a></li>
+<li class="chapter" data-level="14.4" data-path="arbolDec.html"><a href="arbolDec.html#mejorar-los-nombres-etiquetas-de-las-columnas-del-dataset"><i class="fa fa-check"></i><b>14.4</b> Mejorar los nombres (etiquetas) de las columnas del dataset</a></li>
+<li class="chapter" data-level="14.5" data-path="arbolDec.html"><a href="arbolDec.html#transformar-algunos-datos"><i class="fa fa-check"></i><b>14.5</b> Transformar algunos datos</a></li>
+<li class="chapter" data-level="14.6" data-path="arbolDec.html"><a href="arbolDec.html#particionar-los-datos"><i class="fa fa-check"></i><b>14.6</b> Particionar los datos</a></li>
+<li class="chapter" data-level="14.7" data-path="arbolDec.html"><a href="arbolDec.html#construir-el-modelo-árbol-de-decisión-ad"><i class="fa fa-check"></i><b>14.7</b> Construir el modelo (árbol de decisión, AD)</a></li>
+<li class="chapter" data-level="14.8" data-path="arbolDec.html"><a href="arbolDec.html#realizar-la-predicción-con-base-en-el-modelo"><i class="fa fa-check"></i><b>14.8</b> Realizar la predicción con base en el modelo</a></li>
+<li class="chapter" data-level="14.9" data-path="arbolDec.html"><a href="arbolDec.html#evaluar-el-desempeño-del-modelo-árbol-de-decisión"><i class="fa fa-check"></i><b>14.9</b> Evaluar el desempeño del modelo (árbol de decisión)</a></li>
+<li class="chapter" data-level="14.10" data-path="arbolDec.html"><a href="arbolDec.html#ejercicio-9"><i class="fa fa-check"></i><b>14.10</b> Ejercicio 9</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="regrLog.html"><a href="regrLog.html"><i class="fa fa-check"></i><b>15</b> Regresión logística (modelo logit)</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="regrLog.html"><a href="regrLog.html#objetivo-10"><i class="fa fa-check"></i><b>15.1</b> Objetivo</a></li>
+<li class="chapter" data-level="15.2" data-path="regrLog.html"><a href="regrLog.html#cargar-los-datos-históricos-de-un-archivo-csv"><i class="fa fa-check"></i><b>15.2</b> Cargar los datos históricos de un archivo csv</a></li>
+<li class="chapter" data-level="15.3" data-path="regrLog.html"><a href="regrLog.html#explorar-los-datos-1"><i class="fa fa-check"></i><b>15.3</b> Explorar los datos</a></li>
+<li class="chapter" data-level="15.4" data-path="regrLog.html"><a href="regrLog.html#mejorar-los-nombres-etiquetas-de-las-columnas-del-dataset-1"><i class="fa fa-check"></i><b>15.4</b> Mejorar los nombres (etiquetas) de las columnas del dataset</a></li>
+<li class="chapter" data-level="15.5" data-path="regrLog.html"><a href="regrLog.html#transformar-algunos-datos-1"><i class="fa fa-check"></i><b>15.5</b> Transformar algunos datos</a></li>
+<li class="chapter" data-level="15.6" data-path="regrLog.html"><a href="regrLog.html#particionar-los-datos-1"><i class="fa fa-check"></i><b>15.6</b> Particionar los datos</a></li>
+<li class="chapter" data-level="15.7" data-path="regrLog.html"><a href="regrLog.html#construir-el-modelo-logit-regresión-logística"><i class="fa fa-check"></i><b>15.7</b> Construir el modelo logit (regresión logística)</a></li>
+<li class="chapter" data-level="15.8" data-path="regrLog.html"><a href="regrLog.html#generar-el-modelo-mejorado"><i class="fa fa-check"></i><b>15.8</b> Generar el modelo “mejorado”</a></li>
+<li class="chapter" data-level="15.9" data-path="regrLog.html"><a href="regrLog.html#realizar-una-predicción-con-el-modelo-logit-mejorado"><i class="fa fa-check"></i><b>15.9</b> Realizar una predicción con el modelo logit mejorado</a></li>
+<li class="chapter" data-level="15.10" data-path="regrLog.html"><a href="regrLog.html#convertir-estas-probabilidades-en-dos-clases-1-y-0-buena-paga-y-mala-paga"><i class="fa fa-check"></i><b>15.10</b> Convertir estas probabilidades en dos clases: 1 y 0 (“buena paga” y “mala paga”)</a></li>
+<li class="chapter" data-level="15.11" data-path="regrLog.html"><a href="regrLog.html#ejercicio-10"><i class="fa fa-check"></i><b>15.11</b> Ejercicio 10</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="normalizar.html"><a href="normalizar.html"><i class="fa fa-check"></i><b>16</b> Escalar y normalizar (estandarizar datos)</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="normalizar.html"><a href="normalizar.html#objetivo-11"><i class="fa fa-check"></i><b>16.1</b> Objetivo</a></li>
+<li class="chapter" data-level="16.2" data-path="normalizar.html"><a href="normalizar.html#cargar-los-datos-históricos-de-un-archivo-csv-1"><i class="fa fa-check"></i><b>16.2</b> Cargar los datos históricos de un archivo csv</a></li>
+<li class="chapter" data-level="16.3" data-path="normalizar.html"><a href="normalizar.html#analizar-los-datos-de-la-columna-credit.amount-monto-del-crédito"><i class="fa fa-check"></i><b>16.3</b> Analizar los datos de la columna “Credit.Amount” (monto del crédito)</a></li>
+<li class="chapter" data-level="16.4" data-path="normalizar.html"><a href="normalizar.html#escalar-los-datos"><i class="fa fa-check"></i><b>16.4</b> Escalar los datos</a></li>
+<li class="chapter" data-level="16.5" data-path="normalizar.html"><a href="normalizar.html#la-normalización-de-los-datos"><i class="fa fa-check"></i><b>16.5</b> La normalización de los datos</a>
+<ul>
+<li class="chapter" data-level="16.5.1" data-path="normalizar.html"><a href="normalizar.html#comprobar-el-resultado"><i class="fa fa-check"></i><b>16.5.1</b> Comprobar el resultado</a></li>
+</ul></li>
+<li class="chapter" data-level="16.6" data-path="normalizar.html"><a href="normalizar.html#escala-logarítmica"><i class="fa fa-check"></i><b>16.6</b> Escala logarítmica</a>
+<ul>
+<li class="chapter" data-level="16.6.1" data-path="normalizar.html"><a href="normalizar.html#un-ejemplo---retornos-logarítmicos"><i class="fa fa-check"></i><b>16.6.1</b> Un ejemplo - retornos logarítmicos</a></li>
+</ul></li>
+<li class="chapter" data-level="16.7" data-path="normalizar.html"><a href="normalizar.html#creando-variables-dummy-one-hot-encoding"><i class="fa fa-check"></i><b>16.7</b> Creando variables dummy (one-hot encoding)</a></li>
+<li class="chapter" data-level="16.8" data-path="normalizar.html"><a href="normalizar.html#ejercicio-11"><i class="fa fa-check"></i><b>16.8</b> Ejercicio 11</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="rn.html"><a href="rn.html"><i class="fa fa-check"></i><b>17</b> Red Neuronal</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="rn.html"><a href="rn.html#objetivo-12"><i class="fa fa-check"></i><b>17.1</b> Objetivo</a></li>
+<li class="chapter" data-level="17.2" data-path="rn.html"><a href="rn.html#cargar-datos"><i class="fa fa-check"></i><b>17.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="17.3" data-path="rn.html"><a href="rn.html#normalizar-datos"><i class="fa fa-check"></i><b>17.3</b> Normalizar datos</a></li>
+<li class="chapter" data-level="17.4" data-path="rn.html"><a href="rn.html#particionar-los-datos-2"><i class="fa fa-check"></i><b>17.4</b> Particionar los datos</a></li>
+<li class="chapter" data-level="17.5" data-path="rn.html"><a href="rn.html#crear-la-red-neuronal"><i class="fa fa-check"></i><b>17.5</b> Crear la Red Neuronal</a></li>
+<li class="chapter" data-level="17.6" data-path="rn.html"><a href="rn.html#realizar-la-predicción"><i class="fa fa-check"></i><b>17.6</b> Realizar la predicción</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="VaR.html"><a href="VaR.html"><i class="fa fa-check"></i><b>18</b> Determinar el VaR</a>
+<ul>
+<li class="chapter" data-level="18.1" data-path="VaR.html"><a href="VaR.html#objetivo-13"><i class="fa fa-check"></i><b>18.1</b> Objetivo</a>
+<ul>
+<li class="chapter" data-level="18.1.1" data-path="VaR.html"><a href="VaR.html#obtener-unos-datos-serie-de-tiempo-st"><i class="fa fa-check"></i><b>18.1.1</b> Obtener unos datos (Serie de tiempo, ST)</a></li>
+</ul></li>
+<li class="chapter" data-level="18.2" data-path="VaR.html"><a href="VaR.html#determinar-retornos-log"><i class="fa fa-check"></i><b>18.2</b> Determinar retornos log</a></li>
+<li class="chapter" data-level="18.3" data-path="VaR.html"><a href="VaR.html#generar-estadística-de-datos"><i class="fa fa-check"></i><b>18.3</b> Generar estadística de datos</a>
+<ul>
+<li class="chapter" data-level="18.3.1" data-path="VaR.html"><a href="VaR.html#volatilidad"><i class="fa fa-check"></i><b>18.3.1</b> Volatilidad</a></li>
+<li class="chapter" data-level="18.3.2" data-path="VaR.html"><a href="VaR.html#retorno-diario"><i class="fa fa-check"></i><b>18.3.2</b> Retorno diario</a></li>
+<li class="chapter" data-level="18.3.3" data-path="VaR.html"><a href="VaR.html#supuestos-para-el-cálculo-del-var"><i class="fa fa-check"></i><b>18.3.3</b> Supuestos para el cálculo del VaR</a></li>
+</ul></li>
+<li class="chapter" data-level="18.4" data-path="VaR.html"><a href="VaR.html#var"><i class="fa fa-check"></i><b>18.4</b> VaR</a>
+<ul>
+<li class="chapter" data-level="18.4.1" data-path="VaR.html"><a href="VaR.html#var-paramétrico"><i class="fa fa-check"></i><b>18.4.1</b> VaR paramétrico</a></li>
+<li class="chapter" data-level="18.4.2" data-path="VaR.html"><a href="VaR.html#var-histórico"><i class="fa fa-check"></i><b>18.4.2</b> VaR histórico</a></li>
+<li class="chapter" data-level="18.4.3" data-path="VaR.html"><a href="VaR.html#var-montecarlo"><i class="fa fa-check"></i><b>18.4.3</b> VaR Montecarlo</a></li>
+<li class="chapter" data-level="18.4.4" data-path="VaR.html"><a href="VaR.html#comparativo-de-los-tres-vars"><i class="fa fa-check"></i><b>18.4.4</b> Comparativo de los tres VaRs</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="ST.html"><a href="ST.html"><i class="fa fa-check"></i><b>19</b> Serie de tiempo</a>
+<ul>
+<li class="chapter" data-level="19.1" data-path="ST.html"><a href="ST.html#objetivo-14"><i class="fa fa-check"></i><b>19.1</b> Objetivo</a></li>
+<li class="chapter" data-level="19.2" data-path="ST.html"><a href="ST.html#cargar-datos-1"><i class="fa fa-check"></i><b>19.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="19.3" data-path="ST.html"><a href="ST.html#graficar-la-serie"><i class="fa fa-check"></i><b>19.3</b> Graficar la serie</a></li>
+<li class="chapter" data-level="19.4" data-path="ST.html"><a href="ST.html#comprobar-si-es-estacionaria"><i class="fa fa-check"></i><b>19.4</b> Comprobar, si es estacionaria</a></li>
+<li class="chapter" data-level="19.5" data-path="ST.html"><a href="ST.html#identificando-una-serie-no-estacionaria"><i class="fa fa-check"></i><b>19.5</b> Identificando una serie no estacionaria</a>
+<ul>
+<li class="chapter" data-level="19.5.1" data-path="ST.html"><a href="ST.html#convertir-a-estacionaria"><i class="fa fa-check"></i><b>19.5.1</b> Convertir a estacionaria</a></li>
+<li class="chapter" data-level="19.5.2" data-path="ST.html"><a href="ST.html#retornos-log"><i class="fa fa-check"></i><b>19.5.2</b> Retornos log</a></li>
+<li class="chapter" data-level="19.5.3" data-path="ST.html"><a href="ST.html#diferenciar-1st-order"><i class="fa fa-check"></i><b>19.5.3</b> Diferenciar (1st order)</a></li>
+</ul></li>
+<li class="chapter" data-level="19.6" data-path="ST.html"><a href="ST.html#arima"><i class="fa fa-check"></i><b>19.6</b> ARIMA</a>
+<ul>
+<li class="chapter" data-level="19.6.1" data-path="ST.html"><a href="ST.html#acf"><i class="fa fa-check"></i><b>19.6.1</b> acf</a></li>
+<li class="chapter" data-level="19.6.2" data-path="ST.html"><a href="ST.html#pacf"><i class="fa fa-check"></i><b>19.6.2</b> pacf</a></li>
+<li class="chapter" data-level="19.6.3" data-path="ST.html"><a href="ST.html#auto.arima"><i class="fa fa-check"></i><b>19.6.3</b> auto.arima</a></li>
+</ul></li>
+<li class="chapter" data-level="19.7" data-path="ST.html"><a href="ST.html#pronóstico"><i class="fa fa-check"></i><b>19.7</b> Pronóstico</a></li>
+<li class="chapter" data-level="19.8" data-path="ST.html"><a href="ST.html#ejercicio"><i class="fa fa-check"></i><b>19.8</b> Ejercicio</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="prophet.html"><a href="prophet.html"><i class="fa fa-check"></i><b>20</b> Serie de tiempo con Prophet</a>
+<ul>
+<li class="chapter" data-level="20.1" data-path="prophet.html"><a href="prophet.html#objetivo-15"><i class="fa fa-check"></i><b>20.1</b> Objetivo</a></li>
+<li class="chapter" data-level="20.2" data-path="prophet.html"><a href="prophet.html#cargar-datos-2"><i class="fa fa-check"></i><b>20.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="20.3" data-path="prophet.html"><a href="prophet.html#convertir-a-data-frame"><i class="fa fa-check"></i><b>20.3</b> Convertir a data frame</a></li>
+<li class="chapter" data-level="20.4" data-path="prophet.html"><a href="prophet.html#realizar-el-pronóstico-con-prophet"><i class="fa fa-check"></i><b>20.4</b> Realizar el pronóstico con prophet</a>
+<ul>
+<li class="chapter" data-level="20.4.1" data-path="prophet.html"><a href="prophet.html#crear-el-modelo"><i class="fa fa-check"></i><b>20.4.1</b> Crear el modelo</a></li>
+<li class="chapter" data-level="20.4.2" data-path="prophet.html"><a href="prophet.html#pronosticar---predict"><i class="fa fa-check"></i><b>20.4.2</b> Pronosticar - predict</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html"><i class="fa fa-check"></i><b>21</b> Posibles soluciones</a>
+<ul>
+<li class="chapter" data-level="21.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-1-1"><i class="fa fa-check"></i><b>21.1</b> Ejercicio 1</a>
+<ul>
+<li class="chapter" data-level="21.1.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado"><i class="fa fa-check"></i><b>21.1.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.1.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución"><i class="fa fa-check"></i><b>21.1.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-2-1"><i class="fa fa-check"></i><b>21.2</b> Ejercicio 2</a>
+<ul>
+<li class="chapter" data-level="21.2.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-a"><i class="fa fa-check"></i><b>21.2.1</b> Enunciado - parte a</a></li>
+<li class="chapter" data-level="21.2.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-1"><i class="fa fa-check"></i><b>21.2.2</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-b"><i class="fa fa-check"></i><b>21.2.3</b> Enunciado - parte b</a></li>
+<li class="chapter" data-level="21.2.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-2"><i class="fa fa-check"></i><b>21.2.4</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-c"><i class="fa fa-check"></i><b>21.2.5</b> Enunciado - parte c</a></li>
+<li class="chapter" data-level="21.2.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-3"><i class="fa fa-check"></i><b>21.2.6</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-d"><i class="fa fa-check"></i><b>21.2.7</b> Enunciado - parte d</a></li>
+<li class="chapter" data-level="21.2.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-4"><i class="fa fa-check"></i><b>21.2.8</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-e"><i class="fa fa-check"></i><b>21.2.9</b> Enunciado - parte e</a></li>
+<li class="chapter" data-level="21.2.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-5"><i class="fa fa-check"></i><b>21.2.10</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-3-1"><i class="fa fa-check"></i><b>21.3</b> Ejercicio 3</a>
+<ul>
+<li class="chapter" data-level="21.3.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-1"><i class="fa fa-check"></i><b>21.3.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.3.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-6"><i class="fa fa-check"></i><b>21.3.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-4-1"><i class="fa fa-check"></i><b>21.4</b> Ejercicio 4</a>
+<ul>
+<li class="chapter" data-level="21.4.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-2"><i class="fa fa-check"></i><b>21.4.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.4.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-7"><i class="fa fa-check"></i><b>21.4.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-5-1"><i class="fa fa-check"></i><b>21.5</b> Ejercicio 5</a>
+<ul>
+<li class="chapter" data-level="21.5.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-3"><i class="fa fa-check"></i><b>21.5.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.5.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-8"><i class="fa fa-check"></i><b>21.5.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-6-1"><i class="fa fa-check"></i><b>21.6</b> Ejercicio 6</a>
+<ul>
+<li class="chapter" data-level="21.6.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-4"><i class="fa fa-check"></i><b>21.6.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.6.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-9"><i class="fa fa-check"></i><b>21.6.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-7-1"><i class="fa fa-check"></i><b>21.7</b> Ejercicio 7</a>
+<ul>
+<li class="chapter" data-level="21.7.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-5"><i class="fa fa-check"></i><b>21.7.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.7.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-10"><i class="fa fa-check"></i><b>21.7.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-8-1"><i class="fa fa-check"></i><b>21.8</b> Ejercicio 8</a>
+<ul>
+<li class="chapter" data-level="21.8.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-6"><i class="fa fa-check"></i><b>21.8.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.8.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-11"><i class="fa fa-check"></i><b>21.8.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-9-1"><i class="fa fa-check"></i><b>21.9</b> Ejercicio 9</a>
+<ul>
+<li class="chapter" data-level="21.9.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-7"><i class="fa fa-check"></i><b>21.9.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.9.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-12"><i class="fa fa-check"></i><b>21.9.2</b> Posible Solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-10-1"><i class="fa fa-check"></i><b>21.10</b> Ejercicio 10</a>
+<ul>
+<li class="chapter" data-level="21.10.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-8"><i class="fa fa-check"></i><b>21.10.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.10.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-13"><i class="fa fa-check"></i><b>21.10.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.11" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-11-1"><i class="fa fa-check"></i><b>21.11</b> Ejercicio 11</a>
+<ul>
+<li class="chapter" data-level="21.11.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-9"><i class="fa fa-check"></i><b>21.11.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.11.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-14"><i class="fa fa-check"></i><b>21.11.2</b> Posible solución</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="palabras-finales.html"><a href="palabras-finales.html"><i class="fa fa-check"></i><b>22</b> Palabras finales</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Una breve introducción a R con un enfoque financiero y administrativo</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="prophet" class="section level1" number="20">
+<h1><span class="header-section-number">Sección 20</span> Serie de tiempo con Prophet</h1>
+<div id="objetivo-15" class="section level2" number="20.1">
+<h2><span class="header-section-number">20.1</span> Objetivo</h2>
+<p>Realizar un pronóstico con base en una serie de tiempo de datos, utilizando el paquete <em>“Prophet”</em>, desarrollado por Facebook</p>
+</div>
+<div id="cargar-datos-2" class="section level2" number="20.2">
+<h2><span class="header-section-number">20.2</span> Cargar datos</h2>
+<ul>
+<li>Vamos a utilizar los mismos datos como en el ejercicio anterior sobre series de tiempo. Es decir:</li>
+<li>Decargar datos de la acción de Google (ticker GOOG) desde la web (yahoo finance), utilizando el paquete quantmod de R y asignar el resultado a una variable “data”</li>
+<li>Esto para el periodo de 2005-02-07 hasta 2005-07-08</li>
+<li>Mostrar los útlimos 6 registros de estos datos (de la variable data)</li>
+<li>Mostrar la clase de la variable “data”</li>
+</ul>
+<div class="sourceCode" id="cb860"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb860-1"><a href="prophet.html#cb860-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&#39;quantmod&#39;</span>)) <span class="fu">install.packages</span>(<span class="st">&#39;quantmod&#39;</span>); <span class="fu">library</span>(quantmod)</span>
+<span id="cb860-2"><a href="prophet.html#cb860-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb860-3"><a href="prophet.html#cb860-3" aria-hidden="true" tabindex="-1"></a>stockEnv <span class="ot">&lt;-</span> <span class="fu">new.env</span>()</span>
+<span id="cb860-4"><a href="prophet.html#cb860-4" aria-hidden="true" tabindex="-1"></a>tickers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;GOOG&#39;</span>)</span>
+<span id="cb860-5"><a href="prophet.html#cb860-5" aria-hidden="true" tabindex="-1"></a>startDate <span class="ot">&lt;-</span> <span class="st">&#39;2005-02-07&#39;</span></span>
+<span id="cb860-6"><a href="prophet.html#cb860-6" aria-hidden="true" tabindex="-1"></a>endDate <span class="ot">&lt;-</span> <span class="st">&#39;2005-07-08&#39;</span></span>
+<span id="cb860-7"><a href="prophet.html#cb860-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb860-8"><a href="prophet.html#cb860-8" aria-hidden="true" tabindex="-1"></a><span class="fu">getSymbols</span>(<span class="at">Symbols =</span> tickers,</span>
+<span id="cb860-9"><a href="prophet.html#cb860-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">env =</span> stockEnv,</span>
+<span id="cb860-10"><a href="prophet.html#cb860-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">src =</span> <span class="st">&#39;yahoo&#39;</span>,</span>
+<span id="cb860-11"><a href="prophet.html#cb860-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">from =</span> startDate,</span>
+<span id="cb860-12"><a href="prophet.html#cb860-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">to =</span> endDate)</span></code></pre></div>
+<pre><code>## [1] &quot;GOOG&quot;</code></pre>
+<div class="sourceCode" id="cb862"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb862-1"><a href="prophet.html#cb862-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> stockEnv<span class="sc">$</span>GOOG</span>
+<span id="cb862-2"><a href="prophet.html#cb862-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(data)</span></code></pre></div>
+<pre><code>##            GOOG.Open GOOG.High GOOG.Low GOOG.Close GOOG.Volume GOOG.Adjusted
+## 2005-06-29  150.6852  151.6217 145.5295   145.8135    36734576      145.8135
+## 2005-06-30  146.6204  148.9069 144.9766   146.5258    30301955      146.5258
+## 2005-07-01  146.9691  147.5669 144.0700   145.0812    18524375      145.0812
+## 2005-07-05  145.5046  147.4374 144.5731   147.3029    15044179      147.3029
+## 2005-07-06  148.0949  148.2443 145.1459   145.2157    16060574      145.2157
+## 2005-07-07  144.1547  147.3477 143.7163   147.2182    21424203      147.2182</code></pre>
+<div class="sourceCode" id="cb864"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb864-1"><a href="prophet.html#cb864-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(data) <span class="co"># [1] &quot;xts&quot; &quot;zoo&quot;</span></span></code></pre></div>
+<pre><code>## [1] &quot;xts&quot; &quot;zoo&quot;</code></pre>
+</div>
+<div id="convertir-a-data-frame" class="section level2" number="20.3">
+<h2><span class="header-section-number">20.3</span> Convertir a data frame</h2>
+<ul>
+<li>Ahora, convertir la variable “data” de xts , zoo a un data frame en R, utilizando la función data.frame() y asignar el resultado a una variable “df”</li>
+<li>Este data frame debe tener una columna “index” con las fechas de la serie de tiempo y en las demás columnas los precios (formato OHLC)</li>
+<li>Nota: Todos estos precios se pueden asignar mediante el paámetro “coredata” de data.frame()</li>
+<li>Mostrar la estructura de df (str())</li>
+<li>Mostrar las primeras 6 filas con las fechas de df</li>
+</ul>
+<div class="sourceCode" id="cb866"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb866-1"><a href="prophet.html#cb866-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convertir fechas en una columna, mediante el cast a un data.frame</span></span>
+<span id="cb866-2"><a href="prophet.html#cb866-2" aria-hidden="true" tabindex="-1"></a><span class="co"># y escribir los datos a un archivo csv</span></span>
+<span id="cb866-3"><a href="prophet.html#cb866-3" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(data.frame(df), &#39;google.csv&#39;)</span></span>
+<span id="cb866-4"><a href="prophet.html#cb866-4" aria-hidden="true" tabindex="-1"></a><span class="co"># luego se pueden leer los datos con read.csv, lo que incluye la columna con las fechas</span></span>
+<span id="cb866-5"><a href="prophet.html#cb866-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb866-6"><a href="prophet.html#cb866-6" aria-hidden="true" tabindex="-1"></a><span class="co"># o se puede convertir el objetivo xts a un dataframe</span></span>
+<span id="cb866-7"><a href="prophet.html#cb866-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">date=</span><span class="fu">index</span>(data), <span class="fu">coredata</span>(data))</span>
+<span id="cb866-8"><a href="prophet.html#cb866-8" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    105 obs. of  7 variables:
+##  $ date         : Date, format: &quot;2005-02-07&quot; &quot;2005-02-08&quot; ...
+##  $ GOOG.Open    : num  102.2 98.1 100 95.6 93 ...
+##  $ GOOG.High    : num  102.8 99.6 100.4 95.7 95.8 ...
+##  $ GOOG.Low     : num  97.4 96.9 94.4 92.3 92.7 ...
+##  $ GOOG.Close   : num  97.6 98.9 95.4 93.6 93.4 ...
+##  $ GOOG.Volume  : num  26017958 23046060 34471726 38107704 26330324 ...
+##  $ GOOG.Adjusted: num  97.6 98.9 95.4 93.6 93.4 ...</code></pre>
+<div class="sourceCode" id="cb868"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb868-1"><a href="prophet.html#cb868-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df[,<span class="dv">1</span>])</span></code></pre></div>
+<pre><code>## [1] &quot;2005-02-07&quot; &quot;2005-02-08&quot; &quot;2005-02-09&quot; &quot;2005-02-10&quot; &quot;2005-02-11&quot;
+## [6] &quot;2005-02-14&quot;</code></pre>
+<ul>
+<li>Asignar a una variable “df2” únicamenete los valores de la primera columna (con la fechas) y de la séptima columna (GOOG.Adjusted) de df</li>
+<li>Mostrar la estructura de df2 (str())</li>
+</ul>
+<div class="sourceCode" id="cb870"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb870-1"><a href="prophet.html#cb870-1" aria-hidden="true" tabindex="-1"></a><span class="co"># subsetting solo columna de la fecha (col 1) y el cierre ajustado (col 7)</span></span>
+<span id="cb870-2"><a href="prophet.html#cb870-2" aria-hidden="true" tabindex="-1"></a>df2 <span class="ot">&lt;-</span> df[ , <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">7</span>)]</span>
+<span id="cb870-3"><a href="prophet.html#cb870-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df2)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    105 obs. of  2 variables:
+##  $ date         : Date, format: &quot;2005-02-07&quot; &quot;2005-02-08&quot; ...
+##  $ GOOG.Adjusted: num  97.6 98.9 95.4 93.6 93.4 ...</code></pre>
+</div>
+<div id="realizar-el-pronóstico-con-prophet" class="section level2" number="20.4">
+<h2><span class="header-section-number">20.4</span> Realizar el pronóstico con prophet</h2>
+<ul>
+<li>Realizar el pronóstico, utilizando el paquete “prophet”</li>
+<li>Esto require primero cambiar el nombre de las columnas del data frame df2. Fechas = ds y “GOOG.Adjusted” = y</li>
+<li>Mostrar la estructura de df2</li>
+<li>Donde:
+<ul>
+<li>y(t) = g(t) + s(t) + h(t) + epsilon</li>
+<li>g(t): modela el crecimiento periódico. Prophet deteca automaticamente cambios en la tendencia y señala puntos de cambio</li>
+<li>s(t): estacionaridad. Prophet usa una serie Fourier y el componente estacional semanal</li>
+<li>h(t): el compenente de vacacciones</li>
+<li>epsilon: el término de error, que utiliza prophet</li>
+</ul></li>
+</ul>
+<div class="sourceCode" id="cb872"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb872-1"><a href="prophet.html#cb872-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pronóstico con facebook prophet</span></span>
+<span id="cb872-2"><a href="prophet.html#cb872-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&#39;prophet&#39;</span>)) <span class="fu">install.packages</span>(<span class="st">&#39;prophet&#39;</span>); <span class="fu">library</span>(prophet)</span></code></pre></div>
+<pre><code>## Loading required package: prophet</code></pre>
+<pre><code>## Loading required package: rlang</code></pre>
+<pre><code>## 
+## Attaching package: &#39;rlang&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:igraph&#39;:
+## 
+##     is_named</code></pre>
+<pre><code>## The following objects are masked from &#39;package:purrr&#39;:
+## 
+##     %@%, as_function, flatten, flatten_chr, flatten_dbl, flatten_int,
+##     flatten_lgl, flatten_raw, invoke, list_along, modify, prepend,
+##     splice</code></pre>
+<div class="sourceCode" id="cb878"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb878-1"><a href="prophet.html#cb878-1" aria-hidden="true" tabindex="-1"></a><span class="co"># y(t) = g(t) + s(t) + h(t) + epsilon</span></span>
+<span id="cb878-2"><a href="prophet.html#cb878-2" aria-hidden="true" tabindex="-1"></a><span class="co"># g(t): modela el crecimiento periódico. Prophet deteca automaticamente </span></span>
+<span id="cb878-3"><a href="prophet.html#cb878-3" aria-hidden="true" tabindex="-1"></a><span class="co"># cambios en la tendencia y señala puntos de cambio</span></span>
+<span id="cb878-4"><a href="prophet.html#cb878-4" aria-hidden="true" tabindex="-1"></a><span class="co"># s(t): estacionaridad. Prophet usa una serie Fourier y el componente estacional semanal</span></span>
+<span id="cb878-5"><a href="prophet.html#cb878-5" aria-hidden="true" tabindex="-1"></a><span class="co"># h(t): el compenente de vacacciones</span></span>
+<span id="cb878-6"><a href="prophet.html#cb878-6" aria-hidden="true" tabindex="-1"></a><span class="co"># epsilon: el término de error, que utiliza prophet</span></span>
+<span id="cb878-7"><a href="prophet.html#cb878-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb878-8"><a href="prophet.html#cb878-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df2) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;ds&#39;</span>, <span class="st">&#39;y&#39;</span>)</span>
+<span id="cb878-9"><a href="prophet.html#cb878-9" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(df2)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    105 obs. of  2 variables:
+##  $ ds: Date, format: &quot;2005-02-07&quot; &quot;2005-02-08&quot; ...
+##  $ y : num  97.6 98.9 95.4 93.6 93.4 ...</code></pre>
+<div id="crear-el-modelo" class="section level3" number="20.4.1">
+<h3><span class="header-section-number">20.4.1</span> Crear el modelo</h3>
+<ul>
+<li>Crear el modelo de pronóstico, utilizando la función prophet() con df2 y asignar el resultado a una variable “model”</li>
+</ul>
+<div class="sourceCode" id="cb880"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb880-1"><a href="prophet.html#cb880-1" aria-hidden="true" tabindex="-1"></a><span class="co">#crear el modelo de pronóstico, utilizando prophet</span></span>
+<span id="cb880-2"><a href="prophet.html#cb880-2" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">prophet</span>(df2)</span></code></pre></div>
+<pre><code>## Disabling yearly seasonality. Run prophet with yearly.seasonality=TRUE to override this.</code></pre>
+<pre><code>## Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</code></pre>
+<ul>
+<li>Con make_future_dataframe() debemos generar un dataframe con las fechas de los futuros periodos y asignar el resultado a una variable “future”</li>
+<li>Aquí en el ejemplo aplicamos el model y el parámetro: periods=3*30 al respecto</li>
+<li>Luego, mostrar las últimas 6 filas (registros) de “future”</li>
+</ul>
+<div class="sourceCode" id="cb883"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb883-1"><a href="prophet.html#cb883-1" aria-hidden="true" tabindex="-1"></a><span class="co"># con make_future_dataframe() podemos generar un dataframe con las fechas de </span></span>
+<span id="cb883-2"><a href="prophet.html#cb883-2" aria-hidden="true" tabindex="-1"></a><span class="co"># los futuros periodos</span></span>
+<span id="cb883-3"><a href="prophet.html#cb883-3" aria-hidden="true" tabindex="-1"></a>future <span class="ot">&lt;-</span> <span class="fu">make_future_dataframe</span>(model,<span class="at">periods=</span><span class="dv">3</span><span class="sc">*</span><span class="dv">30</span>)</span>
+<span id="cb883-4"><a href="prophet.html#cb883-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(future)</span></code></pre></div>
+<pre><code>##             ds
+## 190 2005-09-30
+## 191 2005-10-01
+## 192 2005-10-02
+## 193 2005-10-03
+## 194 2005-10-04
+## 195 2005-10-05</code></pre>
+</div>
+<div id="pronosticar---predict" class="section level3" number="20.4.2">
+<h3><span class="header-section-number">20.4.2</span> Pronosticar - predict</h3>
+<ul>
+<li>Luego, aplicar la función predict() para predicir los valores (precios) futuros y asignar el resultado a una variable “forecast.” Esta función recibe como parámetros: model y future</li>
+<li>Mostrar las últimas 6 filas de “forecast,” pero únicamente los valores de las siguientes columnas: ‘ds,’‘yhat,’ ‘yhat_lower,’ ‘yhat_upper’</li>
+</ul>
+<div class="sourceCode" id="cb885"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb885-1"><a href="prophet.html#cb885-1" aria-hidden="true" tabindex="-1"></a><span class="co"># aplicar el método predict() para predicir los valores (precios) futuros</span></span>
+<span id="cb885-2"><a href="prophet.html#cb885-2" aria-hidden="true" tabindex="-1"></a>forecast <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, future)</span>
+<span id="cb885-3"><a href="prophet.html#cb885-3" aria-hidden="true" tabindex="-1"></a><span class="co"># tail(forecast)</span></span>
+<span id="cb885-4"><a href="prophet.html#cb885-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(forecast[<span class="fu">c</span>(<span class="st">&#39;ds&#39;</span>,<span class="st">&#39;yhat&#39;</span>, <span class="st">&#39;yhat_lower&#39;</span>, <span class="st">&#39;yhat_upper&#39;</span>)])</span></code></pre></div>
+<pre><code>##             ds     yhat yhat_lower yhat_upper
+## 190 2005-09-30 177.3840   156.3210   197.7868
+## 191 2005-10-01 177.9774   156.8485   199.3778
+## 192 2005-10-02 178.3117   157.0199   199.7805
+## 193 2005-10-03 178.9650   157.3314   201.0657
+## 194 2005-10-04 179.2917   155.9497   202.2743
+## 195 2005-10-05 179.2408   156.7446   202.3476</code></pre>
+<ul>
+<li>Graficar con la función plot() con base en: model y forecast</li>
+</ul>
+<div class="sourceCode" id="cb887"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb887-1"><a href="prophet.html#cb887-1" aria-hidden="true" tabindex="-1"></a><span class="co">#graficar</span></span>
+<span id="cb887-2"><a href="prophet.html#cb887-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model, forecast)</span></code></pre></div>
+<p><img src="r_libro_cl_files/figure-html/unnamed-chunk-226-1.png" width="672" /></p>
+<ul>
+<li>Utilizando la función prophet_plot_components() con model y forecast para mostrar los componentes de la serie de tiempo, como la tendencia de los precios</li>
+</ul>
+<div class="sourceCode" id="cb888"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb888-1"><a href="prophet.html#cb888-1" aria-hidden="true" tabindex="-1"></a><span class="co"># componentes en términos de la tendencia y de la estacionalidad semanal</span></span>
+<span id="cb888-2"><a href="prophet.html#cb888-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prophet_plot_components</span>(model, forecast)</span></code></pre></div>
+<p><img src="r_libro_cl_files/figure-html/unnamed-chunk-227-1.png" width="672" /></p>
+<ul>
+<li>Presentar una gráfica más interactiva, utilizando la función dyplot.prophet()</li>
+</ul>
+<div class="sourceCode" id="cb889"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb889-1"><a href="prophet.html#cb889-1" aria-hidden="true" tabindex="-1"></a><span class="co"># gráfica más interactiva</span></span>
+<span id="cb889-2"><a href="prophet.html#cb889-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dyplot.prophet</span>(model, forecast)</span></code></pre></div>
+<pre><code>## Warning: `select_()` was deprecated in dplyr 0.7.0.
+## Please use `select()` instead.</code></pre>
+<div id="htmlwidget-a5f5c5bcfab11dcf3c0e" style="width:672px;height:480px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a5f5c5bcfab11dcf3c0e">{"x":{"attrs":{"labels":["day","Actual","Predicted"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}},"colors":["black","blue"],"series":{"Actual":{"axis":"y","drawPoints":true,"strokeWidth":0},"Predicted":{"axis":"y"}},"customBars":true,"showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel"},"scale":"daily","annotations":[],"shadings":[],"events":[],"format":"date","data":[["2005-02-07T00:00:00.000Z","2005-02-08T00:00:00.000Z","2005-02-09T00:00:00.000Z","2005-02-10T00:00:00.000Z","2005-02-11T00:00:00.000Z","2005-02-14T00:00:00.000Z","2005-02-15T00:00:00.000Z","2005-02-16T00:00:00.000Z","2005-02-17T00:00:00.000Z","2005-02-18T00:00:00.000Z","2005-02-22T00:00:00.000Z","2005-02-23T00:00:00.000Z","2005-02-24T00:00:00.000Z","2005-02-25T00:00:00.000Z","2005-02-28T00:00:00.000Z","2005-03-01T00:00:00.000Z","2005-03-02T00:00:00.000Z","2005-03-03T00:00:00.000Z","2005-03-04T00:00:00.000Z","2005-03-07T00:00:00.000Z","2005-03-08T00:00:00.000Z","2005-03-09T00:00:00.000Z","2005-03-10T00:00:00.000Z","2005-03-11T00:00:00.000Z","2005-03-14T00:00:00.000Z","2005-03-15T00:00:00.000Z","2005-03-16T00:00:00.000Z","2005-03-17T00:00:00.000Z","2005-03-18T00:00:00.000Z","2005-03-21T00:00:00.000Z","2005-03-22T00:00:00.000Z","2005-03-23T00:00:00.000Z","2005-03-24T00:00:00.000Z","2005-03-28T00:00:00.000Z","2005-03-29T00:00:00.000Z","2005-03-30T00:00:00.000Z","2005-03-31T00:00:00.000Z","2005-04-01T00:00:00.000Z","2005-04-04T00:00:00.000Z","2005-04-05T00:00:00.000Z","2005-04-06T00:00:00.000Z","2005-04-07T00:00:00.000Z","2005-04-08T00:00:00.000Z","2005-04-11T00:00:00.000Z","2005-04-12T00:00:00.000Z","2005-04-13T00:00:00.000Z","2005-04-14T00:00:00.000Z","2005-04-15T00:00:00.000Z","2005-04-18T00:00:00.000Z","2005-04-19T00:00:00.000Z","2005-04-20T00:00:00.000Z","2005-04-21T00:00:00.000Z","2005-04-22T00:00:00.000Z","2005-04-25T00:00:00.000Z","2005-04-26T00:00:00.000Z","2005-04-27T00:00:00.000Z","2005-04-28T00:00:00.000Z","2005-04-29T00:00:00.000Z","2005-05-02T00:00:00.000Z","2005-05-03T00:00:00.000Z","2005-05-04T00:00:00.000Z","2005-05-05T00:00:00.000Z","2005-05-06T00:00:00.000Z","2005-05-09T00:00:00.000Z","2005-05-10T00:00:00.000Z","2005-05-11T00:00:00.000Z","2005-05-12T00:00:00.000Z","2005-05-13T00:00:00.000Z","2005-05-16T00:00:00.000Z","2005-05-17T00:00:00.000Z","2005-05-18T00:00:00.000Z","2005-05-19T00:00:00.000Z","2005-05-20T00:00:00.000Z","2005-05-23T00:00:00.000Z","2005-05-24T00:00:00.000Z","2005-05-25T00:00:00.000Z","2005-05-26T00:00:00.000Z","2005-05-27T00:00:00.000Z","2005-05-31T00:00:00.000Z","2005-06-01T00:00:00.000Z","2005-06-02T00:00:00.000Z","2005-06-03T00:00:00.000Z","2005-06-06T00:00:00.000Z","2005-06-07T00:00:00.000Z","2005-06-08T00:00:00.000Z","2005-06-09T00:00:00.000Z","2005-06-10T00:00:00.000Z","2005-06-13T00:00:00.000Z","2005-06-14T00:00:00.000Z","2005-06-15T00:00:00.000Z","2005-06-16T00:00:00.000Z","2005-06-17T00:00:00.000Z","2005-06-20T00:00:00.000Z","2005-06-21T00:00:00.000Z","2005-06-22T00:00:00.000Z","2005-06-23T00:00:00.000Z","2005-06-24T00:00:00.000Z","2005-06-27T00:00:00.000Z","2005-06-28T00:00:00.000Z","2005-06-29T00:00:00.000Z","2005-06-30T00:00:00.000Z","2005-07-01T00:00:00.000Z","2005-07-05T00:00:00.000Z","2005-07-06T00:00:00.000Z","2005-07-07T00:00:00.000Z","2005-07-08T00:00:00.000Z","2005-07-09T00:00:00.000Z","2005-07-10T00:00:00.000Z","2005-07-11T00:00:00.000Z","2005-07-12T00:00:00.000Z","2005-07-13T00:00:00.000Z","2005-07-14T00:00:00.000Z","2005-07-15T00:00:00.000Z","2005-07-16T00:00:00.000Z","2005-07-17T00:00:00.000Z","2005-07-18T00:00:00.000Z","2005-07-19T00:00:00.000Z","2005-07-20T00:00:00.000Z","2005-07-21T00:00:00.000Z","2005-07-22T00:00:00.000Z","2005-07-23T00:00:00.000Z","2005-07-24T00:00:00.000Z","2005-07-25T00:00:00.000Z","2005-07-26T00:00:00.000Z","2005-07-27T00:00:00.000Z","2005-07-28T00:00:00.000Z","2005-07-29T00:00:00.000Z","2005-07-30T00:00:00.000Z","2005-07-31T00:00:00.000Z","2005-08-01T00:00:00.000Z","2005-08-02T00:00:00.000Z","2005-08-03T00:00:00.000Z","2005-08-04T00:00:00.000Z","2005-08-05T00:00:00.000Z","2005-08-06T00:00:00.000Z","2005-08-07T00:00:00.000Z","2005-08-08T00:00:00.000Z","2005-08-09T00:00:00.000Z","2005-08-10T00:00:00.000Z","2005-08-11T00:00:00.000Z","2005-08-12T00:00:00.000Z","2005-08-13T00:00:00.000Z","2005-08-14T00:00:00.000Z","2005-08-15T00:00:00.000Z","2005-08-16T00:00:00.000Z","2005-08-17T00:00:00.000Z","2005-08-18T00:00:00.000Z","2005-08-19T00:00:00.000Z","2005-08-20T00:00:00.000Z","2005-08-21T00:00:00.000Z","2005-08-22T00:00:00.000Z","2005-08-23T00:00:00.000Z","2005-08-24T00:00:00.000Z","2005-08-25T00:00:00.000Z","2005-08-26T00:00:00.000Z","2005-08-27T00:00:00.000Z","2005-08-28T00:00:00.000Z","2005-08-29T00:00:00.000Z","2005-08-30T00:00:00.000Z","2005-08-31T00:00:00.000Z","2005-09-01T00:00:00.000Z","2005-09-02T00:00:00.000Z","2005-09-03T00:00:00.000Z","2005-09-04T00:00:00.000Z","2005-09-05T00:00:00.000Z","2005-09-06T00:00:00.000Z","2005-09-07T00:00:00.000Z","2005-09-08T00:00:00.000Z","2005-09-09T00:00:00.000Z","2005-09-10T00:00:00.000Z","2005-09-11T00:00:00.000Z","2005-09-12T00:00:00.000Z","2005-09-13T00:00:00.000Z","2005-09-14T00:00:00.000Z","2005-09-15T00:00:00.000Z","2005-09-16T00:00:00.000Z","2005-09-17T00:00:00.000Z","2005-09-18T00:00:00.000Z","2005-09-19T00:00:00.000Z","2005-09-20T00:00:00.000Z","2005-09-21T00:00:00.000Z","2005-09-22T00:00:00.000Z","2005-09-23T00:00:00.000Z","2005-09-24T00:00:00.000Z","2005-09-25T00:00:00.000Z","2005-09-26T00:00:00.000Z","2005-09-27T00:00:00.000Z","2005-09-28T00:00:00.000Z","2005-09-29T00:00:00.000Z","2005-09-30T00:00:00.000Z","2005-10-01T00:00:00.000Z","2005-10-02T00:00:00.000Z","2005-10-03T00:00:00.000Z","2005-10-04T00:00:00.000Z","2005-10-05T00:00:00.000Z"],[[97.648987,97.648987,97.648987],[98.949112,98.949112,98.949112],[95.432297,95.432297,95.432297],[93.639015,93.639015,93.639015],[93.350098,93.350098,93.350098],[96.134666,96.134666,96.134666],[97.250481,97.250481,97.250481],[98.834541,98.834541,98.834541],[98.580498,98.580498,98.580498],[98.6054,98.6054,98.6054],[95.32769,95.32769,95.32769],[96.612869,96.612869,96.612869],[94.092316,94.092316,94.092316],[92.587959,92.587959,92.587959],[93.643997,93.643997,93.643997],[92.682602,92.682602,92.682602],[92.244247,92.244247,92.244247],[93.15583,93.15583,93.15583],[92.602905,92.602905,92.602905],[94.052467,94.052467,94.052467],[92.254211,92.254211,92.254211],[90.336395,90.336395,90.336395],[89.653954,89.653954,89.653954],[88.568024,88.568024,88.568024],[87.168274,87.168274,87.168274],[88.971512,88.971512,88.971512],[87.47213,87.47213,87.47213],[89.310242,89.310242,89.310242],[89.683846,89.683846,89.683846],[90.102272,90.102272,90.102272],[88.96653,88.96653,88.96653],[89.155823,89.155823,89.155823],[89.290321,89.290321,89.290321],[90.371269,90.371269,90.371269],[89.449722,89.449722,89.449722],[89.888077,89.888077,89.888077],[89.917969,89.917969,89.917969],[89.683846,89.683846,89.683846],[92.299042,92.299042,92.299042],[93.932915,93.932915,93.932915],[94.256706,94.256706,94.256706],[96.518227,96.518227,96.518227],[95.66642,95.66642,95.66642],[96.254219,96.254219,96.254219],[96.617851,96.617851,96.617851],[96.104774,96.104774,96.104774],[95.367538,95.367538,95.367538],[92.154579,92.154579,92.154579],[93.135902,93.135902,93.135902],[95.342628,95.342628,95.342628],[98.680122,98.680122,98.680122],[101.728699,101.728699,101.728699],[107.502052,107.502052,107.502052],[111.347641,111.347641,111.347641],[108.966568,108.966568,108.966568],[109.479645,109.479645,109.479645],[109.315262,109.315262,109.315262],[109.589233,109.589233,109.589233],[110.729958,110.729958,110.729958],[112.672676,112.672676,112.672676],[113.823364,113.823364,113.823364],[113.0662,113.0662,113.0662],[113.584259,113.584259,113.584259],[112.58799,112.58799,112.58799],[113.47467,113.47467,113.47467],[115.21315,115.21315,115.21315],[113.932953,113.932953,113.932953],[114.191978,114.191978,114.191978],[115.093597,115.093597,115.093597],[116.129715,116.129715,116.129715],[119.133461,119.133461,119.133461],[119.143417,119.143417,119.143417],[120.353882,120.353882,120.353882],[127.248039,127.248039,127.248039],[127.522018,127.522018,127.522018],[129.91803,129.91803,129.91803],[129.116043,129.116043,129.116043],[132.503342,132.503342,132.503342],[138.11731,138.11731,138.11731],[143.462265,143.462265,143.462265],[143.41246,143.41246,143.41246],[139.60672,139.60672,139.60672],[144.926773,144.926773,144.926773],[146.012711,146.012711,146.012711],[139.258026,139.258026,139.258026],[142.620422,142.620422,142.620422],[140.722534,140.722534,140.722534],[140.847076,140.847076,140.847076],[138.655289,138.655289,138.655289],[136.886917,136.886917,136.886917],[138.201981,138.201981,138.201981],[139.626648,139.626648,139.626648],[142.814697,142.814697,142.814697],[143.382568,143.382568,143.382568],[144.109848,144.109848,144.109848],[144.314072,144.314072,144.314072],[148.069992,148.069992,148.069992],[151.482208,151.482208,151.482208],[150.436127,150.436127,150.436127],[145.813461,145.813461,145.813461],[146.525787,146.525787,146.525787],[145.081207,145.081207,145.081207],[147.302872,147.302872,147.302872],[145.215698,145.215698,145.215698],[147.218185,147.218185,147.218185],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]],[[93.9827596953502,97.7537965717805,101.478973835642],[93.8474496545558,97.5425907205755,101.21693919713],[93.4273652871025,96.9538194896548,100.490718625209],[93.1273173657307,96.7132956262178,100.689074815457],[92.698275048243,96.3609684003103,99.9628928688973],[92.710651783365,96.3283507516317,100.006246768684],[92.5476882262041,96.1171449082929,99.6539309668513],[92.0418821132092,95.5283736852381,99.3326622419609],[91.5488723828148,95.2878498330301,99.399841664331],[91.1254312346728,94.9355226104845,98.2523571476794],[90.5686380316059,94.6916991319154,98.2240897133836],[90.2617325118298,94.1029279202385,97.8529044048191],[90.3146657600704,93.8624040760458,97.718298206214],[89.8959036345336,93.5100768615157,97.2339904440628],[89.6063629703914,93.4774592727949,97.1601074703468],[88.9663618963642,93.2662534494422,96.7263854751897],[89.1109257959278,92.6774822463743,96.3315155469821],[88.5720339169441,92.4369584107897,96.07810917217],[88.2150812113809,92.0846312087031,95.7126943675675],[88.3092605937433,92.0520136314866,95.6602836060579],[87.7085108240755,91.8408078119688,95.6450760059975],[87.4515111883718,91.2524557024113,95.0075015629866],[87.0877676176569,91.012350960338,94.7225359255803],[87.0580241189623,90.6604428479272,94.2673094061995],[86.9132378723833,90.6564145273569,94.2543149038821],[86.9199122742592,90.4547384600545,93.9914678541956],[86.011331859187,89.8754970130361,93.7174703118225],[85.7904680073939,89.6445029335025,93.350189699302],[85.5119483618407,89.4130024534132,92.9118999783328],[85.9018281920403,89.7428650421897,93.5736425333838],[85.9026769062195,89.6524859446685,93.0719183314177],[85.8358852924805,89.3416238427582,93.0747163261729],[85.7869843226341,89.3790091083321,93.4475339333719],[86.4439328075631,90.1057007183212,94.1488913827326],[86.4955251431153,90.3419183590389,93.7483806355379],[86.347156613137,90.2005706200418,94.1276087484546],[86.6799789137679,90.4074702485284,94.0785402964856],[86.8400719935606,90.5025665066776,94.1493548827689],[88.5055649507865,92.2650862781664,96.1409355761095],[88.5703131498714,92.6522595748832,96.4569273245288],[88.7226761553161,92.6618674918854,96.6143393576341],[89.3953170903522,93.1110773310246,96.6701087400267],[89.7994775966774,93.4484837998269,97.1287859295763],[91.6269282415525,95.4850672352776,99.2139549248966],[92.3694707458484,96.0630129287261,99.5520596801129],[92.5507034613518,96.2633932424603,99.9009576677716],[92.9762639415128,96.8120209236771,100.543274504926],[93.759517975673,97.3688989834599,101.332601841669],[96.6102782335388,100.063897191852,103.474012991708],[96.9203879644981,100.761896634204,104.585710823839],[97.1483621336498,101.08233069684,104.893571098735],[97.8206176757526,101.776228016127,105.479792375798],[98.3574034908723,102.358321965077,106.199925104948],[101.640831855695,105.12896784097,109.522709699237],[102.224505004578,105.85218320016,109.594412261289],[102.358005849478,106.197833179637,110.007090236544],[103.074647487301,106.891730526596,110.533099288757],[103.468619973457,107.473824512919,111.048313076765],[106.562340518627,110.244470500934,114.082212832341],[107.35503212345,110.967685869826,114.779164496027],[107.308350123079,111.313335859004,114.927208492024],[108.390844420669,112.007233396103,115.828658835118],[108.968286810085,112.589327562865,116.34943749815],[111.832053148035,115.359974092196,118.993017604998],[112.486784604389,116.156102374252,119.916003477827],[113.091471937274,116.574665276592,120.447647979015],[113.678321314428,117.341475546416,121.125382948624],[114.281361120121,118.070426474147,121.9004482136],[117.680665787748,121.281643286385,124.930169746973],[118.504548558248,122.151715596685,125.893651881488],[119.145011995515,122.644222527269,126.72021483835],[119.850200867398,123.49798275146,127.254827127044],[120.790848549948,124.239939605313,127.944955843664],[123.81829668885,127.490174195917,131.4377840346],[124.486564047498,128.37325243693,131.860496846446],[125.27047933248,128.878765298225,132.54098111559],[125.763277667108,129.732525527006,133.446718528366],[126.699928783213,130.474482371847,134.265388405001],[130.821833077467,134.607795162825,138.129898969026],[131.545080020984,135.11330801052,138.761136155818],[132.044303564912,135.967068225697,139.699673568293],[132.38818012982,136.444052639381,140.315574933856],[134.989712092462,138.899369909476,142.757864926397],[135.679123854849,139.517475705729,143.1464022504],[135.704951347322,139.466576675306,143.299377586809],[136.281619626748,139.763925012367,143.58388956917],[136.188494754191,139.949469979091,143.878829586323],[137.904760776308,141.530468908305,144.991199669379],[138.239482640418,141.857135257598,145.584406872729],[138.27567737488,141.806236227175,145.261096380204],[138.22956887521,142.103584564236,146.058080142176],[138.6167641321,142.289129530959,146.012793005418],[140.336295346683,143.870128460175,147.157416902472],[140.436241429715,144.196794809467,147.660124020147],[140.295077102353,144.145895779044,147.824953459752],[140.680084302341,144.443244116105,148.271687502764],[140.912705821752,144.628789082828,148.424081397124],[142.599754087193,146.209788012043,149.783928406185],[143.068924563347,146.536454361336,150.602557931579],[142.801611700046,146.485555330912,150.201746748842],[143.13380275224,146.782903667974,150.770336418551],[143.316934785838,146.968448634697,150.700909843158],[145.02515190963,148.876113913204,152.681001071415],[144.889355070159,148.825214882781,152.691949249197],[145.470266771473,149.122563219842,152.834411607203],[145.508216192086,149.308108186566,153.056988727269],[146.306391518175,149.901506176201,153.773659778192],[146.842403476941,150.235743253909,154.24313755443],[147.237157294546,150.889107115781,154.488111261749],[147.370129610366,151.215773465073,155.044427994238],[147.336550744779,151.164874434651,155.028837557335],[147.680719243368,151.462222771712,155.091483652845],[148.130341553109,151.647767738435,155.367992035244],[148.353081271858,152.24116572807,156.104818495502],[148.438083808698,152.575402805778,156.529800669872],[149.44555770059,153.22876666765,157.128321257089],[149.62483388108,153.555433016942,157.426668814205],[149.241664374396,153.50453398652,157.666152638415],[149.810759588205,153.80188232358,157.755455106859],[149.876189429648,153.987427290304,158.069321655123],[150.744217777958,154.580825279939,158.467211985421],[150.659311238183,154.915062357646,159.203957472002],[151.316815149776,155.568426219519,159.580365754938],[151.210015527016,155.895092568811,160.064511798321],[151.409318489924,155.844193538388,160.301375830178],[151.706923125945,156.141541875449,160.746723288365],[151.948365799325,156.327086842173,161.087785373833],[152.174006389283,156.920484831808,161.589170565251],[152.514279217998,157.254721909515,162.008662508719],[152.882546082485,157.908085771388,162.847323391606],[153.18087933706,158.23475212068,163.254855493924],[153.107480580422,158.183853090257,163.61248568894],[153.266151305554,158.481201427318,164.112681933623],[153.37045406846,158.666746394042,164.272903683439],[153.424230025946,159.260144383677,165.040422386323],[154.176730680205,159.594381461384,165.472656624593],[154.120182133746,160.247745323257,166.379349745188],[154.253974995788,160.57441167255,167.125966661718],[154.271047010913,160.523512642127,166.9956822814],[154.345307840995,160.820860979187,167.068260923059],[154.304690375103,161.006405945911,168.053339071872],[154.382021358026,161.599803935546,168.862121863916],[155.035667606872,161.934041013254,168.921938923014],[155.599622658396,162.587404875126,170.364398495356],[155.507999854805,162.914071224419,170.441335688723],[154.943698852355,162.863172193995,170.758310475632],[154.990863120927,163.160520531056,171.234369112039],[155.234028913107,163.34606549778,172.030148122601],[156.024678017178,163.939463487415,172.707605522872],[155.775298060142,164.273700565122,173.2961600828],[155.99089712624,164.927064426994,173.982284915402],[155.836403033943,165.253730776287,174.105119798803],[155.839803344724,165.202831745864,174.896108689178],[156.020456134324,165.500180082925,175.333252886997],[155.86657090946,165.685725049649,175.684933849438],[155.841935822618,166.279123039284,176.863036314333],[155.620138798809,166.613360116991,177.838219884211],[157.2868342417,167.266723978864,178.384299368479],[156.467646921979,167.593390328156,178.743045012585],[156.446379431234,167.542491297734,178.933357540935],[156.177629706944,167.839839634794,179.918535824634],[156.478960400792,168.025384601518,180.279220504234],[156.939047662272,168.618782591153,181.176060591486],[156.07794347616,168.95301966886,181.209360438373],[156.830806485812,169.606383530733,182.66463836119],[156.823767063402,169.933049880025,183.320970627851],[157.205886278852,169.882150849602,182.530852698787],[156.432791821452,170.179499186663,184.145960959715],[156.16407821084,170.365044153387,184.200883548241],[157.121224951899,170.958442143022,185.733152065033],[156.388256944756,171.292679220729,186.164345918825],[157.162737693152,171.946043082601,186.686479074589],[157.006090532863,172.272709431894,188.089894288097],[156.814633415609,172.221810401471,187.853308581081],[156.403597382991,172.519158738532,188.86575132984],[156.802579691892,172.704703705255,188.763238134233],[155.862189589604,173.298101694891,190.542495099594],[156.869959046182,173.632338772598,191.310718956158],[157.528786256461,174.28570263447,191.562777106063],[157.058369144199,174.612368983763,191.380538615232],[156.556998990699,174.561469953339,192.245419412982],[157.062146821514,174.858818290401,193.224229435562],[156.350200020718,175.044363257124,194.124025451648],[156.37894044438,175.63776124676,194.738415894761],[155.981313383075,175.971998324467,195.507198803986],[157.549949617375,176.625362186339,196.258611838333],[157.118449899116,176.952028535632,196.902296983098],[156.900566537987,176.901129505209,197.323745623639],[156.989849385496,177.19847784227,198.478077471898],[156.320997689419,177.384022808993,197.786821820563],[156.848495347068,177.977420798628,199.377753740758],[157.019928016959,178.311657876336,199.78053279189],[157.331415973964,178.965021738208,201.065658082578],[155.94971239872,179.291688087501,202.274267978422],[156.744579294557,179.240789057078,202.347611614862]]],"plugins":{"Unzoom":"{}"}},"evals":["attrs.interactionModel","plugins.Unzoom"],"jsHooks":[]}</script>
+<ul>
+<li>Intentar mejorar el modelo construido</li>
+<li>Aplciar: prophet(daily.seasonality = FALSE, yearly.seasonality = FALSE) y asignar el resultado a una variable model2</li>
+<li>Agregar: add_seasonality(model2, name=‘self_defined_cycle,’ period=8, fourier.order = 8,mode=‘additive’)</li>
+<li>Finalmente, asignar fit.prophet(model2, df2) a model2</li>
+</ul>
+<div class="sourceCode" id="cb891"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb891-1"><a href="prophet.html#cb891-1" aria-hidden="true" tabindex="-1"></a><span class="co"># mejorar el modelo</span></span>
+<span id="cb891-2"><a href="prophet.html#cb891-2" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">prophet</span>(<span class="at">daily.seasonality =</span> <span class="cn">FALSE</span>, <span class="at">yearly.seasonality =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb891-3"><a href="prophet.html#cb891-3" aria-hidden="true" tabindex="-1"></a><span class="fu">add_seasonality</span>(model2, <span class="at">name=</span><span class="st">&#39;self_defined_cycle&#39;</span>, <span class="at">period=</span><span class="dv">8</span>, <span class="at">fourier.order =</span> <span class="dv">8</span>,<span class="at">mode=</span><span class="st">&#39;additive&#39;</span>)</span></code></pre></div>
+<pre><code>## $growth
+## [1] &quot;linear&quot;
+## 
+## $changepoints
+## NULL
+## 
+## $n.changepoints
+## [1] 25
+## 
+## $changepoint.range
+## [1] 0.8
+## 
+## $yearly.seasonality
+## [1] FALSE
+## 
+## $weekly.seasonality
+## [1] &quot;auto&quot;
+## 
+## $daily.seasonality
+## [1] FALSE
+## 
+## $holidays
+## NULL
+## 
+## $seasonality.mode
+## [1] &quot;additive&quot;
+## 
+## $seasonality.prior.scale
+## [1] 10
+## 
+## $changepoint.prior.scale
+## [1] 0.05
+## 
+## $holidays.prior.scale
+## [1] 10
+## 
+## $mcmc.samples
+## [1] 0
+## 
+## $interval.width
+## [1] 0.8
+## 
+## $uncertainty.samples
+## [1] 1000
+## 
+## $specified.changepoints
+## [1] FALSE
+## 
+## $start
+## NULL
+## 
+## $y.scale
+## NULL
+## 
+## $logistic.floor
+## [1] FALSE
+## 
+## $t.scale
+## NULL
+## 
+## $changepoints.t
+## NULL
+## 
+## $seasonalities
+## $seasonalities$self_defined_cycle
+## $seasonalities$self_defined_cycle$period
+## [1] 8
+## 
+## $seasonalities$self_defined_cycle$fourier.order
+## [1] 8
+## 
+## $seasonalities$self_defined_cycle$prior.scale
+## [1] 10
+## 
+## $seasonalities$self_defined_cycle$mode
+## [1] &quot;additive&quot;
+## 
+## $seasonalities$self_defined_cycle$condition.name
+## NULL
+## 
+## 
+## 
+## $extra_regressors
+## list()
+## 
+## $country_holidays
+## NULL
+## 
+## $stan.fit
+## NULL
+## 
+## $params
+## list()
+## 
+## $history
+## NULL
+## 
+## $history.dates
+## NULL
+## 
+## $train.holiday.names
+## NULL
+## 
+## $train.component.cols
+## NULL
+## 
+## $component.modes
+## NULL
+## 
+## $fit.kwargs
+## list()
+## 
+## attr(,&quot;class&quot;)
+## [1] &quot;prophet&quot; &quot;list&quot;</code></pre>
+<div class="sourceCode" id="cb893"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb893-1"><a href="prophet.html#cb893-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">fit.prophet</span>(model2, df2)</span></code></pre></div>
+<ul>
+<li>De aquí en adelante es el “viejo” código, solo se actualizan los nombres: future2, forecast2</li>
+<li>Con make_future_dataframe() podemos generar un dataframe “future2” con las fechas de los futuros periodos: periods=3*30</li>
+<li>Mostar la últimas 6 filas (registros) de future2</li>
+</ul>
+<div class="sourceCode" id="cb894"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb894-1"><a href="prophet.html#cb894-1" aria-hidden="true" tabindex="-1"></a><span class="co"># de aquí en adelante es el &quot;viejo&quot; código, solo se actualizan los nombres: future2, forecast2</span></span>
+<span id="cb894-2"><a href="prophet.html#cb894-2" aria-hidden="true" tabindex="-1"></a><span class="co"># con make_future_dataframe() podemos generar un dataframe con las fechas de </span></span>
+<span id="cb894-3"><a href="prophet.html#cb894-3" aria-hidden="true" tabindex="-1"></a><span class="co"># los futuros periodos</span></span>
+<span id="cb894-4"><a href="prophet.html#cb894-4" aria-hidden="true" tabindex="-1"></a>future2 <span class="ot">&lt;-</span> <span class="fu">make_future_dataframe</span>(model2,<span class="at">periods=</span><span class="dv">3</span><span class="sc">*</span><span class="dv">30</span>)</span>
+<span id="cb894-5"><a href="prophet.html#cb894-5" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(future2)</span></code></pre></div>
+<pre><code>##             ds
+## 190 2005-09-30
+## 191 2005-10-01
+## 192 2005-10-02
+## 193 2005-10-03
+## 194 2005-10-04
+## 195 2005-10-05</code></pre>
+<ul>
+<li>Luego, aplicar la función predict() para predicir los valores (precios) futuros y asignar el resultado a una variable “forecast2.” Esta función recibe como parámetros: model y future2</li>
+<li>Mostrar las últimas 6 filas de “forecast2,” pero únicamente los valores de las siguientes columnas: ‘ds,’‘yhat,’ ‘yhat_lower,’ ‘yhat_upper’</li>
+</ul>
+<div class="sourceCode" id="cb896"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb896-1"><a href="prophet.html#cb896-1" aria-hidden="true" tabindex="-1"></a><span class="co"># aplicar el método predict() para predicir los valores (precios) futuros</span></span>
+<span id="cb896-2"><a href="prophet.html#cb896-2" aria-hidden="true" tabindex="-1"></a>forecast2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model2, future2)</span>
+<span id="cb896-3"><a href="prophet.html#cb896-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(forecast2)</span></code></pre></div>
+<pre><code>##             ds    trend additive_terms additive_terms_lower
+## 190 2005-09-30 177.6700    -0.28594278          -0.28594278
+## 191 2005-10-01 178.0042    -0.02678187          -0.02678187
+## 192 2005-10-02 178.3384    -0.02678187          -0.02678187
+## 193 2005-10-03 178.6727     0.29234492           0.29234492
+## 194 2005-10-04 179.0069     0.28477419           0.28477419
+## 195 2005-10-05 179.3412    -0.10036192          -0.10036192
+##     additive_terms_upper      weekly weekly_lower weekly_upper
+## 190          -0.28594278 -0.28594278  -0.28594278  -0.28594278
+## 191          -0.02678187 -0.02678187  -0.02678187  -0.02678187
+## 192          -0.02678187 -0.02678187  -0.02678187  -0.02678187
+## 193           0.29234492  0.29234492   0.29234492   0.29234492
+## 194           0.28477419  0.28477419   0.28477419   0.28477419
+## 195          -0.10036192 -0.10036192  -0.10036192  -0.10036192
+##     multiplicative_terms multiplicative_terms_lower multiplicative_terms_upper
+## 190                    0                          0                          0
+## 191                    0                          0                          0
+## 192                    0                          0                          0
+## 193                    0                          0                          0
+## 194                    0                          0                          0
+## 195                    0                          0                          0
+##     yhat_lower yhat_upper trend_lower trend_upper     yhat
+## 190   154.2788   200.1447    154.6399    199.1777 177.3840
+## 191   154.0635   200.4067    154.3411    199.8114 177.9774
+## 192   154.2585   200.4490    154.0483    200.4334 178.3117
+## 193   154.3843   201.9193    153.9344    201.0554 178.9650
+## 194   153.5469   202.0202    153.9282    201.7631 179.2917
+## 195   152.7730   204.3152    153.9287    202.6586 179.2408</code></pre>
+<div class="sourceCode" id="cb898"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb898-1"><a href="prophet.html#cb898-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(forecast2[<span class="fu">c</span>(<span class="st">&#39;ds&#39;</span>,<span class="st">&#39;yhat&#39;</span>, <span class="st">&#39;yhat_lower&#39;</span>, <span class="st">&#39;yhat_upper&#39;</span>)])</span></code></pre></div>
+<pre><code>##             ds     yhat yhat_lower yhat_upper
+## 190 2005-09-30 177.3840   154.2788   200.1447
+## 191 2005-10-01 177.9774   154.0635   200.4067
+## 192 2005-10-02 178.3117   154.2585   200.4490
+## 193 2005-10-03 178.9650   154.3843   201.9193
+## 194 2005-10-04 179.2917   153.5469   202.0202
+## 195 2005-10-05 179.2408   152.7730   204.3152</code></pre>
+<ul>
+<li>Graficar con la función plot() con base en: model2 y forecast2</li>
+</ul>
+<div class="sourceCode" id="cb900"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb900-1"><a href="prophet.html#cb900-1" aria-hidden="true" tabindex="-1"></a><span class="co">#graficar</span></span>
+<span id="cb900-2"><a href="prophet.html#cb900-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model2, forecast2)</span></code></pre></div>
+<p><img src="r_libro_cl_files/figure-html/unnamed-chunk-232-1.png" width="672" /></p>
+<ul>
+<li>Utilizando la función prophet_plot_components() con model2 y forecast2 para mostrar los componentes de la serie de tiempo, como la tendencia de los precios</li>
+</ul>
+<div class="sourceCode" id="cb901"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb901-1"><a href="prophet.html#cb901-1" aria-hidden="true" tabindex="-1"></a><span class="co"># componentes en términos de la tendencia y de la estacionalidad semanal</span></span>
+<span id="cb901-2"><a href="prophet.html#cb901-2" aria-hidden="true" tabindex="-1"></a><span class="fu">prophet_plot_components</span>(model2, forecast2)</span></code></pre></div>
+<p><img src="r_libro_cl_files/figure-html/unnamed-chunk-233-1.png" width="672" /></p>
+<ul>
+<li>Presentar una gráfica más interactiva, utilizando la función dyplot.prophet(), con model2 y forecast2</li>
+<li>Observar los resultados (el pronóstico) obtenido, navegando de forma interactiva la gráfica</li>
+</ul>
+<div class="sourceCode" id="cb902"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb902-1"><a href="prophet.html#cb902-1" aria-hidden="true" tabindex="-1"></a><span class="co"># gráfica más interactiva</span></span>
+<span id="cb902-2"><a href="prophet.html#cb902-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dyplot.prophet</span>(model2, forecast2)</span></code></pre></div>
+<div id="htmlwidget-aeb19c330ced0cef8f2e" style="width:672px;height:480px;" class="dygraphs html-widget"></div>
+<script type="application/json" data-for="htmlwidget-aeb19c330ced0cef8f2e">{"x":{"attrs":{"labels":["day","Actual","Predicted"],"legend":"auto","retainDateWindow":false,"axes":{"x":{"pixelsPerLabel":60}},"colors":["black","blue"],"series":{"Actual":{"axis":"y","drawPoints":true,"strokeWidth":0},"Predicted":{"axis":"y"}},"customBars":true,"showRangeSelector":true,"rangeSelectorHeight":40,"rangeSelectorPlotFillColor":" #A7B1C4","rangeSelectorPlotStrokeColor":"#808FAB","interactionModel":"Dygraph.Interaction.defaultModel"},"scale":"daily","annotations":[],"shadings":[],"events":[],"format":"date","data":[["2005-02-07T00:00:00.000Z","2005-02-08T00:00:00.000Z","2005-02-09T00:00:00.000Z","2005-02-10T00:00:00.000Z","2005-02-11T00:00:00.000Z","2005-02-14T00:00:00.000Z","2005-02-15T00:00:00.000Z","2005-02-16T00:00:00.000Z","2005-02-17T00:00:00.000Z","2005-02-18T00:00:00.000Z","2005-02-22T00:00:00.000Z","2005-02-23T00:00:00.000Z","2005-02-24T00:00:00.000Z","2005-02-25T00:00:00.000Z","2005-02-28T00:00:00.000Z","2005-03-01T00:00:00.000Z","2005-03-02T00:00:00.000Z","2005-03-03T00:00:00.000Z","2005-03-04T00:00:00.000Z","2005-03-07T00:00:00.000Z","2005-03-08T00:00:00.000Z","2005-03-09T00:00:00.000Z","2005-03-10T00:00:00.000Z","2005-03-11T00:00:00.000Z","2005-03-14T00:00:00.000Z","2005-03-15T00:00:00.000Z","2005-03-16T00:00:00.000Z","2005-03-17T00:00:00.000Z","2005-03-18T00:00:00.000Z","2005-03-21T00:00:00.000Z","2005-03-22T00:00:00.000Z","2005-03-23T00:00:00.000Z","2005-03-24T00:00:00.000Z","2005-03-28T00:00:00.000Z","2005-03-29T00:00:00.000Z","2005-03-30T00:00:00.000Z","2005-03-31T00:00:00.000Z","2005-04-01T00:00:00.000Z","2005-04-04T00:00:00.000Z","2005-04-05T00:00:00.000Z","2005-04-06T00:00:00.000Z","2005-04-07T00:00:00.000Z","2005-04-08T00:00:00.000Z","2005-04-11T00:00:00.000Z","2005-04-12T00:00:00.000Z","2005-04-13T00:00:00.000Z","2005-04-14T00:00:00.000Z","2005-04-15T00:00:00.000Z","2005-04-18T00:00:00.000Z","2005-04-19T00:00:00.000Z","2005-04-20T00:00:00.000Z","2005-04-21T00:00:00.000Z","2005-04-22T00:00:00.000Z","2005-04-25T00:00:00.000Z","2005-04-26T00:00:00.000Z","2005-04-27T00:00:00.000Z","2005-04-28T00:00:00.000Z","2005-04-29T00:00:00.000Z","2005-05-02T00:00:00.000Z","2005-05-03T00:00:00.000Z","2005-05-04T00:00:00.000Z","2005-05-05T00:00:00.000Z","2005-05-06T00:00:00.000Z","2005-05-09T00:00:00.000Z","2005-05-10T00:00:00.000Z","2005-05-11T00:00:00.000Z","2005-05-12T00:00:00.000Z","2005-05-13T00:00:00.000Z","2005-05-16T00:00:00.000Z","2005-05-17T00:00:00.000Z","2005-05-18T00:00:00.000Z","2005-05-19T00:00:00.000Z","2005-05-20T00:00:00.000Z","2005-05-23T00:00:00.000Z","2005-05-24T00:00:00.000Z","2005-05-25T00:00:00.000Z","2005-05-26T00:00:00.000Z","2005-05-27T00:00:00.000Z","2005-05-31T00:00:00.000Z","2005-06-01T00:00:00.000Z","2005-06-02T00:00:00.000Z","2005-06-03T00:00:00.000Z","2005-06-06T00:00:00.000Z","2005-06-07T00:00:00.000Z","2005-06-08T00:00:00.000Z","2005-06-09T00:00:00.000Z","2005-06-10T00:00:00.000Z","2005-06-13T00:00:00.000Z","2005-06-14T00:00:00.000Z","2005-06-15T00:00:00.000Z","2005-06-16T00:00:00.000Z","2005-06-17T00:00:00.000Z","2005-06-20T00:00:00.000Z","2005-06-21T00:00:00.000Z","2005-06-22T00:00:00.000Z","2005-06-23T00:00:00.000Z","2005-06-24T00:00:00.000Z","2005-06-27T00:00:00.000Z","2005-06-28T00:00:00.000Z","2005-06-29T00:00:00.000Z","2005-06-30T00:00:00.000Z","2005-07-01T00:00:00.000Z","2005-07-05T00:00:00.000Z","2005-07-06T00:00:00.000Z","2005-07-07T00:00:00.000Z","2005-07-08T00:00:00.000Z","2005-07-09T00:00:00.000Z","2005-07-10T00:00:00.000Z","2005-07-11T00:00:00.000Z","2005-07-12T00:00:00.000Z","2005-07-13T00:00:00.000Z","2005-07-14T00:00:00.000Z","2005-07-15T00:00:00.000Z","2005-07-16T00:00:00.000Z","2005-07-17T00:00:00.000Z","2005-07-18T00:00:00.000Z","2005-07-19T00:00:00.000Z","2005-07-20T00:00:00.000Z","2005-07-21T00:00:00.000Z","2005-07-22T00:00:00.000Z","2005-07-23T00:00:00.000Z","2005-07-24T00:00:00.000Z","2005-07-25T00:00:00.000Z","2005-07-26T00:00:00.000Z","2005-07-27T00:00:00.000Z","2005-07-28T00:00:00.000Z","2005-07-29T00:00:00.000Z","2005-07-30T00:00:00.000Z","2005-07-31T00:00:00.000Z","2005-08-01T00:00:00.000Z","2005-08-02T00:00:00.000Z","2005-08-03T00:00:00.000Z","2005-08-04T00:00:00.000Z","2005-08-05T00:00:00.000Z","2005-08-06T00:00:00.000Z","2005-08-07T00:00:00.000Z","2005-08-08T00:00:00.000Z","2005-08-09T00:00:00.000Z","2005-08-10T00:00:00.000Z","2005-08-11T00:00:00.000Z","2005-08-12T00:00:00.000Z","2005-08-13T00:00:00.000Z","2005-08-14T00:00:00.000Z","2005-08-15T00:00:00.000Z","2005-08-16T00:00:00.000Z","2005-08-17T00:00:00.000Z","2005-08-18T00:00:00.000Z","2005-08-19T00:00:00.000Z","2005-08-20T00:00:00.000Z","2005-08-21T00:00:00.000Z","2005-08-22T00:00:00.000Z","2005-08-23T00:00:00.000Z","2005-08-24T00:00:00.000Z","2005-08-25T00:00:00.000Z","2005-08-26T00:00:00.000Z","2005-08-27T00:00:00.000Z","2005-08-28T00:00:00.000Z","2005-08-29T00:00:00.000Z","2005-08-30T00:00:00.000Z","2005-08-31T00:00:00.000Z","2005-09-01T00:00:00.000Z","2005-09-02T00:00:00.000Z","2005-09-03T00:00:00.000Z","2005-09-04T00:00:00.000Z","2005-09-05T00:00:00.000Z","2005-09-06T00:00:00.000Z","2005-09-07T00:00:00.000Z","2005-09-08T00:00:00.000Z","2005-09-09T00:00:00.000Z","2005-09-10T00:00:00.000Z","2005-09-11T00:00:00.000Z","2005-09-12T00:00:00.000Z","2005-09-13T00:00:00.000Z","2005-09-14T00:00:00.000Z","2005-09-15T00:00:00.000Z","2005-09-16T00:00:00.000Z","2005-09-17T00:00:00.000Z","2005-09-18T00:00:00.000Z","2005-09-19T00:00:00.000Z","2005-09-20T00:00:00.000Z","2005-09-21T00:00:00.000Z","2005-09-22T00:00:00.000Z","2005-09-23T00:00:00.000Z","2005-09-24T00:00:00.000Z","2005-09-25T00:00:00.000Z","2005-09-26T00:00:00.000Z","2005-09-27T00:00:00.000Z","2005-09-28T00:00:00.000Z","2005-09-29T00:00:00.000Z","2005-09-30T00:00:00.000Z","2005-10-01T00:00:00.000Z","2005-10-02T00:00:00.000Z","2005-10-03T00:00:00.000Z","2005-10-04T00:00:00.000Z","2005-10-05T00:00:00.000Z"],[[97.648987,97.648987,97.648987],[98.949112,98.949112,98.949112],[95.432297,95.432297,95.432297],[93.639015,93.639015,93.639015],[93.350098,93.350098,93.350098],[96.134666,96.134666,96.134666],[97.250481,97.250481,97.250481],[98.834541,98.834541,98.834541],[98.580498,98.580498,98.580498],[98.6054,98.6054,98.6054],[95.32769,95.32769,95.32769],[96.612869,96.612869,96.612869],[94.092316,94.092316,94.092316],[92.587959,92.587959,92.587959],[93.643997,93.643997,93.643997],[92.682602,92.682602,92.682602],[92.244247,92.244247,92.244247],[93.15583,93.15583,93.15583],[92.602905,92.602905,92.602905],[94.052467,94.052467,94.052467],[92.254211,92.254211,92.254211],[90.336395,90.336395,90.336395],[89.653954,89.653954,89.653954],[88.568024,88.568024,88.568024],[87.168274,87.168274,87.168274],[88.971512,88.971512,88.971512],[87.47213,87.47213,87.47213],[89.310242,89.310242,89.310242],[89.683846,89.683846,89.683846],[90.102272,90.102272,90.102272],[88.96653,88.96653,88.96653],[89.155823,89.155823,89.155823],[89.290321,89.290321,89.290321],[90.371269,90.371269,90.371269],[89.449722,89.449722,89.449722],[89.888077,89.888077,89.888077],[89.917969,89.917969,89.917969],[89.683846,89.683846,89.683846],[92.299042,92.299042,92.299042],[93.932915,93.932915,93.932915],[94.256706,94.256706,94.256706],[96.518227,96.518227,96.518227],[95.66642,95.66642,95.66642],[96.254219,96.254219,96.254219],[96.617851,96.617851,96.617851],[96.104774,96.104774,96.104774],[95.367538,95.367538,95.367538],[92.154579,92.154579,92.154579],[93.135902,93.135902,93.135902],[95.342628,95.342628,95.342628],[98.680122,98.680122,98.680122],[101.728699,101.728699,101.728699],[107.502052,107.502052,107.502052],[111.347641,111.347641,111.347641],[108.966568,108.966568,108.966568],[109.479645,109.479645,109.479645],[109.315262,109.315262,109.315262],[109.589233,109.589233,109.589233],[110.729958,110.729958,110.729958],[112.672676,112.672676,112.672676],[113.823364,113.823364,113.823364],[113.0662,113.0662,113.0662],[113.584259,113.584259,113.584259],[112.58799,112.58799,112.58799],[113.47467,113.47467,113.47467],[115.21315,115.21315,115.21315],[113.932953,113.932953,113.932953],[114.191978,114.191978,114.191978],[115.093597,115.093597,115.093597],[116.129715,116.129715,116.129715],[119.133461,119.133461,119.133461],[119.143417,119.143417,119.143417],[120.353882,120.353882,120.353882],[127.248039,127.248039,127.248039],[127.522018,127.522018,127.522018],[129.91803,129.91803,129.91803],[129.116043,129.116043,129.116043],[132.503342,132.503342,132.503342],[138.11731,138.11731,138.11731],[143.462265,143.462265,143.462265],[143.41246,143.41246,143.41246],[139.60672,139.60672,139.60672],[144.926773,144.926773,144.926773],[146.012711,146.012711,146.012711],[139.258026,139.258026,139.258026],[142.620422,142.620422,142.620422],[140.722534,140.722534,140.722534],[140.847076,140.847076,140.847076],[138.655289,138.655289,138.655289],[136.886917,136.886917,136.886917],[138.201981,138.201981,138.201981],[139.626648,139.626648,139.626648],[142.814697,142.814697,142.814697],[143.382568,143.382568,143.382568],[144.109848,144.109848,144.109848],[144.314072,144.314072,144.314072],[148.069992,148.069992,148.069992],[151.482208,151.482208,151.482208],[150.436127,150.436127,150.436127],[145.813461,145.813461,145.813461],[146.525787,146.525787,146.525787],[145.081207,145.081207,145.081207],[147.302872,147.302872,147.302872],[145.215698,145.215698,145.215698],[147.218185,147.218185,147.218185],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]],[[93.7542310658945,97.7537965717805,101.701520990459],[94.102481569783,97.5425907205755,101.500639615726],[93.4302392857589,96.9538194896548,100.565906101758],[93.0019655718025,96.7132956262178,100.429606547354],[92.5742815192825,96.3609684003103,100.003555628918],[92.7130837245644,96.3283507516317,100.019895067178],[92.1346527710401,96.1171449082929,99.8273573506643],[91.8459676622136,95.5283736852381,99.3357472371268],[91.5784470408562,95.2878498330301,98.9497289558011],[91.3754634635908,94.9355226104845,98.5465536575816],[90.9618027972426,94.6916991319154,98.6213896702107],[90.2661674049882,94.1029279202385,97.7127615230917],[90.2349762017668,93.8624040760458,97.5970196270281],[89.7995387085459,93.5100768615157,97.0086797397595],[89.7453095389345,93.4774592727949,97.2199738989053],[89.6398030579759,93.2662534494422,97.1048915455681],[88.8761575320599,92.6774822463743,96.7177982305138],[88.7860670145483,92.4369584107897,96.4893896832412],[88.024720538532,92.0846312087031,96.1294134495458],[88.2908319420811,92.0520136314866,95.9812132079713],[88.3207447003129,91.8408078119688,95.4836651532024],[87.5939169508287,91.2524557024113,94.9341483915359],[87.3548231885795,91.012350960338,94.831501616842],[86.9499497408283,90.6604428479272,94.228747330369],[86.8676079216763,90.6564145273569,94.2519450789117],[86.8118124290994,90.4547384600545,94.2710256586835],[85.9456815333935,89.8754970130361,93.6643058092009],[85.8688882112339,89.6445029335025,93.2330201940133],[85.5585484165722,89.4130024534132,93.1008940877588],[85.8301732339339,89.7428650421897,93.316871549501],[86.049819732749,89.6524859446685,93.8122084835945],[85.408338717661,89.3416238427582,93.1402857284741],[85.889202465093,89.3790091083321,93.0319455267102],[86.4466016603636,90.1057007183212,93.874617620592],[86.8247764129692,90.3419183590389,94.0727210360439],[86.4707364262809,90.2005706200418,93.7933267503861],[86.9437190471122,90.4074702485284,94.3645017649319],[86.5698371678859,90.5025665066776,94.2414134260846],[88.7215456892403,92.2650862781664,96.0540954654149],[89.2654964833927,92.6522595748832,96.5118807771046],[88.7289911468409,92.6618674918854,96.5055536991272],[89.4090030142937,93.1110773310246,96.7808036481246],[89.9504770889594,93.4484837998269,96.9441120406358],[91.7885481977666,95.4850672352776,99.1438324203607],[92.4133403643143,96.0630129287261,99.9605098789717],[92.7211495829277,96.2633932424603,100.211586994492],[93.1294730836571,96.8120209236771,100.256591685529],[93.5546105217028,97.3688989834599,100.955600547286],[96.0132463323135,100.063897191852,103.649428606153],[97.0638697138784,100.761896634204,104.416977649394],[97.3644585819475,101.08233069684,104.846758032391],[97.8074027573557,101.776228016127,105.722853759927],[98.6054190635126,102.358321965077,105.919034278176],[101.411019251292,105.12896784097,108.579620856276],[102.428000787077,105.85218320016,109.644415450952],[102.333796305245,106.197833179637,109.805544837355],[102.975929718091,106.891730526596,110.659979715989],[103.745789077332,107.473824512919,111.144923425589],[106.360045818771,110.244470500934,113.755354562645],[107.163425385613,110.967685869826,114.597831663308],[107.811520743238,111.313335859004,114.904544265948],[108.086961311703,112.007233396103,115.96285181377],[108.674005541384,112.589327562865,116.325717835747],[111.512594295246,115.359974092196,119.306017129719],[112.674815392183,116.156102374252,119.924906165374],[112.607598478709,116.574665276592,120.341937266649],[113.575658989191,117.341475546416,121.281395520704],[113.972244826942,118.070426474147,121.656288346419],[117.547758058185,121.281643286385,124.810822016307],[118.258928281331,122.151715596685,125.981936522046],[118.898837863024,122.644222527269,126.247370026061],[119.541043328498,123.49798275146,127.272468686478],[120.538668021496,124.239939605313,128.157803952028],[123.754451644572,127.490174195917,131.343887974792],[124.629967687621,128.37325243693,132.290337115922],[125.152226058128,128.878765298225,132.859016880145],[126.081702554685,129.732525527006,133.761805287205],[126.685047553118,130.474482371847,134.024221086438],[130.875378053588,134.607795162825,138.289308556931],[131.18029656548,135.11330801052,138.999287055644],[132.13760568344,135.967068225697,139.586394683257],[132.675092868819,136.444052639381,140.114120609541],[135.16813700715,138.899369909476,142.686998048663],[135.72972589327,139.517475705729,143.252196778186],[135.639191747046,139.466576675306,143.237144599153],[136.055617790048,139.763925012367,143.677607089712],[136.192162471686,139.949469979091,143.520910273583],[137.627991252012,141.530468908305,145.188572082826],[137.835738166316,141.857135257598,145.530590454623],[138.102607558926,141.806236227175,145.29177025642],[138.248840542529,142.103584564236,145.849744873524],[137.958098084827,142.289129530959,145.785825246272],[140.153013143077,143.870128460175,147.629145490098],[140.966482381976,144.196794809467,148.079408927354],[140.299608831825,144.145895779044,148.078099104988],[140.767236528101,144.443244116105,148.664517521764],[141.060330337964,144.628789082828,148.088119409435],[142.253422261536,146.209788012043,150.127157167996],[142.649861222462,146.536454361336,150.351171158846],[142.918186641721,146.485555330912,150.177085171161],[142.739891816728,146.782903667974,150.12064712319],[143.188877142748,146.968448634697,150.727146931009],[145.112056834299,148.876113913204,152.656197246029],[145.042337540303,148.825214882781,152.690823827337],[145.059569874219,149.122563219842,152.628154483208],[145.612776768626,149.308108186566,153.050135187402],[146.399337129149,149.901506176201,153.654086390221],[146.56572150185,150.235743253909,154.120205129755],[147.274532791929,150.889107115781,154.810221872171],[147.737381360785,151.215773465073,155.436911440005],[147.527594396298,151.164874434651,154.896651550045],[147.753490066488,151.462222771712,155.233535747485],[147.896283410257,151.647767738435,155.491642633588],[148.204080073975,152.24116572807,156.010048072923],[148.938816450958,152.575402805778,156.531889966536],[149.037367963961,153.22876666765,157.053580314371],[149.880783513973,153.555433016942,157.339025095086],[149.380655373061,153.50453398652,157.513030645632],[149.878932859148,153.80188232358,157.87857607548],[149.955263226899,153.987427290304,158.027602972402],[150.406848756141,154.580825279939,158.665958974804],[150.356062901985,154.915062357646,159.243490168063],[151.003130072778,155.568426219519,159.845592731508],[151.240672201729,155.895092568811,160.028888341131],[151.072205968475,155.844193538388,160.480872904136],[151.316528829186,156.141541875449,160.9900816482],[151.348666821049,156.327086842173,160.779025594142],[152.001119019678,156.920484831808,161.83785309863],[152.107813729751,157.254721909515,162.455673799525],[152.590478965094,157.908085771388,162.985087328349],[152.879473938868,158.23475212068,163.497467505937],[152.49781001691,158.183853090257,163.257730494389],[153.04456208911,158.481201427318,163.684302639889],[152.794027817963,158.666746394042,164.756708087225],[153.271670680555,159.260144383677,165.13228519113],[153.311565037727,159.594381461384,165.433149091269],[153.745066243879,160.247745323257,166.291316507397],[153.305619971621,160.57441167255,167.256699157252],[153.743965431326,160.523512642127,167.057092314988],[153.625834408158,160.820860979187,167.419537057356],[154.016978935028,161.006405945911,167.949622413571],[154.421994373514,161.599803935546,168.546241899396],[154.248389573937,161.934041013254,169.355726438506],[154.488351711726,162.587404875126,169.734975220706],[154.546070803975,162.914071224419,170.29843149417],[154.558786085291,162.863172193995,170.633655917963],[154.200544120096,163.160520531056,171.162520132404],[154.050805739669,163.34606549778,172.095688120373],[154.843006531458,163.939463487415,172.311277914453],[154.717141186567,164.273700565122,173.150322649778],[154.974809098856,164.927064426994,174.248379232382],[155.154745841421,165.253730776287,174.374021749884],[154.774014039758,165.202831745864,175.01022890662],[154.733133641749,165.500180082925,175.628395854294],[154.482174133674,165.685725049649,176.449276303615],[155.124844514484,166.279123039284,176.8209589633],[155.170680465171,166.613360116991,177.730867384387],[155.211820698518,167.266723978864,178.994585379019],[155.542621663381,167.593390328156,179.576896791884],[154.752067501305,167.542491297734,179.30553415193],[155.19808311153,167.839839634794,180.173541120464],[154.727270079146,168.025384601518,180.164900417047],[155.233444236027,168.618782591153,181.786173369886],[154.808338066512,168.95301966886,181.804755399434],[155.743822837124,169.606383530733,182.962748926916],[155.813628523753,169.933049880025,183.782615571817],[154.842168471204,169.882150849602,184.333845293989],[154.943937865014,170.179499186663,184.878859697519],[155.233741129704,170.365044153387,185.60548118364],[155.186810724913,170.958442143022,185.789307943825],[155.332921870651,171.292679220729,186.849607455197],[155.426892901052,171.946043082601,187.47905487628],[155.843333746016,172.272709431894,188.421839584808],[154.593692527049,172.221810401471,188.930651270545],[154.550449186205,172.519158738532,189.035162095217],[154.782435383826,172.704703705255,189.937618319616],[154.271850968076,173.298101694891,190.60472279898],[155.02569492144,173.632338772598,191.198943857232],[155.181175705016,174.28570263447,191.726404467603],[155.011661152572,174.612368983763,192.548761655205],[154.537428262621,174.561469953339,192.851284284776],[155.272092012444,174.858818290401,193.172879483373],[154.943028115416,175.044363257124,194.681153514645],[154.021897945393,175.63776124676,194.819737246328],[155.077129965777,175.971998324467,196.048326937648],[154.795654958424,176.625362186339,197.009030302077],[155.366847591043,176.952028535632,197.742998286878],[154.718808441187,176.901129505209,197.904232680852],[154.163826485599,177.19847784227,199.218060438314],[154.278803707468,177.384022808993,200.144668749773],[154.063454280959,177.977420798628,200.406743472676],[154.258511227901,178.311657876336,200.448970964605],[154.384322340784,178.965021738208,201.919280527513],[153.546894830452,179.291688087501,202.020214627401],[152.773016252215,179.240789057078,204.315195855829]]],"plugins":{"Unzoom":"{}"}},"evals":["attrs.interactionModel","plugins.Unzoom"],"jsHooks":[]}</script>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="ST.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="posibles-soluciones.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"info": null
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

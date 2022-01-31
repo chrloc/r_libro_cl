@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Sección 17 Red Neuronal | Una breve introducción a R con un enfoque financiero y administrativo</title>
+  <meta name="description" content="Una breve introducción al lenguaje de programación R. Con unos ejemplos del área administrativo y de las finanzas." />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Sección 17 Red Neuronal | Una breve introducción a R con un enfoque financiero y administrativo" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Una breve introducción al lenguaje de programación R. Con unos ejemplos del área administrativo y de las finanzas." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Sección 17 Red Neuronal | Una breve introducción a R con un enfoque financiero y administrativo" />
+  
+  <meta name="twitter:description" content="Una breve introducción al lenguaje de programación R. Con unos ejemplos del área administrativo y de las finanzas." />
+  
+
+<meta name="author" content="Christian Lochmuller" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="normalizar.html"/>
+<link rel="next" href="VaR.html"/>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<script src="libs/Dygraph.Plugins.Unzoom-1.0/unzoom.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Una breve introducción a R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisitos</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introducción</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#objetivo"><i class="fa fa-check"></i><b>2.1</b> Objetivo</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#usar-r-como-calculadora"><i class="fa fa-check"></i><b>2.2</b> Usar R como “calculadora”</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#asignar-un-valor-numérico-a-una-variable"><i class="fa fa-check"></i><b>2.3</b> Asignar un valor numérico a una variable</a></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#buscar-ayuda"><i class="fa fa-check"></i><b>2.4</b> Buscar ayuda</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="intro.html"><a href="intro.html#un-ejemplo"><i class="fa fa-check"></i><b>2.4.1</b> Un ejemplo</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#organizar-el-código"><i class="fa fa-check"></i><b>2.5</b> Organizar el código</a></li>
+<li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#una-opción-para-explorar-swirl"><i class="fa fa-check"></i><b>2.6</b> Una opción para explorar: Swirl</a></li>
+<li class="chapter" data-level="2.7" data-path="intro.html"><a href="intro.html#ejercicio-1"><i class="fa fa-check"></i><b>2.7</b> Ejercicio 1</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>3</b> Usar tipos de datos</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="tipos.html"><a href="tipos.html#objetivo-1"><i class="fa fa-check"></i><b>3.1</b> Objetivo</a></li>
+<li class="chapter" data-level="3.2" data-path="tipos.html"><a href="tipos.html#datos-booleanos-y-operadores-de-lógica"><i class="fa fa-check"></i><b>3.2</b> Datos booleanos y operadores de lógica</a></li>
+<li class="chapter" data-level="3.3" data-path="tipos.html"><a href="tipos.html#tipo-de-dato-fecha"><i class="fa fa-check"></i><b>3.3</b> Tipo de dato fecha</a></li>
+<li class="chapter" data-level="3.4" data-path="tipos.html"><a href="tipos.html#tipo-de-dato-vector"><i class="fa fa-check"></i><b>3.4</b> Tipo de dato vector</a></li>
+<li class="chapter" data-level="3.5" data-path="tipos.html"><a href="tipos.html#vectores-de-carácteres-strings"><i class="fa fa-check"></i><b>3.5</b> Vectores de carácteres (strings)</a></li>
+<li class="chapter" data-level="3.6" data-path="tipos.html"><a href="tipos.html#acceder-a-elementos-de-un-vector"><i class="fa fa-check"></i><b>3.6</b> Acceder a elementos de un vector</a></li>
+<li class="chapter" data-level="3.7" data-path="tipos.html"><a href="tipos.html#factors-variables-categóricas"><i class="fa fa-check"></i><b>3.7</b> Factors (variables categóricas)</a></li>
+<li class="chapter" data-level="3.8" data-path="tipos.html"><a href="tipos.html#funciones-matemáticas-para-vectores"><i class="fa fa-check"></i><b>3.8</b> Funciones matemáticas para vectores</a></li>
+<li class="chapter" data-level="3.9" data-path="tipos.html"><a href="tipos.html#usar-pipes-un-concepto-interesante"><i class="fa fa-check"></i><b>3.9</b> Usar pipes (un concepto “interesante”)</a></li>
+<li class="chapter" data-level="3.10" data-path="tipos.html"><a href="tipos.html#data-frames"><i class="fa fa-check"></i><b>3.10</b> Data frames</a></li>
+<li class="chapter" data-level="3.11" data-path="tipos.html"><a href="tipos.html#listas"><i class="fa fa-check"></i><b>3.11</b> Listas</a>
+<ul>
+<li class="chapter" data-level="3.11.1" data-path="tipos.html"><a href="tipos.html#una-lista-de-listas"><i class="fa fa-check"></i><b>3.11.1</b> Una lista de listas</a></li>
+</ul></li>
+<li class="chapter" data-level="3.12" data-path="tipos.html"><a href="tipos.html#ejercicio-2"><i class="fa fa-check"></i><b>3.12</b> Ejercicio 2</a>
+<ul>
+<li class="chapter" data-level="3.12.1" data-path="tipos.html"><a href="tipos.html#parte-a"><i class="fa fa-check"></i><b>3.12.1</b> Parte a</a></li>
+<li class="chapter" data-level="3.12.2" data-path="tipos.html"><a href="tipos.html#parte-b"><i class="fa fa-check"></i><b>3.12.2</b> Parte b</a></li>
+<li class="chapter" data-level="3.12.3" data-path="tipos.html"><a href="tipos.html#parte-c"><i class="fa fa-check"></i><b>3.12.3</b> Parte c</a></li>
+<li class="chapter" data-level="3.12.4" data-path="tipos.html"><a href="tipos.html#parte-d"><i class="fa fa-check"></i><b>3.12.4</b> Parte d</a></li>
+<li class="chapter" data-level="3.12.5" data-path="tipos.html"><a href="tipos.html#parte-e"><i class="fa fa-check"></i><b>3.12.5</b> Parte e</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="cargar.html"><a href="cargar.html"><i class="fa fa-check"></i><b>4</b> Cargar datos a R/RStudio</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="cargar.html"><a href="cargar.html#objetivo-2"><i class="fa fa-check"></i><b>4.1</b> Objetivo</a></li>
+<li class="chapter" data-level="4.2" data-path="cargar.html"><a href="cargar.html#leer-datos-desde-un-archivo-de-tipo-csv-y-xlsx"><i class="fa fa-check"></i><b>4.2</b> Leer datos desde un archivo de tipo csv y xlsx</a></li>
+<li class="chapter" data-level="4.3" data-path="cargar.html"><a href="cargar.html#leer-datos-desde-un-archivo-csv-de-una-página-web-url"><i class="fa fa-check"></i><b>4.3</b> Leer datos desde un archivo csv de una página web (url)</a></li>
+<li class="chapter" data-level="4.4" data-path="cargar.html"><a href="cargar.html#leer-datos-de-acciones-utilizando-el-paquete-quantmod"><i class="fa fa-check"></i><b>4.4</b> Leer datos de acciones, utilizando el paquete quantmod</a></li>
+<li class="chapter" data-level="4.5" data-path="cargar.html"><a href="cargar.html#leer-datos-de-una-tabla-de-una-página-web-wikipedia"><i class="fa fa-check"></i><b>4.5</b> Leer datos de una tabla de una página web: wikipedia</a></li>
+<li class="chapter" data-level="4.6" data-path="cargar.html"><a href="cargar.html#cargar-un-conjunto-de-datos-que-viene-con-r"><i class="fa fa-check"></i><b>4.6</b> Cargar un conjunto de datos, que viene con R</a></li>
+<li class="chapter" data-level="4.7" data-path="cargar.html"><a href="cargar.html#cargar-datos-financieros-con-el-paquete-tidyquant"><i class="fa fa-check"></i><b>4.7</b> Cargar datos financieros con el paquete tidyquant</a>
+<ul>
+<li class="chapter" data-level="4.7.1" data-path="cargar.html"><a href="cargar.html#renta-variable---precio-de-acciones"><i class="fa fa-check"></i><b>4.7.1</b> Renta variable - precio de acciones</a></li>
+<li class="chapter" data-level="4.7.2" data-path="cargar.html"><a href="cargar.html#renta-fija"><i class="fa fa-check"></i><b>4.7.2</b> Renta fija</a></li>
+</ul></li>
+<li class="chapter" data-level="4.8" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8</b> Cargar datos de criptomonedas</a>
+<ul>
+<li class="chapter" data-level="4.8.1" data-path="cargar.html"><a href="cargar.html#para-cargar-datos-históricos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8.1</b> Para cargar datos históricos de criptomonedas</a></li>
+</ul></li>
+<li class="chapter" data-level="4.9" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-eurostat-con-r"><i class="fa fa-check"></i><b>4.9</b> Cargar datos de Eurostat con R</a></li>
+<li class="chapter" data-level="4.10" data-path="cargar.html"><a href="cargar.html#ejercicio-3"><i class="fa fa-check"></i><b>4.10</b> Ejercicio 3</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="explorar.html"><a href="explorar.html"><i class="fa fa-check"></i><b>5</b> Explorar datos</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="explorar.html"><a href="explorar.html#objetivo-3"><i class="fa fa-check"></i><b>5.1</b> Objetivo</a></li>
+<li class="chapter" data-level="5.2" data-path="explorar.html"><a href="explorar.html#desarrollar-un-entendimiento-inicial-del-conjunto-de-datos"><i class="fa fa-check"></i><b>5.2</b> Desarrollar un entendimiento inicial del conjunto de datos</a></li>
+<li class="chapter" data-level="5.3" data-path="explorar.html"><a href="explorar.html#comprobar-si-existen-datos-faltantes"><i class="fa fa-check"></i><b>5.3</b> Comprobar, si existen datos faltantes</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="explorar.html"><a href="explorar.html#opción-1"><i class="fa fa-check"></i><b>5.3.1</b> Opción 1</a></li>
+<li class="chapter" data-level="5.3.2" data-path="explorar.html"><a href="explorar.html#opción-2"><i class="fa fa-check"></i><b>5.3.2</b> Opción 2</a></li>
+<li class="chapter" data-level="5.3.3" data-path="explorar.html"><a href="explorar.html#opción-3"><i class="fa fa-check"></i><b>5.3.3</b> Opción 3</a></li>
+<li class="chapter" data-level="5.3.4" data-path="explorar.html"><a href="explorar.html#opción-4"><i class="fa fa-check"></i><b>5.3.4</b> Opción 4</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="explorar.html"><a href="explorar.html#visualizaciones-para-explorar-datos"><i class="fa fa-check"></i><b>5.4</b> Visualizaciones para explorar datos</a></li>
+<li class="chapter" data-level="5.5" data-path="explorar.html"><a href="explorar.html#guardar-un-histograma"><i class="fa fa-check"></i><b>5.5</b> Guardar un histograma</a></li>
+<li class="chapter" data-level="5.6" data-path="explorar.html"><a href="explorar.html#apalancarse-por-el-paquete-desctools"><i class="fa fa-check"></i><b>5.6</b> Apalancarse por el paquete DescTools</a></li>
+<li class="chapter" data-level="5.7" data-path="explorar.html"><a href="explorar.html#ejercicio-4"><i class="fa fa-check"></i><b>5.7</b> Ejercicio 4</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="tidy.html"><a href="tidy.html"><i class="fa fa-check"></i><b>6</b> El paquete tidyverse y su funcionalidad</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="tidy.html"><a href="tidy.html#objetivo-y-contextualización"><i class="fa fa-check"></i><b>6.1</b> Objetivo y contextualización</a></li>
+<li class="chapter" data-level="6.2" data-path="tidy.html"><a href="tidy.html#tibble-parte-del-ecosistema-tidyverse"><i class="fa fa-check"></i><b>6.2</b> tibble (parte del ecosistema tidyverse)</a></li>
+<li class="chapter" data-level="6.3" data-path="tidy.html"><a href="tidy.html#utilizar-y-aplicar-funciones-del-tidyverse"><i class="fa fa-check"></i><b>6.3</b> Utilizar y aplicar funciones del tidyverse</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="tidy.html"><a href="tidy.html#filter"><i class="fa fa-check"></i><b>6.3.1</b> filter</a></li>
+<li class="chapter" data-level="6.3.2" data-path="tidy.html"><a href="tidy.html#arrange-para-ordenar-datos"><i class="fa fa-check"></i><b>6.3.2</b> arrange (para ordenar datos)</a></li>
+<li class="chapter" data-level="6.3.3" data-path="tidy.html"><a href="tidy.html#group_by-y-summarize-contar-registros"><i class="fa fa-check"></i><b>6.3.3</b> group_by y summarize (contar registros)</a></li>
+<li class="chapter" data-level="6.3.4" data-path="tidy.html"><a href="tidy.html#select"><i class="fa fa-check"></i><b>6.3.4</b> select</a></li>
+<li class="chapter" data-level="6.3.5" data-path="tidy.html"><a href="tidy.html#mutate"><i class="fa fa-check"></i><b>6.3.5</b> mutate</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="tidy.html"><a href="tidy.html#ejercicio-más-avanzado"><i class="fa fa-check"></i><b>6.4</b> Ejercicio más avanzado</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="tidy.html"><a href="tidy.html#procesar-datos-bursátiles-con-pipes"><i class="fa fa-check"></i><b>6.4.1</b> Procesar datos bursátiles con pipes (%&gt;%)</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="tidy.html"><a href="tidy.html#ejercicio-5"><i class="fa fa-check"></i><b>6.5</b> Ejercicio 5</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="bucles.html"><a href="bucles.html"><i class="fa fa-check"></i><b>7</b> Bucles / ciclos</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="bucles.html"><a href="bucles.html#objetivo-4"><i class="fa fa-check"></i><b>7.1</b> Objetivo</a></li>
+<li class="chapter" data-level="7.2" data-path="bucles.html"><a href="bucles.html#qué-son-las-funciones-del-tipo-apply"><i class="fa fa-check"></i><b>7.2</b> ¿Qué son las funciones del tipo “apply()?”</a></li>
+<li class="chapter" data-level="7.3" data-path="bucles.html"><a href="bucles.html#apply"><i class="fa fa-check"></i><b>7.3</b> apply</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="bucles.html"><a href="bucles.html#apply-vs-for-for-loop"><i class="fa fa-check"></i><b>7.3.1</b> apply vs for (for loop)</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="bucles.html"><a href="bucles.html#lapply"><i class="fa fa-check"></i><b>7.4</b> lapply</a></li>
+<li class="chapter" data-level="7.5" data-path="bucles.html"><a href="bucles.html#sapply"><i class="fa fa-check"></i><b>7.5</b> sapply</a></li>
+<li class="chapter" data-level="7.6" data-path="bucles.html"><a href="bucles.html#ejercicio-6"><i class="fa fa-check"></i><b>7.6</b> Ejercicio 6</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="ajusteDistri.html"><a href="ajusteDistri.html"><i class="fa fa-check"></i><b>8</b> Ajuste de datos a una distribución</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="ajusteDistri.html"><a href="ajusteDistri.html#objetivo-5"><i class="fa fa-check"></i><b>8.1</b> Objetivo</a></li>
+<li class="chapter" data-level="8.2" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-normal"><i class="fa fa-check"></i><b>8.2</b> Distribución normal</a></li>
+<li class="chapter" data-level="8.3" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-exponencial"><i class="fa fa-check"></i><b>8.3</b> Distribución exponencial</a></li>
+<li class="chapter" data-level="8.4" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-uniforme"><i class="fa fa-check"></i><b>8.4</b> Distribución uniforme</a></li>
+<li class="chapter" data-level="8.5" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-lognormal"><i class="fa fa-check"></i><b>8.5</b> Distribución lognormal</a></li>
+<li class="chapter" data-level="8.6" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-poisson-discreta"><i class="fa fa-check"></i><b>8.6</b> Distribución Poisson (discreta)</a></li>
+<li class="chapter" data-level="8.7" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-binomial"><i class="fa fa-check"></i><b>8.7</b> Distribución binomial</a></li>
+<li class="chapter" data-level="8.8" data-path="ajusteDistri.html"><a href="ajusteDistri.html#unir-todo-en-un-solo-data-frame"><i class="fa fa-check"></i><b>8.8</b> Unir todo en un solo data frame</a></li>
+<li class="chapter" data-level="8.9" data-path="ajusteDistri.html"><a href="ajusteDistri.html#realizar-el-ajuste"><i class="fa fa-check"></i><b>8.9</b> Realizar el ajuste</a></li>
+<li class="chapter" data-level="8.10" data-path="ajusteDistri.html"><a href="ajusteDistri.html#ejercicio-7"><i class="fa fa-check"></i><b>8.10</b> Ejercicio 7</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="regLineal.html"><a href="regLineal.html"><i class="fa fa-check"></i><b>9</b> Un modelo lineal “sencillo” (regresión lineal)</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="regLineal.html"><a href="regLineal.html#objetivo-6"><i class="fa fa-check"></i><b>9.1</b> Objetivo</a></li>
+<li class="chapter" data-level="9.2" data-path="regLineal.html"><a href="regLineal.html#cargar-datos-sobre-carros"><i class="fa fa-check"></i><b>9.2</b> Cargar datos sobre carros</a></li>
+<li class="chapter" data-level="9.3" data-path="regLineal.html"><a href="regLineal.html#crear-el-modelo-lineal-regresión-lineal"><i class="fa fa-check"></i><b>9.3</b> Crear el modelo lineal (regresión lineal)</a></li>
+<li class="chapter" data-level="9.4" data-path="regLineal.html"><a href="regLineal.html#realizar-una-predicción"><i class="fa fa-check"></i><b>9.4</b> Realizar una predicción</a></li>
+<li class="chapter" data-level="9.5" data-path="regLineal.html"><a href="regLineal.html#un-segundo-ejemplo-sencillo"><i class="fa fa-check"></i><b>9.5</b> Un segundo ejemplo sencillo</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="regLineal.html"><a href="regLineal.html#utilidad-en-función-del-gasto-para-publicidad"><i class="fa fa-check"></i><b>9.5.1</b> Utilidad en función del gasto para publicidad</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="electre1.html"><a href="electre1.html"><i class="fa fa-check"></i><b>10</b> MCDA: Outranking - sobre calificación</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="electre1.html"><a href="electre1.html#objetivo-y-contextualización-1"><i class="fa fa-check"></i><b>10.1</b> Objetivo y contextualización</a></li>
+<li class="chapter" data-level="10.2" data-path="electre1.html"><a href="electre1.html#generar-datos"><i class="fa fa-check"></i><b>10.2</b> Generar datos</a></li>
+<li class="chapter" data-level="10.3" data-path="electre1.html"><a href="electre1.html#leer-los-datos-desde-un-archivo-de-excel"><i class="fa fa-check"></i><b>10.3</b> Leer los datos desde un archivo de Excel</a></li>
+<li class="chapter" data-level="10.4" data-path="electre1.html"><a href="electre1.html#analizar-el-paquete-outranking-tools-y-la-función-electre_1"><i class="fa fa-check"></i><b>10.4</b> Analizar el paquete Outranking Tools y la función electre_1()</a></li>
+<li class="chapter" data-level="10.5" data-path="electre1.html"><a href="electre1.html#transformar-los-datos-al-formato-requerido"><i class="fa fa-check"></i><b>10.5</b> Transformar los datos al formato requerido</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="ahp.html"><a href="ahp.html"><i class="fa fa-check"></i><b>11</b> Modelo AHP (Analytical Hierarchy Process)</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="ahp.html"><a href="ahp.html#objetivo-7"><i class="fa fa-check"></i><b>11.1</b> Objetivo</a></li>
+<li class="chapter" data-level="11.2" data-path="ahp.html"><a href="ahp.html#cargar-el-paquete-mcda"><i class="fa fa-check"></i><b>11.2</b> Cargar el paquete MCDA</a></li>
+<li class="chapter" data-level="11.3" data-path="ahp.html"><a href="ahp.html#alternativespairwisecomparisonslist"><i class="fa fa-check"></i><b>11.3</b> alternativesPairwiseComparisonsList</a></li>
+<li class="chapter" data-level="11.4" data-path="ahp.html"><a href="ahp.html#mostrar-resultado-con-ahp"><i class="fa fa-check"></i><b>11.4</b> Mostrar resultado con AHP</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="fuzzy.html"><a href="fuzzy.html"><i class="fa fa-check"></i><b>12</b> Modelo fuzzy (borroso)</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="fuzzy.html"><a href="fuzzy.html#objetivo-y-contextualización-2"><i class="fa fa-check"></i><b>12.1</b> Objetivo y contextualización</a></li>
+<li class="chapter" data-level="12.2" data-path="fuzzy.html"><a href="fuzzy.html#definir-el-universo-universe"><i class="fa fa-check"></i><b>12.2</b> Definir el universo (universe)</a></li>
+<li class="chapter" data-level="12.3" data-path="fuzzy.html"><a href="fuzzy.html#definir-las-variables"><i class="fa fa-check"></i><b>12.3</b> Definir las variables</a></li>
+<li class="chapter" data-level="12.4" data-path="fuzzy.html"><a href="fuzzy.html#fuzzy-rules---reglas-borrosas"><i class="fa fa-check"></i><b>12.4</b> Fuzzy rules - reglas borrosas</a></li>
+<li class="chapter" data-level="12.5" data-path="fuzzy.html"><a href="fuzzy.html#definir-el-modelo-borroso"><i class="fa fa-check"></i><b>12.5</b> Definir el modelo borroso</a></li>
+<li class="chapter" data-level="12.6" data-path="fuzzy.html"><a href="fuzzy.html#dos-ejemplos-fuzzy"><i class="fa fa-check"></i><b>12.6</b> Dos ejemplos fuzzy</a></li>
+<li class="chapter" data-level="12.7" data-path="fuzzy.html"><a href="fuzzy.html#finalmente-se-debe-resetear-el-universo"><i class="fa fa-check"></i><b>12.7</b> Finalmente se debe “resetear” el universo</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="muestreo.html"><a href="muestreo.html"><i class="fa fa-check"></i><b>13</b> Muestreo - sampling</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="muestreo.html"><a href="muestreo.html#objetivo-8"><i class="fa fa-check"></i><b>13.1</b> Objetivo</a></li>
+<li class="chapter" data-level="13.2" data-path="muestreo.html"><a href="muestreo.html#muestreo-aleatorio-simple---simple-random-sampling"><i class="fa fa-check"></i><b>13.2</b> Muestreo aleatorio simple - Simple Random Sampling</a></li>
+<li class="chapter" data-level="13.3" data-path="muestreo.html"><a href="muestreo.html#proceso-de-muestreo-para-realizar-una-encuesta"><i class="fa fa-check"></i><b>13.3</b> Proceso de muestreo para realizar una encuesta</a>
+<ul>
+<li class="chapter" data-level="13.3.1" data-path="muestreo.html"><a href="muestreo.html#creamos-nuestra-propia-función-en-r"><i class="fa fa-check"></i><b>13.3.1</b> Creamos “nuestra propia función” en R</a></li>
+<li class="chapter" data-level="13.3.2" data-path="muestreo.html"><a href="muestreo.html#definir-los-valores-para-los-parámetros-de-la-función-muestra.n"><i class="fa fa-check"></i><b>13.3.2</b> Definir los valores para los parámetros de la función “muestra.n”</a></li>
+<li class="chapter" data-level="13.3.3" data-path="muestreo.html"><a href="muestreo.html#llamar-la-función-muestra.n-y-observar-el-resultado"><i class="fa fa-check"></i><b>13.3.3</b> Llamar la función “muestra.n” y observar el resultado</a></li>
+<li class="chapter" data-level="13.3.4" data-path="muestreo.html"><a href="muestreo.html#para-poblaciones-mayor-que-100.000-personas"><i class="fa fa-check"></i><b>13.3.4</b> Para poblaciones mayor que 100.000 personas</a></li>
+<li class="chapter" data-level="13.3.5" data-path="muestreo.html"><a href="muestreo.html#definir-los-valores-para-los-parámetros-de-la-función-muestra.n.2"><i class="fa fa-check"></i><b>13.3.5</b> Definir los valores para los parámetros de la función “muestra.n.2”</a></li>
+<li class="chapter" data-level="13.3.6" data-path="muestreo.html"><a href="muestreo.html#llamar-usar-la-función"><i class="fa fa-check"></i><b>13.3.6</b> Llamar (usar) la función</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="muestreo.html"><a href="muestreo.html#muestreo-para-un-problema-de-datos-masivos-big-data"><i class="fa fa-check"></i><b>13.4</b> Muestreo para un problema de datos masivos (big data)</a></li>
+<li class="chapter" data-level="13.5" data-path="muestreo.html"><a href="muestreo.html#muestreo-estratificado---stratified-sampling"><i class="fa fa-check"></i><b>13.5</b> Muestreo estratificado - Stratified sampling</a></li>
+<li class="chapter" data-level="13.6" data-path="muestreo.html"><a href="muestreo.html#trabajar-con-potencia-power-analysis"><i class="fa fa-check"></i><b>13.6</b> Trabajar con potencia (power analysis)</a>
+<ul>
+<li class="chapter" data-level="13.6.1" data-path="muestreo.html"><a href="muestreo.html#utilziar-la-función-pwr.t.test---power-calculations-for-t-tests-of-means"><i class="fa fa-check"></i><b>13.6.1</b> Utilziar la función pwr.t.test() - Power calculations for t-tests of means</a></li>
+</ul></li>
+<li class="chapter" data-level="13.7" data-path="muestreo.html"><a href="muestreo.html#ejercicio-8"><i class="fa fa-check"></i><b>13.7</b> Ejercicio 8</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="arbolDec.html"><a href="arbolDec.html"><i class="fa fa-check"></i><b>14</b> Árbol de decisión - Decision Tree</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="arbolDec.html"><a href="arbolDec.html#objetivo-9"><i class="fa fa-check"></i><b>14.1</b> Objetivo</a></li>
+<li class="chapter" data-level="14.2" data-path="arbolDec.html"><a href="arbolDec.html#cargar-los-datos"><i class="fa fa-check"></i><b>14.2</b> Cargar los datos</a></li>
+<li class="chapter" data-level="14.3" data-path="arbolDec.html"><a href="arbolDec.html#explorar-los-datos"><i class="fa fa-check"></i><b>14.3</b> Explorar los datos</a></li>
+<li class="chapter" data-level="14.4" data-path="arbolDec.html"><a href="arbolDec.html#mejorar-los-nombres-etiquetas-de-las-columnas-del-dataset"><i class="fa fa-check"></i><b>14.4</b> Mejorar los nombres (etiquetas) de las columnas del dataset</a></li>
+<li class="chapter" data-level="14.5" data-path="arbolDec.html"><a href="arbolDec.html#transformar-algunos-datos"><i class="fa fa-check"></i><b>14.5</b> Transformar algunos datos</a></li>
+<li class="chapter" data-level="14.6" data-path="arbolDec.html"><a href="arbolDec.html#particionar-los-datos"><i class="fa fa-check"></i><b>14.6</b> Particionar los datos</a></li>
+<li class="chapter" data-level="14.7" data-path="arbolDec.html"><a href="arbolDec.html#construir-el-modelo-árbol-de-decisión-ad"><i class="fa fa-check"></i><b>14.7</b> Construir el modelo (árbol de decisión, AD)</a></li>
+<li class="chapter" data-level="14.8" data-path="arbolDec.html"><a href="arbolDec.html#realizar-la-predicción-con-base-en-el-modelo"><i class="fa fa-check"></i><b>14.8</b> Realizar la predicción con base en el modelo</a></li>
+<li class="chapter" data-level="14.9" data-path="arbolDec.html"><a href="arbolDec.html#evaluar-el-desempeño-del-modelo-árbol-de-decisión"><i class="fa fa-check"></i><b>14.9</b> Evaluar el desempeño del modelo (árbol de decisión)</a></li>
+<li class="chapter" data-level="14.10" data-path="arbolDec.html"><a href="arbolDec.html#ejercicio-9"><i class="fa fa-check"></i><b>14.10</b> Ejercicio 9</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="regrLog.html"><a href="regrLog.html"><i class="fa fa-check"></i><b>15</b> Regresión logística (modelo logit)</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="regrLog.html"><a href="regrLog.html#objetivo-10"><i class="fa fa-check"></i><b>15.1</b> Objetivo</a></li>
+<li class="chapter" data-level="15.2" data-path="regrLog.html"><a href="regrLog.html#cargar-los-datos-históricos-de-un-archivo-csv"><i class="fa fa-check"></i><b>15.2</b> Cargar los datos históricos de un archivo csv</a></li>
+<li class="chapter" data-level="15.3" data-path="regrLog.html"><a href="regrLog.html#explorar-los-datos-1"><i class="fa fa-check"></i><b>15.3</b> Explorar los datos</a></li>
+<li class="chapter" data-level="15.4" data-path="regrLog.html"><a href="regrLog.html#mejorar-los-nombres-etiquetas-de-las-columnas-del-dataset-1"><i class="fa fa-check"></i><b>15.4</b> Mejorar los nombres (etiquetas) de las columnas del dataset</a></li>
+<li class="chapter" data-level="15.5" data-path="regrLog.html"><a href="regrLog.html#transformar-algunos-datos-1"><i class="fa fa-check"></i><b>15.5</b> Transformar algunos datos</a></li>
+<li class="chapter" data-level="15.6" data-path="regrLog.html"><a href="regrLog.html#particionar-los-datos-1"><i class="fa fa-check"></i><b>15.6</b> Particionar los datos</a></li>
+<li class="chapter" data-level="15.7" data-path="regrLog.html"><a href="regrLog.html#construir-el-modelo-logit-regresión-logística"><i class="fa fa-check"></i><b>15.7</b> Construir el modelo logit (regresión logística)</a></li>
+<li class="chapter" data-level="15.8" data-path="regrLog.html"><a href="regrLog.html#generar-el-modelo-mejorado"><i class="fa fa-check"></i><b>15.8</b> Generar el modelo “mejorado”</a></li>
+<li class="chapter" data-level="15.9" data-path="regrLog.html"><a href="regrLog.html#realizar-una-predicción-con-el-modelo-logit-mejorado"><i class="fa fa-check"></i><b>15.9</b> Realizar una predicción con el modelo logit mejorado</a></li>
+<li class="chapter" data-level="15.10" data-path="regrLog.html"><a href="regrLog.html#convertir-estas-probabilidades-en-dos-clases-1-y-0-buena-paga-y-mala-paga"><i class="fa fa-check"></i><b>15.10</b> Convertir estas probabilidades en dos clases: 1 y 0 (“buena paga” y “mala paga”)</a></li>
+<li class="chapter" data-level="15.11" data-path="regrLog.html"><a href="regrLog.html#ejercicio-10"><i class="fa fa-check"></i><b>15.11</b> Ejercicio 10</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="normalizar.html"><a href="normalizar.html"><i class="fa fa-check"></i><b>16</b> Escalar y normalizar (estandarizar datos)</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="normalizar.html"><a href="normalizar.html#objetivo-11"><i class="fa fa-check"></i><b>16.1</b> Objetivo</a></li>
+<li class="chapter" data-level="16.2" data-path="normalizar.html"><a href="normalizar.html#cargar-los-datos-históricos-de-un-archivo-csv-1"><i class="fa fa-check"></i><b>16.2</b> Cargar los datos históricos de un archivo csv</a></li>
+<li class="chapter" data-level="16.3" data-path="normalizar.html"><a href="normalizar.html#analizar-los-datos-de-la-columna-credit.amount-monto-del-crédito"><i class="fa fa-check"></i><b>16.3</b> Analizar los datos de la columna “Credit.Amount” (monto del crédito)</a></li>
+<li class="chapter" data-level="16.4" data-path="normalizar.html"><a href="normalizar.html#escalar-los-datos"><i class="fa fa-check"></i><b>16.4</b> Escalar los datos</a></li>
+<li class="chapter" data-level="16.5" data-path="normalizar.html"><a href="normalizar.html#la-normalización-de-los-datos"><i class="fa fa-check"></i><b>16.5</b> La normalización de los datos</a>
+<ul>
+<li class="chapter" data-level="16.5.1" data-path="normalizar.html"><a href="normalizar.html#comprobar-el-resultado"><i class="fa fa-check"></i><b>16.5.1</b> Comprobar el resultado</a></li>
+</ul></li>
+<li class="chapter" data-level="16.6" data-path="normalizar.html"><a href="normalizar.html#escala-logarítmica"><i class="fa fa-check"></i><b>16.6</b> Escala logarítmica</a>
+<ul>
+<li class="chapter" data-level="16.6.1" data-path="normalizar.html"><a href="normalizar.html#un-ejemplo---retornos-logarítmicos"><i class="fa fa-check"></i><b>16.6.1</b> Un ejemplo - retornos logarítmicos</a></li>
+</ul></li>
+<li class="chapter" data-level="16.7" data-path="normalizar.html"><a href="normalizar.html#creando-variables-dummy-one-hot-encoding"><i class="fa fa-check"></i><b>16.7</b> Creando variables dummy (one-hot encoding)</a></li>
+<li class="chapter" data-level="16.8" data-path="normalizar.html"><a href="normalizar.html#ejercicio-11"><i class="fa fa-check"></i><b>16.8</b> Ejercicio 11</a></li>
+</ul></li>
+<li class="chapter" data-level="17" data-path="rn.html"><a href="rn.html"><i class="fa fa-check"></i><b>17</b> Red Neuronal</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="rn.html"><a href="rn.html#objetivo-12"><i class="fa fa-check"></i><b>17.1</b> Objetivo</a></li>
+<li class="chapter" data-level="17.2" data-path="rn.html"><a href="rn.html#cargar-datos"><i class="fa fa-check"></i><b>17.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="17.3" data-path="rn.html"><a href="rn.html#normalizar-datos"><i class="fa fa-check"></i><b>17.3</b> Normalizar datos</a></li>
+<li class="chapter" data-level="17.4" data-path="rn.html"><a href="rn.html#particionar-los-datos-2"><i class="fa fa-check"></i><b>17.4</b> Particionar los datos</a></li>
+<li class="chapter" data-level="17.5" data-path="rn.html"><a href="rn.html#crear-la-red-neuronal"><i class="fa fa-check"></i><b>17.5</b> Crear la Red Neuronal</a></li>
+<li class="chapter" data-level="17.6" data-path="rn.html"><a href="rn.html#realizar-la-predicción"><i class="fa fa-check"></i><b>17.6</b> Realizar la predicción</a></li>
+</ul></li>
+<li class="chapter" data-level="18" data-path="VaR.html"><a href="VaR.html"><i class="fa fa-check"></i><b>18</b> Determinar el VaR</a>
+<ul>
+<li class="chapter" data-level="18.1" data-path="VaR.html"><a href="VaR.html#objetivo-13"><i class="fa fa-check"></i><b>18.1</b> Objetivo</a>
+<ul>
+<li class="chapter" data-level="18.1.1" data-path="VaR.html"><a href="VaR.html#obtener-unos-datos-serie-de-tiempo-st"><i class="fa fa-check"></i><b>18.1.1</b> Obtener unos datos (Serie de tiempo, ST)</a></li>
+</ul></li>
+<li class="chapter" data-level="18.2" data-path="VaR.html"><a href="VaR.html#determinar-retornos-log"><i class="fa fa-check"></i><b>18.2</b> Determinar retornos log</a></li>
+<li class="chapter" data-level="18.3" data-path="VaR.html"><a href="VaR.html#generar-estadística-de-datos"><i class="fa fa-check"></i><b>18.3</b> Generar estadística de datos</a>
+<ul>
+<li class="chapter" data-level="18.3.1" data-path="VaR.html"><a href="VaR.html#volatilidad"><i class="fa fa-check"></i><b>18.3.1</b> Volatilidad</a></li>
+<li class="chapter" data-level="18.3.2" data-path="VaR.html"><a href="VaR.html#retorno-diario"><i class="fa fa-check"></i><b>18.3.2</b> Retorno diario</a></li>
+<li class="chapter" data-level="18.3.3" data-path="VaR.html"><a href="VaR.html#supuestos-para-el-cálculo-del-var"><i class="fa fa-check"></i><b>18.3.3</b> Supuestos para el cálculo del VaR</a></li>
+</ul></li>
+<li class="chapter" data-level="18.4" data-path="VaR.html"><a href="VaR.html#var"><i class="fa fa-check"></i><b>18.4</b> VaR</a>
+<ul>
+<li class="chapter" data-level="18.4.1" data-path="VaR.html"><a href="VaR.html#var-paramétrico"><i class="fa fa-check"></i><b>18.4.1</b> VaR paramétrico</a></li>
+<li class="chapter" data-level="18.4.2" data-path="VaR.html"><a href="VaR.html#var-histórico"><i class="fa fa-check"></i><b>18.4.2</b> VaR histórico</a></li>
+<li class="chapter" data-level="18.4.3" data-path="VaR.html"><a href="VaR.html#var-montecarlo"><i class="fa fa-check"></i><b>18.4.3</b> VaR Montecarlo</a></li>
+<li class="chapter" data-level="18.4.4" data-path="VaR.html"><a href="VaR.html#comparativo-de-los-tres-vars"><i class="fa fa-check"></i><b>18.4.4</b> Comparativo de los tres VaRs</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="19" data-path="ST.html"><a href="ST.html"><i class="fa fa-check"></i><b>19</b> Serie de tiempo</a>
+<ul>
+<li class="chapter" data-level="19.1" data-path="ST.html"><a href="ST.html#objetivo-14"><i class="fa fa-check"></i><b>19.1</b> Objetivo</a></li>
+<li class="chapter" data-level="19.2" data-path="ST.html"><a href="ST.html#cargar-datos-1"><i class="fa fa-check"></i><b>19.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="19.3" data-path="ST.html"><a href="ST.html#graficar-la-serie"><i class="fa fa-check"></i><b>19.3</b> Graficar la serie</a></li>
+<li class="chapter" data-level="19.4" data-path="ST.html"><a href="ST.html#comprobar-si-es-estacionaria"><i class="fa fa-check"></i><b>19.4</b> Comprobar, si es estacionaria</a></li>
+<li class="chapter" data-level="19.5" data-path="ST.html"><a href="ST.html#identificando-una-serie-no-estacionaria"><i class="fa fa-check"></i><b>19.5</b> Identificando una serie no estacionaria</a>
+<ul>
+<li class="chapter" data-level="19.5.1" data-path="ST.html"><a href="ST.html#convertir-a-estacionaria"><i class="fa fa-check"></i><b>19.5.1</b> Convertir a estacionaria</a></li>
+<li class="chapter" data-level="19.5.2" data-path="ST.html"><a href="ST.html#retornos-log"><i class="fa fa-check"></i><b>19.5.2</b> Retornos log</a></li>
+<li class="chapter" data-level="19.5.3" data-path="ST.html"><a href="ST.html#diferenciar-1st-order"><i class="fa fa-check"></i><b>19.5.3</b> Diferenciar (1st order)</a></li>
+</ul></li>
+<li class="chapter" data-level="19.6" data-path="ST.html"><a href="ST.html#arima"><i class="fa fa-check"></i><b>19.6</b> ARIMA</a>
+<ul>
+<li class="chapter" data-level="19.6.1" data-path="ST.html"><a href="ST.html#acf"><i class="fa fa-check"></i><b>19.6.1</b> acf</a></li>
+<li class="chapter" data-level="19.6.2" data-path="ST.html"><a href="ST.html#pacf"><i class="fa fa-check"></i><b>19.6.2</b> pacf</a></li>
+<li class="chapter" data-level="19.6.3" data-path="ST.html"><a href="ST.html#auto.arima"><i class="fa fa-check"></i><b>19.6.3</b> auto.arima</a></li>
+</ul></li>
+<li class="chapter" data-level="19.7" data-path="ST.html"><a href="ST.html#pronóstico"><i class="fa fa-check"></i><b>19.7</b> Pronóstico</a></li>
+<li class="chapter" data-level="19.8" data-path="ST.html"><a href="ST.html#ejercicio"><i class="fa fa-check"></i><b>19.8</b> Ejercicio</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="prophet.html"><a href="prophet.html"><i class="fa fa-check"></i><b>20</b> Serie de tiempo con Prophet</a>
+<ul>
+<li class="chapter" data-level="20.1" data-path="prophet.html"><a href="prophet.html#objetivo-15"><i class="fa fa-check"></i><b>20.1</b> Objetivo</a></li>
+<li class="chapter" data-level="20.2" data-path="prophet.html"><a href="prophet.html#cargar-datos-2"><i class="fa fa-check"></i><b>20.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="20.3" data-path="prophet.html"><a href="prophet.html#convertir-a-data-frame"><i class="fa fa-check"></i><b>20.3</b> Convertir a data frame</a></li>
+<li class="chapter" data-level="20.4" data-path="prophet.html"><a href="prophet.html#realizar-el-pronóstico-con-prophet"><i class="fa fa-check"></i><b>20.4</b> Realizar el pronóstico con prophet</a>
+<ul>
+<li class="chapter" data-level="20.4.1" data-path="prophet.html"><a href="prophet.html#crear-el-modelo"><i class="fa fa-check"></i><b>20.4.1</b> Crear el modelo</a></li>
+<li class="chapter" data-level="20.4.2" data-path="prophet.html"><a href="prophet.html#pronosticar---predict"><i class="fa fa-check"></i><b>20.4.2</b> Pronosticar - predict</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html"><i class="fa fa-check"></i><b>21</b> Posibles soluciones</a>
+<ul>
+<li class="chapter" data-level="21.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-1-1"><i class="fa fa-check"></i><b>21.1</b> Ejercicio 1</a>
+<ul>
+<li class="chapter" data-level="21.1.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado"><i class="fa fa-check"></i><b>21.1.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.1.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución"><i class="fa fa-check"></i><b>21.1.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-2-1"><i class="fa fa-check"></i><b>21.2</b> Ejercicio 2</a>
+<ul>
+<li class="chapter" data-level="21.2.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-a"><i class="fa fa-check"></i><b>21.2.1</b> Enunciado - parte a</a></li>
+<li class="chapter" data-level="21.2.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-1"><i class="fa fa-check"></i><b>21.2.2</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-b"><i class="fa fa-check"></i><b>21.2.3</b> Enunciado - parte b</a></li>
+<li class="chapter" data-level="21.2.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-2"><i class="fa fa-check"></i><b>21.2.4</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-c"><i class="fa fa-check"></i><b>21.2.5</b> Enunciado - parte c</a></li>
+<li class="chapter" data-level="21.2.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-3"><i class="fa fa-check"></i><b>21.2.6</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-d"><i class="fa fa-check"></i><b>21.2.7</b> Enunciado - parte d</a></li>
+<li class="chapter" data-level="21.2.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-4"><i class="fa fa-check"></i><b>21.2.8</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-e"><i class="fa fa-check"></i><b>21.2.9</b> Enunciado - parte e</a></li>
+<li class="chapter" data-level="21.2.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-5"><i class="fa fa-check"></i><b>21.2.10</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-3-1"><i class="fa fa-check"></i><b>21.3</b> Ejercicio 3</a>
+<ul>
+<li class="chapter" data-level="21.3.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-1"><i class="fa fa-check"></i><b>21.3.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.3.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-6"><i class="fa fa-check"></i><b>21.3.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-4-1"><i class="fa fa-check"></i><b>21.4</b> Ejercicio 4</a>
+<ul>
+<li class="chapter" data-level="21.4.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-2"><i class="fa fa-check"></i><b>21.4.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.4.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-7"><i class="fa fa-check"></i><b>21.4.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-5-1"><i class="fa fa-check"></i><b>21.5</b> Ejercicio 5</a>
+<ul>
+<li class="chapter" data-level="21.5.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-3"><i class="fa fa-check"></i><b>21.5.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.5.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-8"><i class="fa fa-check"></i><b>21.5.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-6-1"><i class="fa fa-check"></i><b>21.6</b> Ejercicio 6</a>
+<ul>
+<li class="chapter" data-level="21.6.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-4"><i class="fa fa-check"></i><b>21.6.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.6.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-9"><i class="fa fa-check"></i><b>21.6.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-7-1"><i class="fa fa-check"></i><b>21.7</b> Ejercicio 7</a>
+<ul>
+<li class="chapter" data-level="21.7.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-5"><i class="fa fa-check"></i><b>21.7.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.7.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-10"><i class="fa fa-check"></i><b>21.7.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-8-1"><i class="fa fa-check"></i><b>21.8</b> Ejercicio 8</a>
+<ul>
+<li class="chapter" data-level="21.8.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-6"><i class="fa fa-check"></i><b>21.8.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.8.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-11"><i class="fa fa-check"></i><b>21.8.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-9-1"><i class="fa fa-check"></i><b>21.9</b> Ejercicio 9</a>
+<ul>
+<li class="chapter" data-level="21.9.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-7"><i class="fa fa-check"></i><b>21.9.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.9.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-12"><i class="fa fa-check"></i><b>21.9.2</b> Posible Solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-10-1"><i class="fa fa-check"></i><b>21.10</b> Ejercicio 10</a>
+<ul>
+<li class="chapter" data-level="21.10.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-8"><i class="fa fa-check"></i><b>21.10.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.10.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-13"><i class="fa fa-check"></i><b>21.10.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.11" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-11-1"><i class="fa fa-check"></i><b>21.11</b> Ejercicio 11</a>
+<ul>
+<li class="chapter" data-level="21.11.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-9"><i class="fa fa-check"></i><b>21.11.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.11.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-14"><i class="fa fa-check"></i><b>21.11.2</b> Posible solución</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="palabras-finales.html"><a href="palabras-finales.html"><i class="fa fa-check"></i><b>22</b> Palabras finales</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Una breve introducción a R con un enfoque financiero y administrativo</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="rn" class="section level1" number="17">
+<h1><span class="header-section-number">Sección 17</span> Red Neuronal</h1>
+<div id="objetivo-12" class="section level2" number="17.1">
+<h2><span class="header-section-number">17.1</span> Objetivo</h2>
+<p>El objetivo en este ejemplo consiste en clasificar datos de créditos (credit data), utilizando un modelo de red neuronal (Neural Network)</p>
+</div>
+<div id="cargar-datos" class="section level2" number="17.2">
+<h2><span class="header-section-number">17.2</span> Cargar datos</h2>
+<p>Vamos a utilizar un conjunto de datos de créditos de la web, de la misma fuente que se utilizó antes <a href="regrLog.html#regrLog">15</a>.</p>
+<p>El objetivo consiste en construir un clasificador, utilizando una red neuronal, para clasificar los registros en dos grupos (clases): “buena paga” y “mala paga.”</p>
+<ul>
+<li>Bajar el archivo de los datos de la internet y leer los datos del archivo y asignarlos a una variable “mis.datos”</li>
+</ul>
+<p>url &lt;- “<a href="http://freakonometrics.free.fr/german_credit.csv" class="uri">http://freakonometrics.free.fr/german_credit.csv</a>”
+mis.datos &lt;- read.csv(url, header = TRUE, sep = “,”)</p>
+<div class="sourceCode" id="cb768"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb768-1"><a href="rn.html#cb768-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&quot;http://freakonometrics.free.fr/german_credit.csv&quot;</span></span>
+<span id="cb768-2"><a href="rn.html#cb768-2" aria-hidden="true" tabindex="-1"></a>mis.datos <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb768-3"><a href="rn.html#cb768-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Estos mismos datos también se pueden bajar de la siguiente dirección:</span></span>
+<span id="cb768-4"><a href="rn.html#cb768-4" aria-hidden="true" tabindex="-1"></a><span class="co"># url &lt;-  &quot;https://newonlinecourses.science.psu.edu/onlinecourses/sites/stat508/files/german_credit.csv&quot;</span></span>
+<span id="cb768-5"><a href="rn.html#cb768-5" aria-hidden="true" tabindex="-1"></a><span class="co"># mis.datos &lt;- read.csv(url(direccion))</span></span></code></pre></div>
+<ul>
+<li>Mostrar las primeras 3 filas de los datos (mis.datos)</li>
+<li>Mostrar la estructura de los datos</li>
+</ul>
+<div class="sourceCode" id="cb769"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb769-1"><a href="rn.html#cb769-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(mis.datos,<span class="dv">3</span>)</span></code></pre></div>
+<pre><code>##   Creditability Account.Balance Duration.of.Credit..month.
+## 1             1               1                         18
+## 2             1               1                          9
+## 3             1               2                         12
+##   Payment.Status.of.Previous.Credit Purpose Credit.Amount Value.Savings.Stocks
+## 1                                 4       2          1049                    1
+## 2                                 4       0          2799                    1
+## 3                                 2       9           841                    2
+##   Length.of.current.employment Instalment.per.cent Sex...Marital.Status
+## 1                            2                   4                    2
+## 2                            3                   2                    3
+## 3                            4                   2                    2
+##   Guarantors Duration.in.Current.address Most.valuable.available.asset
+## 1          1                           4                             2
+## 2          1                           2                             1
+## 3          1                           4                             1
+##   Age..years. Concurrent.Credits Type.of.apartment No.of.Credits.at.this.Bank
+## 1          21                  3                 1                          1
+## 2          36                  3                 1                          2
+## 3          23                  3                 1                          1
+##   Occupation No.of.dependents Telephone Foreign.Worker
+## 1          3                1         1              1
+## 2          3                2         1              1
+## 3          2                1         1              1</code></pre>
+<div class="sourceCode" id="cb771"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb771-1"><a href="rn.html#cb771-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(mis.datos)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    1000 obs. of  21 variables:
+##  $ Creditability                    : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Account.Balance                  : int  1 1 2 1 1 1 1 1 4 2 ...
+##  $ Duration.of.Credit..month.       : int  18 9 12 12 12 10 8 6 18 24 ...
+##  $ Payment.Status.of.Previous.Credit: int  4 4 2 4 4 4 4 4 4 2 ...
+##  $ Purpose                          : int  2 0 9 0 0 0 0 0 3 3 ...
+##  $ Credit.Amount                    : int  1049 2799 841 2122 2171 2241 3398 1361 1098 3758 ...
+##  $ Value.Savings.Stocks             : int  1 1 2 1 1 1 1 1 1 3 ...
+##  $ Length.of.current.employment     : int  2 3 4 3 3 2 4 2 1 1 ...
+##  $ Instalment.per.cent              : int  4 2 2 3 4 1 1 2 4 1 ...
+##  $ Sex...Marital.Status             : int  2 3 2 3 3 3 3 3 2 2 ...
+##  $ Guarantors                       : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Duration.in.Current.address      : int  4 2 4 2 4 3 4 4 4 4 ...
+##  $ Most.valuable.available.asset    : int  2 1 1 1 2 1 1 1 3 4 ...
+##  $ Age..years.                      : int  21 36 23 39 38 48 39 40 65 23 ...
+##  $ Concurrent.Credits               : int  3 3 3 3 1 3 3 3 3 3 ...
+##  $ Type.of.apartment                : int  1 1 1 1 2 1 2 2 2 1 ...
+##  $ No.of.Credits.at.this.Bank       : int  1 2 1 2 2 2 2 1 2 1 ...
+##  $ Occupation                       : int  3 3 2 2 2 2 2 2 1 1 ...
+##  $ No.of.dependents                 : int  1 2 1 2 1 2 1 2 1 1 ...
+##  $ Telephone                        : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Foreign.Worker                   : int  1 1 1 2 2 2 2 2 1 1 ...</code></pre>
+<ul>
+<li>Eliminar la columna “Telephone” de los datos, ya que este atributo no puede explicar la variable de salida (si un cliente es de “buena paga” o “mala paga”), asignando un valor NULL a este atributo de mis.datos</li>
+</ul>
+<div class="sourceCode" id="cb773"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb773-1"><a href="rn.html#cb773-1" aria-hidden="true" tabindex="-1"></a><span class="co"># eliminar la columna Telephone de los datos</span></span>
+<span id="cb773-2"><a href="rn.html#cb773-2" aria-hidden="true" tabindex="-1"></a>mis.datos<span class="sc">$</span>Telephone <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div>
+</div>
+<div id="normalizar-datos" class="section level2" number="17.3">
+<h2><span class="header-section-number">17.3</span> Normalizar datos</h2>
+<ul>
+<li>Normalizar los datos numéricos, menos la variable de salida. Una RNN (red neuronal) típicamente requiere eso (más que otros modelos / algoritmos). Normalizar los datos correspondientes entre 0 y 1. Digamos aquí los siguientes atributos se deben normalizar: Duration.of.Credit..month. , Credit.Amount , Age..years. Es decir, hablamos de las columnas 3, 6 y 14</li>
+</ul>
+<div class="sourceCode" id="cb774"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb774-1"><a href="rn.html#cb774-1" aria-hidden="true" tabindex="-1"></a><span class="co"># normalizar los valores entre 0 y 1</span></span>
+<span id="cb774-2"><a href="rn.html#cb774-2" aria-hidden="true" tabindex="-1"></a><span class="co"># aquí las columnas con valores númericas. Es decir, las columnas 3, 6 y 14</span></span>
+<span id="cb774-3"><a href="rn.html#cb774-3" aria-hidden="true" tabindex="-1"></a>mis.datos[, <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">14</span>)] <span class="ot">&lt;-</span> <span class="fu">apply</span>(mis.datos[, <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">14</span>)], <span class="at">MARGIN =</span> <span class="dv">2</span>, <span class="at">FUN =</span> <span class="cf">function</span>(X) (X <span class="sc">-</span> <span class="fu">min</span>(X))<span class="sc">/</span><span class="fu">diff</span>(<span class="fu">range</span>(X)))</span>
+<span id="cb774-4"><a href="rn.html#cb774-4" aria-hidden="true" tabindex="-1"></a><span class="co"># también con la función scale() esto es posible:</span></span>
+<span id="cb774-5"><a href="rn.html#cb774-5" aria-hidden="true" tabindex="-1"></a><span class="co"># maxs &lt;- apply(mis.datos[, c(3,6,14)], 2, max)</span></span>
+<span id="cb774-6"><a href="rn.html#cb774-6" aria-hidden="true" tabindex="-1"></a><span class="co"># mins &lt;- apply(mis.datos[, c(3,6,14)], 2, min)</span></span>
+<span id="cb774-7"><a href="rn.html#cb774-7" aria-hidden="true" tabindex="-1"></a><span class="co"># mis.datos[,c(3,6,14)] &lt;- scale(mis.datos[, c(3,6,14)], center = mins, scale = maxs - mins)</span></span></code></pre></div>
+<ul>
+<li>Variables categóricas podemos someter a “One-Hot-Encoding” para mejorar (potencialmente) el desempeño del modelo (aquí de la red neuronal)</li>
+<li>Las variables categóricas contienen valores de etiqueta (haciendo referencia a una categoría como p.ej. nivel género: M, F) en lugar de valores numéricos</li>
+<li>Por consigiente, se requiere a menudo la transformación de estas variables</li>
+<li>One-Hot-Encoding transforma una variable categórica a un número entero, que el cómputo puede entender “más facilmente.”</li>
+<li>Aquí, en el data frame mis.datos las variables categoricas como p.ej. “Occupation” ya son codificados como números (que representan las categorias). Entonces, vamos a dejar los datos como están, sin aplicar el One-Hot-Encoding en este ejemplo</li>
+</ul>
+</div>
+<div id="particionar-los-datos-2" class="section level2" number="17.4">
+<h2><span class="header-section-number">17.4</span> Particionar los datos</h2>
+<ul>
+<li>El próximo paso consiste en particionar los datos en “entrenamiento” y “pruebas” de forma 66%/34%</li>
+</ul>
+<div class="sourceCode" id="cb775"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb775-1"><a href="rn.html#cb775-1" aria-hidden="true" tabindex="-1"></a><span class="co"># particionar los datos</span></span>
+<span id="cb775-2"><a href="rn.html#cb775-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(mis.datos), <span class="fu">nrow</span>(mis.datos)<span class="sc">*</span><span class="fl">0.66</span>, <span class="at">replace=</span><span class="cn">FALSE</span>)</span>
+<span id="cb775-3"><a href="rn.html#cb775-3" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> mis.datos[d, ]</span>
+<span id="cb775-4"><a href="rn.html#cb775-4" aria-hidden="true" tabindex="-1"></a>test <span class="ot">&lt;-</span> mis.datos[<span class="sc">-</span>d, ]</span></code></pre></div>
+</div>
+<div id="crear-la-red-neuronal" class="section level2" number="17.5">
+<h2><span class="header-section-number">17.5</span> Crear la Red Neuronal</h2>
+<ul>
+<li>Ahora vamos a construir la red neuronal, utilizando el paquete “neuralnet” de R</li>
+<li>Identificar la variable de salida del modelo. Aqui: Creditability</li>
+<li>Tomar el resto de las variables como variables de entrada</li>
+<li>Generar la red neuronal utilizando la función neuralnet() con los parámetros: hidden = c(10,5), linear.output = FALSE, act.fct = ‘logistic,’ threshold = 0.01 (para más detalles ver las páginas de ayuda de neuralnet)</li>
+</ul>
+<div class="sourceCode" id="cb776"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb776-1"><a href="rn.html#cb776-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="sc">!</span><span class="fu">require</span>(<span class="st">&#39;neuralnet&#39;</span>)) <span class="fu">install.packages</span>(<span class="st">&#39;neuralnet&#39;</span>); <span class="fu">library</span>(neuralnet)</span></code></pre></div>
+<pre><code>## Loading required package: neuralnet</code></pre>
+<pre><code>## 
+## Attaching package: &#39;neuralnet&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     compute</code></pre>
+<div class="sourceCode" id="cb780"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb780-1"><a href="rn.html#cb780-1" aria-hidden="true" tabindex="-1"></a>rn_model <span class="ot">&lt;-</span> <span class="fu">neuralnet</span>(Creditability<span class="sc">~</span>.,</span>
+<span id="cb780-2"><a href="rn.html#cb780-2" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">data =</span> train,</span>
+<span id="cb780-3"><a href="rn.html#cb780-3" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">hidden =</span> <span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">5</span>),</span>
+<span id="cb780-4"><a href="rn.html#cb780-4" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">linear.output =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb780-5"><a href="rn.html#cb780-5" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">act.fct =</span> <span class="st">&#39;logistic&#39;</span>,</span>
+<span id="cb780-6"><a href="rn.html#cb780-6" aria-hidden="true" tabindex="-1"></a>                                            <span class="at">threshold =</span> <span class="fl">0.01</span>)</span>
+<span id="cb780-7"><a href="rn.html#cb780-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb780-8"><a href="rn.html#cb780-8" aria-hidden="true" tabindex="-1"></a><span class="co"># act.fct puede ser logistic o tanh</span></span></code></pre></div>
+<ul>
+<li>Graficar la red neuronal y observar los “pesos” que la red neuronal asignó a cada variable de entrada (cada variable independiente), utilizando la función plot() con los parámetros “rn_model” y rep=‘best’</li>
+</ul>
+<div class="sourceCode" id="cb781"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb781-1"><a href="rn.html#cb781-1" aria-hidden="true" tabindex="-1"></a><span class="co"># graficar con plot()</span></span>
+<span id="cb781-2"><a href="rn.html#cb781-2" aria-hidden="true" tabindex="-1"></a><span class="co"># observar pesos asignados a las variables</span></span>
+<span id="cb781-3"><a href="rn.html#cb781-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rn_model, <span class="at">rep=</span><span class="st">&#39;best&#39;</span>)</span></code></pre></div>
+<p><img src="r_libro_cl_files/figure-html/unnamed-chunk-188-1.png" width="672" /></p>
+<ul>
+<li>Ahora, calcular el resultado, utilizando la función compute() con el fin de calcular la red neuronal</li>
+<li>Nota: Esta función recibe como parámetros el modelo “rn_model” y los datos test, pero sin la variable de salida (columna Creditability)</li>
+<li>Asignar el resultado a una variable: rn_model.resultados</li>
+</ul>
+<div class="sourceCode" id="cb782"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb782-1"><a href="rn.html#cb782-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calcular el resultado</span></span>
+<span id="cb782-2"><a href="rn.html#cb782-2" aria-hidden="true" tabindex="-1"></a>rn_model.resultados <span class="ot">&lt;-</span> <span class="fu">compute</span>(rn_model, test[ , <span class="sc">-</span><span class="dv">1</span>])</span>
+<span id="cb782-3"><a href="rn.html#cb782-3" aria-hidden="true" tabindex="-1"></a><span class="co"># head(rn_model.resultados)</span></span></code></pre></div>
+</div>
+<div id="realizar-la-predicción" class="section level2" number="17.6">
+<h2><span class="header-section-number">17.6</span> Realizar la predicción</h2>
+<ul>
+<li>Finalmente, extraer del modelo de la red neuronal construido (rn_model) la predicción, accediendo al atributo net.result y asignar el resultado a una variable “prediccion”</li>
+<li>Utilizar la variable predicción para generar un data frame de dos columnas con los valores actuales de test$Creditability y con la prediccion para esta variable, realizada por el modelo (la red neuronal)</li>
+<li>Nota: La predicción finalmente es un porcentaje</li>
+</ul>
+<div class="sourceCode" id="cb783"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb783-1"><a href="rn.html#cb783-1" aria-hidden="true" tabindex="-1"></a><span class="co">#predicción</span></span>
+<span id="cb783-2"><a href="rn.html#cb783-2" aria-hidden="true" tabindex="-1"></a>prediccion_RN <span class="ot">&lt;-</span> rn_model<span class="sc">$</span>net.result</span>
+<span id="cb783-3"><a href="rn.html#cb783-3" aria-hidden="true" tabindex="-1"></a>resultados <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">actual=</span>test<span class="sc">$</span>Creditability, <span class="at">pred=</span>rn_model.resultados<span class="sc">$</span>net.result)</span>
+<span id="cb783-4"><a href="rn.html#cb783-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(resultados)</span></code></pre></div>
+<pre><code>##    actual         pred
+## 6       1 1.000000e+00
+## 15      1 1.552670e-14
+## 21      1 1.000000e+00
+## 24      1 1.000000e+00
+## 25      1 1.000000e+00
+## 27      1 9.999995e-01</code></pre>
+<ul>
+<li>Generar la tabla de clasificación (tabla de “confusión”) para visualizar de esta forma los resultados (valor actual de Creditibility vs el valor predicho)</li>
+</ul>
+<div class="sourceCode" id="cb785"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb785-1"><a href="rn.html#cb785-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tabla de confusión</span></span>
+<span id="cb785-2"><a href="rn.html#cb785-2" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="at">actual=</span>resultados<span class="sc">$</span>actual, <span class="at">pred=</span><span class="fu">ifelse</span>(resultados<span class="sc">$</span>pred <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)) </span></code></pre></div>
+<pre><code>##       pred
+## actual   0   1
+##      0  63  54
+##      1  52 171</code></pre>
+<ul>
+<li>Determinar la exactitud del modelo (red neuronal)</li>
+</ul>
+<div class="sourceCode" id="cb787"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb787-1"><a href="rn.html#cb787-1" aria-hidden="true" tabindex="-1"></a><span class="co"># exactitud</span></span>
+<span id="cb787-2"><a href="rn.html#cb787-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(resultados<span class="sc">$</span>actual<span class="sc">==</span><span class="fu">ifelse</span>(resultados<span class="sc">$</span>pred <span class="sc">&gt;</span> <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="co"># 0.6882353</span></span></code></pre></div>
+<pre><code>## [1] 0.6882353</code></pre>
+<ul>
+<li>¿Qué es lo que se puede decir con respecto a la exactitud del modelo y su capacidad de clasificar los datos / registros (en “buena paga” y “mala paga”)?</li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="normalizar.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="VaR.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+},
+"info": null
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

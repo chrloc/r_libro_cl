@@ -8,6 +8,11 @@ El objetivo de esta sección es introducir al lenguaje R, como utilizarla como c
 
 R, como otros lenguajes de programación, se puede utilizar como una calculadora. Esto se muestra a continuación, utilizando algunas operaciones matemáticas comunes como ejemplo.
 
+Nota: Orden de evaluación. 
+PEMDAS mnemonic: "Please Excuse My Dear Aunt Sally".
+
+Parentheses, Exponents, Multiplication/Division, Addition/Subtraction
+
 ```{r}
 1+1 # 2
 3 * 4 * 2 # 24

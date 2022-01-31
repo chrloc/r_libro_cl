@@ -1,0 +1,2 @@
+"0","a2 <- acciones[acciones$symbol==""MSFT"", ] "
+"0","head(a2)"

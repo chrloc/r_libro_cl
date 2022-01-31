@@ -24,7 +24,7 @@ Un tibble, o tbl_df, es una presentación moderna de un data frame. Manteniendo 
 
 - Leer algunos datos de la web (http://freakonometrics.free.fr/german_credit.csv), desde un archivo csv ... [véase aquí](#cargar) y asignar el resultado a una variable "dataset"
 
-```{r}
+```{r tidyStart}
 url="http://freakonometrics.free.fr/german_credit.csv"
 dataset <- read.csv(url, header = TRUE, sep = ",")
 ```
@@ -67,7 +67,7 @@ dataset %>%
   head(n=5)
 ```
 
-### arrange
+### arrange (para ordenar datos)
 
 - Ordenar el resultado anterior por la columna edad (Age..years.) de manera descendente, utilizando la función arrange()
 
@@ -78,7 +78,7 @@ dataset %>%
   head(n=5)
 ```
 
-### group_by y summarize
+### group_by y summarize (contar registros)
 
 - Contar las observaciones por el campo destino ("Purpose") del crédito, utilizando la función group_by() y la función summarize()
 - Mostrar el resultado en la pantalla
@@ -91,7 +91,7 @@ dataset %>%
 
 ### select
 
-- Seleccionar únicamente las columnas "Creditability"" y "Credit.Amount"" del dataset, utilizando la función select(), y mostrar las primeras 5 filas
+- Seleccionar únicamente las columnas "Creditability" y "Credit.Amount" del dataset, utilizando la función select(), y mostrar las primeras 5 filas
 
 ```{r}
 dataset %>%
@@ -140,7 +140,7 @@ dataset %>%
 
 Es decir, lo que se hace aquí es que queremos utilizar el conjunto de datos que consiste, por un lado, en las diez acciones más grandes dentro del índice S&P500, que tuvieron su IPO antes de enero del año  2000. Por otro lado, debemos combinar ambos conjuntos de datos ("S&P500" y "NYSE más NASDAQ", usando un "inner join", porque solo queremos mantener los símbolos del S&P500, que también se negocian en NYSE o NASDAQ [Stöckl, S. (21/09/2018). Tidy Portfoliomanagement in R](https://bookdown.org/sstoeckl/Tidy_Portfoliomanagement_in_R/s-2Data.html#fnref1). 
 
-```{r}
+```{r tidyEnd}
 library(tidyverse)
 library(tidyquant) # debe ser la versión actual (>=0.5.9)
 tq_exchange_options() # "AMEX"   "NASDAQ" "NYSE"

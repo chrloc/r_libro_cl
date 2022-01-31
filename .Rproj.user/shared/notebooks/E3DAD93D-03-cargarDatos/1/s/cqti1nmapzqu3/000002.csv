@@ -1,0 +1,4 @@
+"0","library(quantmod)"
+"0","?quantmod"
+"0","stockData <- new.env() #Generar un entorno nuevo "
+"0","# para que quandmod pueda guardar los datos en este entorno"

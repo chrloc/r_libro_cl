@@ -1,2 +1,2 @@
-"0","dataset.histogram <-ggplot(data=dataset, aes(x = Creditability)) + theme(legend.position=""none"")"
+"0","dataset.histogram <- ggplot(data=dataset, aes(x = Creditability)) + theme(legend.position=""none"")"
 "0","dataset.histogram + geom_bar(colour=""darkgreen"", fill=""white"" ) + labs(x=""Default 0 or 1"", y=""Frequency"")"

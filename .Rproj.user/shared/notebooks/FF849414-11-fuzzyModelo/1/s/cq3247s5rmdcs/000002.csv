@@ -1,0 +1,3 @@
+"0","example.1 <- fuzzy_inference(model, list(experiencia = 75, educacion = 0,"
+"0","                                         carisma = 70))"
+"0","plot(example.1)"

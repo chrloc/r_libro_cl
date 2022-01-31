@@ -1,0 +1,4 @@
+"0","# particionar los datos"
+"0","d <- sample(nrow(mis.datos), nrow(mis.datos)*0.66, replace=FALSE)"
+"0","train <- mis.datos[d, ]"
+"0","test <- mis.datos[-d, ]"

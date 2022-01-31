@@ -1,0 +1,2 @@
+"0","df$mpgScore <- predict(lin.mod, df)"
+"0","head(df)"

@@ -1,0 +1,42 @@
+"0","?fuzzy_system"
+"0","model <- fuzzy_system(variables, rules)"
+"0","print(model) # imprime las variables y las reglas a la pantalla"
+"1","A fuzzy system consisting of 4 variables and 6 rules.
+
+"
+"1","Variables:
+
+"
+"1","aptitud(poca, ok, perfecta)
+"
+"1","educacion(baja, media, alta)
+"
+"1","experiencia(poca, aceptable, mucha)
+"
+"1","carisma(poco, medio, alto)
+"
+"1","
+Rules:
+
+"
+"1","experiencia %is% mucha && carisma %is% medio => aptitud %is% ok
+"
+"1","experiencia %is% mucha && educacion %is% alta && carisma %is%  => aptitud %is% poca
+"
+"1","    alto => aptitud %is% poca
+"
+"1","experiencia %is% mucha && educacion %is% baja && carisma %is%  => aptitud %is% ok
+"
+"1","    medio => aptitud %is% ok
+"
+"1","experiencia %is% aceptable && educacion %is% baja && carisma %is%  => aptitud %is% perfecta
+"
+"1","    poco => aptitud %is% perfecta
+"
+"1","experiencia %is% aceptable || educacion %is% media || carisma %is%  => aptitud %is% ok
+"
+"1","    medio => aptitud %is% ok
+"
+"1","experiencia %is% poca => aptitud %is% poca
+"
+"0","plot(model) # imprime los conjuntos borrosos"

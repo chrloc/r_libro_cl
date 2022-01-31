@@ -1,0 +1,2 @@
+"0","dataset.num <- dataset[ , c(""Ingresos"", ""Egresos"", ""Calificacion"")]"
+"0","print(dataset.num)"

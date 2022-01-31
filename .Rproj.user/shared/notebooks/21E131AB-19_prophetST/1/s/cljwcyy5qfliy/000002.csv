@@ -1,0 +1,6 @@
+"0","#crear el modelo de pronóstico, utilizando prophet"
+"0","model <- prophet(df2)"
+"2","Disabling yearly seasonality. Run prophet with yearly.seasonality=TRUE to override this.
+"
+"2","Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.
+"

@@ -1,0 +1,37 @@
+"0","library(rriskDistributions)"
+"0","# utilizar la función fit.cont() para distribuciones continuas"
+"0","res1 <-  fit.cont(datos$normal)"
+"2","
+Begin fitting distributions ---------------------------------------
+"
+"2","* fitting normal distribution ... OK
+"
+"2","* fitting Cauchy  distribution ... OK
+"
+"2","* fitting logistic distribution ... OK
+"
+"2","* fitting beta distribution ... failed
+"
+"2","* fitting exponential distribution ... failed
+"
+"2","* fitting chi-square distribution ... failed
+"
+"2","* fitting uniform distribution ... OK
+"
+"2","* fitting gamma distribution ... failed
+"
+"2","* fitting lognormal distribution ... failed
+"
+"2","* fitting Weibull distribution ... failed
+"
+"2","* fitting F-distribution ... failed
+"
+"2","* fitting Student's t-distribution ... OK
+"
+"2","* fitting Gompertz distribution ... failed
+"
+"2","* fitting triangular distribution ... failed
+"
+"2","End fitting distributions -----------------------------------------
+
+"

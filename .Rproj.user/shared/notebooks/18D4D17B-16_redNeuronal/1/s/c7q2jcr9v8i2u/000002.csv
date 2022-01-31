@@ -1,0 +1,7 @@
+"0","if(!require('neuralnet')) install.packages('neuralnet'); library(neuralnet)"
+"0","rn_model <- neuralnet(Creditability~.,"
+"0","											data = train,"
+"0","											hidden = c(10,5),"
+"0","											linear.output = FALSE,"
+"0","											act.fct = 'tanh',"
+"0","											threshold = 0.01)"

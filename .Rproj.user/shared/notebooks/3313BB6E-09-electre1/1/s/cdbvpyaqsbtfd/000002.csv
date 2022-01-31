@@ -1,8 +1,5 @@
 "0","library(readxl)"
-"0","#getwd()"
-"0","#setwd(""C:/Users/christian.lochmuller/Documents/directorioR"") #working directory"
-"0","# nota: no se puede cambiar el directorio in bookdown"
-"0","mis.datos <- read_excel('electre_datos.xlsx')"
+"0","mis.datos <- read_excel('electre_datos.xlsx') # del working directory"
 "2","New names:
 * `` -> ...1
 "

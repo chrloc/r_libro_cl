@@ -1,0 +1,4 @@
+"0","# con make_future_dataframe() podemos generar un dataframe con las fechas de "
+"0","# los futuros periodos"
+"0","future <- make_future_dataframe(model,periods=3*30)"
+"0","tail(future)"

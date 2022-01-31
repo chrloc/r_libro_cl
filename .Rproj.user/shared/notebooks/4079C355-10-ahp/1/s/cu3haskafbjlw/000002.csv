@@ -1,0 +1,10 @@
+"0","library(MCDA)"
+"0","library(readxl)"
+"0","data <- read_excel('ahp_con_MCDA.xlsx')"
+"2","New names:
+* `` -> ...2
+* `` -> ...3
+* `` -> ...4
+* `` -> ...5
+"
+"0","print(data)"

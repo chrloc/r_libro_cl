@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Sección 4 Cargar datos a R/RStudio | Una breve introducción a R con un enfoque financiero y administrativo</title>
   <meta name="description" content="Una breve introducción al lenguaje de programación R. Con unos ejemplos del área administrativo y de las finanzas." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Sección 4 Cargar datos a R/RStudio | Una breve introducción a R con un enfoque financiero y administrativo" />
   <meta property="og:type" content="book" />
@@ -32,7 +32,9 @@
   
 <link rel="prev" href="tipos.html"/>
 <link rel="next" href="explorar.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -48,50 +50,83 @@
 
 
 
-
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<script src="libs/viz-1.8.2/viz.js"></script>
-<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="libs/grViz-binding-1.0.5/grViz.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<script src="libs/Dygraph.Plugins.Unzoom-1.0/unzoom.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -110,32 +145,37 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisitos</a></li>
-<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introducción</a><ul>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introducción</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#objetivo"><i class="fa fa-check"></i><b>2.1</b> Objetivo</a></li>
 <li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#usar-r-como-calculadora"><i class="fa fa-check"></i><b>2.2</b> Usar R como “calculadora”</a></li>
 <li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#asignar-un-valor-numérico-a-una-variable"><i class="fa fa-check"></i><b>2.3</b> Asignar un valor numérico a una variable</a></li>
-<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#buscar-ayuda"><i class="fa fa-check"></i><b>2.4</b> Buscar ayuda</a><ul>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#buscar-ayuda"><i class="fa fa-check"></i><b>2.4</b> Buscar ayuda</a>
+<ul>
 <li class="chapter" data-level="2.4.1" data-path="intro.html"><a href="intro.html#un-ejemplo"><i class="fa fa-check"></i><b>2.4.1</b> Un ejemplo</a></li>
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#organizar-el-código"><i class="fa fa-check"></i><b>2.5</b> Organizar el código</a></li>
 <li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#una-opción-para-explorar-swirl"><i class="fa fa-check"></i><b>2.6</b> Una opción para explorar: Swirl</a></li>
 <li class="chapter" data-level="2.7" data-path="intro.html"><a href="intro.html#ejercicio-1"><i class="fa fa-check"></i><b>2.7</b> Ejercicio 1</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>3</b> Usar tipos de datos</a><ul>
+<li class="chapter" data-level="3" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>3</b> Usar tipos de datos</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="tipos.html"><a href="tipos.html#objetivo-1"><i class="fa fa-check"></i><b>3.1</b> Objetivo</a></li>
 <li class="chapter" data-level="3.2" data-path="tipos.html"><a href="tipos.html#datos-booleanos-y-operadores-de-lógica"><i class="fa fa-check"></i><b>3.2</b> Datos booleanos y operadores de lógica</a></li>
 <li class="chapter" data-level="3.3" data-path="tipos.html"><a href="tipos.html#tipo-de-dato-fecha"><i class="fa fa-check"></i><b>3.3</b> Tipo de dato fecha</a></li>
 <li class="chapter" data-level="3.4" data-path="tipos.html"><a href="tipos.html#tipo-de-dato-vector"><i class="fa fa-check"></i><b>3.4</b> Tipo de dato vector</a></li>
-<li class="chapter" data-level="3.5" data-path="tipos.html"><a href="tipos.html#vectores-de-caracteres-strings"><i class="fa fa-check"></i><b>3.5</b> Vectores de caracteres (strings)</a></li>
+<li class="chapter" data-level="3.5" data-path="tipos.html"><a href="tipos.html#vectores-de-carácteres-strings"><i class="fa fa-check"></i><b>3.5</b> Vectores de carácteres (strings)</a></li>
 <li class="chapter" data-level="3.6" data-path="tipos.html"><a href="tipos.html#acceder-a-elementos-de-un-vector"><i class="fa fa-check"></i><b>3.6</b> Acceder a elementos de un vector</a></li>
 <li class="chapter" data-level="3.7" data-path="tipos.html"><a href="tipos.html#factors-variables-categóricas"><i class="fa fa-check"></i><b>3.7</b> Factors (variables categóricas)</a></li>
 <li class="chapter" data-level="3.8" data-path="tipos.html"><a href="tipos.html#funciones-matemáticas-para-vectores"><i class="fa fa-check"></i><b>3.8</b> Funciones matemáticas para vectores</a></li>
 <li class="chapter" data-level="3.9" data-path="tipos.html"><a href="tipos.html#usar-pipes-un-concepto-interesante"><i class="fa fa-check"></i><b>3.9</b> Usar pipes (un concepto “interesante”)</a></li>
 <li class="chapter" data-level="3.10" data-path="tipos.html"><a href="tipos.html#data-frames"><i class="fa fa-check"></i><b>3.10</b> Data frames</a></li>
-<li class="chapter" data-level="3.11" data-path="tipos.html"><a href="tipos.html#listas"><i class="fa fa-check"></i><b>3.11</b> Listas</a><ul>
+<li class="chapter" data-level="3.11" data-path="tipos.html"><a href="tipos.html#listas"><i class="fa fa-check"></i><b>3.11</b> Listas</a>
+<ul>
 <li class="chapter" data-level="3.11.1" data-path="tipos.html"><a href="tipos.html#una-lista-de-listas"><i class="fa fa-check"></i><b>3.11.1</b> Una lista de listas</a></li>
 </ul></li>
-<li class="chapter" data-level="3.12" data-path="tipos.html"><a href="tipos.html#ejercicio-2"><i class="fa fa-check"></i><b>3.12</b> Ejercicio 2</a><ul>
+<li class="chapter" data-level="3.12" data-path="tipos.html"><a href="tipos.html#ejercicio-2"><i class="fa fa-check"></i><b>3.12</b> Ejercicio 2</a>
+<ul>
 <li class="chapter" data-level="3.12.1" data-path="tipos.html"><a href="tipos.html#parte-a"><i class="fa fa-check"></i><b>3.12.1</b> Parte a</a></li>
 <li class="chapter" data-level="3.12.2" data-path="tipos.html"><a href="tipos.html#parte-b"><i class="fa fa-check"></i><b>3.12.2</b> Parte b</a></li>
 <li class="chapter" data-level="3.12.3" data-path="tipos.html"><a href="tipos.html#parte-c"><i class="fa fa-check"></i><b>3.12.3</b> Parte c</a></li>
@@ -143,27 +183,32 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.12.5" data-path="tipos.html"><a href="tipos.html#parte-e"><i class="fa fa-check"></i><b>3.12.5</b> Parte e</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="cargar.html"><a href="cargar.html"><i class="fa fa-check"></i><b>4</b> Cargar datos a R/RStudio</a><ul>
+<li class="chapter" data-level="4" data-path="cargar.html"><a href="cargar.html"><i class="fa fa-check"></i><b>4</b> Cargar datos a R/RStudio</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="cargar.html"><a href="cargar.html#objetivo-2"><i class="fa fa-check"></i><b>4.1</b> Objetivo</a></li>
 <li class="chapter" data-level="4.2" data-path="cargar.html"><a href="cargar.html#leer-datos-desde-un-archivo-de-tipo-csv-y-xlsx"><i class="fa fa-check"></i><b>4.2</b> Leer datos desde un archivo de tipo csv y xlsx</a></li>
 <li class="chapter" data-level="4.3" data-path="cargar.html"><a href="cargar.html#leer-datos-desde-un-archivo-csv-de-una-página-web-url"><i class="fa fa-check"></i><b>4.3</b> Leer datos desde un archivo csv de una página web (url)</a></li>
 <li class="chapter" data-level="4.4" data-path="cargar.html"><a href="cargar.html#leer-datos-de-acciones-utilizando-el-paquete-quantmod"><i class="fa fa-check"></i><b>4.4</b> Leer datos de acciones, utilizando el paquete quantmod</a></li>
 <li class="chapter" data-level="4.5" data-path="cargar.html"><a href="cargar.html#leer-datos-de-una-tabla-de-una-página-web-wikipedia"><i class="fa fa-check"></i><b>4.5</b> Leer datos de una tabla de una página web: wikipedia</a></li>
 <li class="chapter" data-level="4.6" data-path="cargar.html"><a href="cargar.html#cargar-un-conjunto-de-datos-que-viene-con-r"><i class="fa fa-check"></i><b>4.6</b> Cargar un conjunto de datos, que viene con R</a></li>
-<li class="chapter" data-level="4.7" data-path="cargar.html"><a href="cargar.html#cargar-datos-financieros-con-el-paquete-tidyquant"><i class="fa fa-check"></i><b>4.7</b> Cargar datos financieros con el paquete tidyquant</a><ul>
+<li class="chapter" data-level="4.7" data-path="cargar.html"><a href="cargar.html#cargar-datos-financieros-con-el-paquete-tidyquant"><i class="fa fa-check"></i><b>4.7</b> Cargar datos financieros con el paquete tidyquant</a>
+<ul>
 <li class="chapter" data-level="4.7.1" data-path="cargar.html"><a href="cargar.html#renta-variable---precio-de-acciones"><i class="fa fa-check"></i><b>4.7.1</b> Renta variable - precio de acciones</a></li>
 <li class="chapter" data-level="4.7.2" data-path="cargar.html"><a href="cargar.html#renta-fija"><i class="fa fa-check"></i><b>4.7.2</b> Renta fija</a></li>
 </ul></li>
-<li class="chapter" data-level="4.8" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8</b> Cargar datos de criptomonedas</a><ul>
+<li class="chapter" data-level="4.8" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8</b> Cargar datos de criptomonedas</a>
+<ul>
 <li class="chapter" data-level="4.8.1" data-path="cargar.html"><a href="cargar.html#para-cargar-datos-históricos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8.1</b> Para cargar datos históricos de criptomonedas</a></li>
 </ul></li>
 <li class="chapter" data-level="4.9" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-eurostat-con-r"><i class="fa fa-check"></i><b>4.9</b> Cargar datos de Eurostat con R</a></li>
 <li class="chapter" data-level="4.10" data-path="cargar.html"><a href="cargar.html#ejercicio-3"><i class="fa fa-check"></i><b>4.10</b> Ejercicio 3</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="explorar.html"><a href="explorar.html"><i class="fa fa-check"></i><b>5</b> Explorar datos</a><ul>
+<li class="chapter" data-level="5" data-path="explorar.html"><a href="explorar.html"><i class="fa fa-check"></i><b>5</b> Explorar datos</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="explorar.html"><a href="explorar.html#objetivo-3"><i class="fa fa-check"></i><b>5.1</b> Objetivo</a></li>
 <li class="chapter" data-level="5.2" data-path="explorar.html"><a href="explorar.html#desarrollar-un-entendimiento-inicial-del-conjunto-de-datos"><i class="fa fa-check"></i><b>5.2</b> Desarrollar un entendimiento inicial del conjunto de datos</a></li>
-<li class="chapter" data-level="5.3" data-path="explorar.html"><a href="explorar.html#comprobar-si-existen-datos-faltantes"><i class="fa fa-check"></i><b>5.3</b> Comprobar, si existen datos faltantes</a><ul>
+<li class="chapter" data-level="5.3" data-path="explorar.html"><a href="explorar.html#comprobar-si-existen-datos-faltantes"><i class="fa fa-check"></i><b>5.3</b> Comprobar, si existen datos faltantes</a>
+<ul>
 <li class="chapter" data-level="5.3.1" data-path="explorar.html"><a href="explorar.html#opción-1"><i class="fa fa-check"></i><b>5.3.1</b> Opción 1</a></li>
 <li class="chapter" data-level="5.3.2" data-path="explorar.html"><a href="explorar.html#opción-2"><i class="fa fa-check"></i><b>5.3.2</b> Opción 2</a></li>
 <li class="chapter" data-level="5.3.3" data-path="explorar.html"><a href="explorar.html#opción-3"><i class="fa fa-check"></i><b>5.3.3</b> Opción 3</a></li>
@@ -174,32 +219,38 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.6" data-path="explorar.html"><a href="explorar.html#apalancarse-por-el-paquete-desctools"><i class="fa fa-check"></i><b>5.6</b> Apalancarse por el paquete DescTools</a></li>
 <li class="chapter" data-level="5.7" data-path="explorar.html"><a href="explorar.html#ejercicio-4"><i class="fa fa-check"></i><b>5.7</b> Ejercicio 4</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="tidy.html"><a href="tidy.html"><i class="fa fa-check"></i><b>6</b> El paquete tidyverse y su funcionalidad</a><ul>
+<li class="chapter" data-level="6" data-path="tidy.html"><a href="tidy.html"><i class="fa fa-check"></i><b>6</b> El paquete tidyverse y su funcionalidad</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="tidy.html"><a href="tidy.html#objetivo-y-contextualización"><i class="fa fa-check"></i><b>6.1</b> Objetivo y contextualización</a></li>
 <li class="chapter" data-level="6.2" data-path="tidy.html"><a href="tidy.html#tibble-parte-del-ecosistema-tidyverse"><i class="fa fa-check"></i><b>6.2</b> tibble (parte del ecosistema tidyverse)</a></li>
-<li class="chapter" data-level="6.3" data-path="tidy.html"><a href="tidy.html#utilizar-y-aplicar-funciones-del-tidyverse"><i class="fa fa-check"></i><b>6.3</b> Utilizar y aplicar funciones del tidyverse</a><ul>
+<li class="chapter" data-level="6.3" data-path="tidy.html"><a href="tidy.html#utilizar-y-aplicar-funciones-del-tidyverse"><i class="fa fa-check"></i><b>6.3</b> Utilizar y aplicar funciones del tidyverse</a>
+<ul>
 <li class="chapter" data-level="6.3.1" data-path="tidy.html"><a href="tidy.html#filter"><i class="fa fa-check"></i><b>6.3.1</b> filter</a></li>
-<li class="chapter" data-level="6.3.2" data-path="tidy.html"><a href="tidy.html#arrange"><i class="fa fa-check"></i><b>6.3.2</b> arrange</a></li>
-<li class="chapter" data-level="6.3.3" data-path="tidy.html"><a href="tidy.html#group_by-y-summarize"><i class="fa fa-check"></i><b>6.3.3</b> group_by y summarize</a></li>
+<li class="chapter" data-level="6.3.2" data-path="tidy.html"><a href="tidy.html#arrange-para-ordenar-datos"><i class="fa fa-check"></i><b>6.3.2</b> arrange (para ordenar datos)</a></li>
+<li class="chapter" data-level="6.3.3" data-path="tidy.html"><a href="tidy.html#group_by-y-summarize-contar-registros"><i class="fa fa-check"></i><b>6.3.3</b> group_by y summarize (contar registros)</a></li>
 <li class="chapter" data-level="6.3.4" data-path="tidy.html"><a href="tidy.html#select"><i class="fa fa-check"></i><b>6.3.4</b> select</a></li>
 <li class="chapter" data-level="6.3.5" data-path="tidy.html"><a href="tidy.html#mutate"><i class="fa fa-check"></i><b>6.3.5</b> mutate</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="tidy.html"><a href="tidy.html#ejercicio-más-avanzado"><i class="fa fa-check"></i><b>6.4</b> Ejercicio más avanzado</a><ul>
+<li class="chapter" data-level="6.4" data-path="tidy.html"><a href="tidy.html#ejercicio-más-avanzado"><i class="fa fa-check"></i><b>6.4</b> Ejercicio más avanzado</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="tidy.html"><a href="tidy.html#procesar-datos-bursátiles-con-pipes"><i class="fa fa-check"></i><b>6.4.1</b> Procesar datos bursátiles con pipes (%&gt;%)</a></li>
 </ul></li>
 <li class="chapter" data-level="6.5" data-path="tidy.html"><a href="tidy.html#ejercicio-5"><i class="fa fa-check"></i><b>6.5</b> Ejercicio 5</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="bucles.html"><a href="bucles.html"><i class="fa fa-check"></i><b>7</b> Bucles / ciclos</a><ul>
+<li class="chapter" data-level="7" data-path="bucles.html"><a href="bucles.html"><i class="fa fa-check"></i><b>7</b> Bucles / ciclos</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="bucles.html"><a href="bucles.html#objetivo-4"><i class="fa fa-check"></i><b>7.1</b> Objetivo</a></li>
-<li class="chapter" data-level="7.2" data-path="bucles.html"><a href="bucles.html#qué-son-las-funciones-del-tipo-apply"><i class="fa fa-check"></i><b>7.2</b> ¿Qué son las funciones del tipo “apply()”?</a></li>
-<li class="chapter" data-level="7.3" data-path="bucles.html"><a href="bucles.html#apply"><i class="fa fa-check"></i><b>7.3</b> apply</a><ul>
+<li class="chapter" data-level="7.2" data-path="bucles.html"><a href="bucles.html#qué-son-las-funciones-del-tipo-apply"><i class="fa fa-check"></i><b>7.2</b> ¿Qué son las funciones del tipo “apply()?”</a></li>
+<li class="chapter" data-level="7.3" data-path="bucles.html"><a href="bucles.html#apply"><i class="fa fa-check"></i><b>7.3</b> apply</a>
+<ul>
 <li class="chapter" data-level="7.3.1" data-path="bucles.html"><a href="bucles.html#apply-vs-for-for-loop"><i class="fa fa-check"></i><b>7.3.1</b> apply vs for (for loop)</a></li>
 </ul></li>
 <li class="chapter" data-level="7.4" data-path="bucles.html"><a href="bucles.html#lapply"><i class="fa fa-check"></i><b>7.4</b> lapply</a></li>
 <li class="chapter" data-level="7.5" data-path="bucles.html"><a href="bucles.html#sapply"><i class="fa fa-check"></i><b>7.5</b> sapply</a></li>
 <li class="chapter" data-level="7.6" data-path="bucles.html"><a href="bucles.html#ejercicio-6"><i class="fa fa-check"></i><b>7.6</b> Ejercicio 6</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="ajusteDistri.html"><a href="ajusteDistri.html"><i class="fa fa-check"></i><b>8</b> Ajuste de datos a una distribución</a><ul>
+<li class="chapter" data-level="8" data-path="ajusteDistri.html"><a href="ajusteDistri.html"><i class="fa fa-check"></i><b>8</b> Ajuste de datos a una distribución</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="ajusteDistri.html"><a href="ajusteDistri.html#objetivo-5"><i class="fa fa-check"></i><b>8.1</b> Objetivo</a></li>
 <li class="chapter" data-level="8.2" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-normal"><i class="fa fa-check"></i><b>8.2</b> Distribución normal</a></li>
 <li class="chapter" data-level="8.3" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-exponencial"><i class="fa fa-check"></i><b>8.3</b> Distribución exponencial</a></li>
@@ -207,34 +258,38 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="8.5" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-lognormal"><i class="fa fa-check"></i><b>8.5</b> Distribución lognormal</a></li>
 <li class="chapter" data-level="8.6" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-poisson-discreta"><i class="fa fa-check"></i><b>8.6</b> Distribución Poisson (discreta)</a></li>
 <li class="chapter" data-level="8.7" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-binomial"><i class="fa fa-check"></i><b>8.7</b> Distribución binomial</a></li>
-<li class="chapter" data-level="8.8" data-path="ajusteDistri.html"><a href="ajusteDistri.html#unir-todo-en-un-data-frame"><i class="fa fa-check"></i><b>8.8</b> Unir todo en un data frame</a></li>
+<li class="chapter" data-level="8.8" data-path="ajusteDistri.html"><a href="ajusteDistri.html#unir-todo-en-un-solo-data-frame"><i class="fa fa-check"></i><b>8.8</b> Unir todo en un solo data frame</a></li>
 <li class="chapter" data-level="8.9" data-path="ajusteDistri.html"><a href="ajusteDistri.html#realizar-el-ajuste"><i class="fa fa-check"></i><b>8.9</b> Realizar el ajuste</a></li>
 <li class="chapter" data-level="8.10" data-path="ajusteDistri.html"><a href="ajusteDistri.html#ejercicio-7"><i class="fa fa-check"></i><b>8.10</b> Ejercicio 7</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="regLineal.html"><a href="regLineal.html"><i class="fa fa-check"></i><b>9</b> Un modelo lineal “sencillo” (regresión lineal)</a><ul>
+<li class="chapter" data-level="9" data-path="regLineal.html"><a href="regLineal.html"><i class="fa fa-check"></i><b>9</b> Un modelo lineal “sencillo” (regresión lineal)</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="regLineal.html"><a href="regLineal.html#objetivo-6"><i class="fa fa-check"></i><b>9.1</b> Objetivo</a></li>
 <li class="chapter" data-level="9.2" data-path="regLineal.html"><a href="regLineal.html#cargar-datos-sobre-carros"><i class="fa fa-check"></i><b>9.2</b> Cargar datos sobre carros</a></li>
 <li class="chapter" data-level="9.3" data-path="regLineal.html"><a href="regLineal.html#crear-el-modelo-lineal-regresión-lineal"><i class="fa fa-check"></i><b>9.3</b> Crear el modelo lineal (regresión lineal)</a></li>
 <li class="chapter" data-level="9.4" data-path="regLineal.html"><a href="regLineal.html#realizar-una-predicción"><i class="fa fa-check"></i><b>9.4</b> Realizar una predicción</a></li>
+<li class="chapter" data-level="9.5" data-path="regLineal.html"><a href="regLineal.html#un-segundo-ejemplo-sencillo"><i class="fa fa-check"></i><b>9.5</b> Un segundo ejemplo sencillo</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="regLineal.html"><a href="regLineal.html#utilidad-en-función-del-gasto-para-publicidad"><i class="fa fa-check"></i><b>9.5.1</b> Utilidad en función del gasto para publicidad</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="electre1.html"><a href="electre1.html"><i class="fa fa-check"></i><b>10</b> MCDA: Outranking - sobre calificación</a><ul>
+</ul></li>
+<li class="chapter" data-level="10" data-path="electre1.html"><a href="electre1.html"><i class="fa fa-check"></i><b>10</b> MCDA: Outranking - sobre calificación</a>
+<ul>
 <li class="chapter" data-level="10.1" data-path="electre1.html"><a href="electre1.html#objetivo-y-contextualización-1"><i class="fa fa-check"></i><b>10.1</b> Objetivo y contextualización</a></li>
-<li class="chapter" data-level="10.2" data-path="electre1.html"><a href="electre1.html#datos"><i class="fa fa-check"></i><b>10.2</b> Datos</a></li>
+<li class="chapter" data-level="10.2" data-path="electre1.html"><a href="electre1.html#generar-datos"><i class="fa fa-check"></i><b>10.2</b> Generar datos</a></li>
 <li class="chapter" data-level="10.3" data-path="electre1.html"><a href="electre1.html#leer-los-datos-desde-un-archivo-de-excel"><i class="fa fa-check"></i><b>10.3</b> Leer los datos desde un archivo de Excel</a></li>
 <li class="chapter" data-level="10.4" data-path="electre1.html"><a href="electre1.html#analizar-el-paquete-outranking-tools-y-la-función-electre_1"><i class="fa fa-check"></i><b>10.4</b> Analizar el paquete Outranking Tools y la función electre_1()</a></li>
 <li class="chapter" data-level="10.5" data-path="electre1.html"><a href="electre1.html#transformar-los-datos-al-formato-requerido"><i class="fa fa-check"></i><b>10.5</b> Transformar los datos al formato requerido</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="ahp.html"><a href="ahp.html"><i class="fa fa-check"></i><b>11</b> Modelo AHP (Analytical Hierarchy Process)</a><ul>
+<li class="chapter" data-level="11" data-path="ahp.html"><a href="ahp.html"><i class="fa fa-check"></i><b>11</b> Modelo AHP (Analytical Hierarchy Process)</a>
+<ul>
 <li class="chapter" data-level="11.1" data-path="ahp.html"><a href="ahp.html#objetivo-7"><i class="fa fa-check"></i><b>11.1</b> Objetivo</a></li>
-<li class="chapter" data-level="11.2" data-path="ahp.html"><a href="ahp.html#cargar-los-paquetes-ahp-y-data.tree"><i class="fa fa-check"></i><b>11.2</b> Cargar los paquetes ahp y data.tree</a></li>
-<li class="chapter" data-level="11.3" data-path="ahp.html"><a href="ahp.html#mostrar-los-archivos-ejemplos-que-vienen-con-este-paquete-ahp-y-cargar-uno-de-estos"><i class="fa fa-check"></i><b>11.3</b> Mostrar los archivos (ejemplos), que vienen con este paquete ahp y cargar uno de estos</a></li>
-<li class="chapter" data-level="11.4" data-path="ahp.html"><a href="ahp.html#aplicar-ahp-utilizando-la-función-calculate"><i class="fa fa-check"></i><b>11.4</b> Aplicar ahp, utilizando la función calculate()</a></li>
-<li class="chapter" data-level="11.5" data-path="ahp.html"><a href="ahp.html#mostrar-el-problema-de-decisión-gráficamente-como-árbol"><i class="fa fa-check"></i><b>11.5</b> Mostrar el problema de decisión gráficamente (como árbol)</a></li>
-<li class="chapter" data-level="11.6" data-path="ahp.html"><a href="ahp.html#analizar-los-resultados-de-ahp"><i class="fa fa-check"></i><b>11.6</b> Analizar los resultados de ahp</a><ul>
-<li class="chapter" data-level="11.6.1" data-path="ahp.html"><a href="ahp.html#nota-solución-alternativa"><i class="fa fa-check"></i><b>11.6.1</b> Nota: solución alternativa</a></li>
+<li class="chapter" data-level="11.2" data-path="ahp.html"><a href="ahp.html#cargar-el-paquete-mcda"><i class="fa fa-check"></i><b>11.2</b> Cargar el paquete MCDA</a></li>
+<li class="chapter" data-level="11.3" data-path="ahp.html"><a href="ahp.html#alternativespairwisecomparisonslist"><i class="fa fa-check"></i><b>11.3</b> alternativesPairwiseComparisonsList</a></li>
+<li class="chapter" data-level="11.4" data-path="ahp.html"><a href="ahp.html#mostrar-resultado-con-ahp"><i class="fa fa-check"></i><b>11.4</b> Mostrar resultado con AHP</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="12" data-path="fuzzy.html"><a href="fuzzy.html"><i class="fa fa-check"></i><b>12</b> Modelo fuzzy (borroso)</a><ul>
+<li class="chapter" data-level="12" data-path="fuzzy.html"><a href="fuzzy.html"><i class="fa fa-check"></i><b>12</b> Modelo fuzzy (borroso)</a>
+<ul>
 <li class="chapter" data-level="12.1" data-path="fuzzy.html"><a href="fuzzy.html#objetivo-y-contextualización-2"><i class="fa fa-check"></i><b>12.1</b> Objetivo y contextualización</a></li>
 <li class="chapter" data-level="12.2" data-path="fuzzy.html"><a href="fuzzy.html#definir-el-universo-universe"><i class="fa fa-check"></i><b>12.2</b> Definir el universo (universe)</a></li>
 <li class="chapter" data-level="12.3" data-path="fuzzy.html"><a href="fuzzy.html#definir-las-variables"><i class="fa fa-check"></i><b>12.3</b> Definir las variables</a></li>
@@ -243,10 +298,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12.6" data-path="fuzzy.html"><a href="fuzzy.html#dos-ejemplos-fuzzy"><i class="fa fa-check"></i><b>12.6</b> Dos ejemplos fuzzy</a></li>
 <li class="chapter" data-level="12.7" data-path="fuzzy.html"><a href="fuzzy.html#finalmente-se-debe-resetear-el-universo"><i class="fa fa-check"></i><b>12.7</b> Finalmente se debe “resetear” el universo</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="muestreo.html"><a href="muestreo.html"><i class="fa fa-check"></i><b>13</b> Muestreo - sampling</a><ul>
+<li class="chapter" data-level="13" data-path="muestreo.html"><a href="muestreo.html"><i class="fa fa-check"></i><b>13</b> Muestreo - sampling</a>
+<ul>
 <li class="chapter" data-level="13.1" data-path="muestreo.html"><a href="muestreo.html#objetivo-8"><i class="fa fa-check"></i><b>13.1</b> Objetivo</a></li>
 <li class="chapter" data-level="13.2" data-path="muestreo.html"><a href="muestreo.html#muestreo-aleatorio-simple---simple-random-sampling"><i class="fa fa-check"></i><b>13.2</b> Muestreo aleatorio simple - Simple Random Sampling</a></li>
-<li class="chapter" data-level="13.3" data-path="muestreo.html"><a href="muestreo.html#proceso-de-muestreo-para-realizar-una-encuesta"><i class="fa fa-check"></i><b>13.3</b> Proceso de muestreo para realizar una encuesta</a><ul>
+<li class="chapter" data-level="13.3" data-path="muestreo.html"><a href="muestreo.html#proceso-de-muestreo-para-realizar-una-encuesta"><i class="fa fa-check"></i><b>13.3</b> Proceso de muestreo para realizar una encuesta</a>
+<ul>
 <li class="chapter" data-level="13.3.1" data-path="muestreo.html"><a href="muestreo.html#creamos-nuestra-propia-función-en-r"><i class="fa fa-check"></i><b>13.3.1</b> Creamos “nuestra propia función” en R</a></li>
 <li class="chapter" data-level="13.3.2" data-path="muestreo.html"><a href="muestreo.html#definir-los-valores-para-los-parámetros-de-la-función-muestra.n"><i class="fa fa-check"></i><b>13.3.2</b> Definir los valores para los parámetros de la función “muestra.n”</a></li>
 <li class="chapter" data-level="13.3.3" data-path="muestreo.html"><a href="muestreo.html#llamar-la-función-muestra.n-y-observar-el-resultado"><i class="fa fa-check"></i><b>13.3.3</b> Llamar la función “muestra.n” y observar el resultado</a></li>
@@ -256,12 +313,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="13.4" data-path="muestreo.html"><a href="muestreo.html#muestreo-para-un-problema-de-datos-masivos-big-data"><i class="fa fa-check"></i><b>13.4</b> Muestreo para un problema de datos masivos (big data)</a></li>
 <li class="chapter" data-level="13.5" data-path="muestreo.html"><a href="muestreo.html#muestreo-estratificado---stratified-sampling"><i class="fa fa-check"></i><b>13.5</b> Muestreo estratificado - Stratified sampling</a></li>
-<li class="chapter" data-level="13.6" data-path="muestreo.html"><a href="muestreo.html#trabajar-con-potencia-power-analysis"><i class="fa fa-check"></i><b>13.6</b> Trabajar con potencia (power analysis)</a><ul>
+<li class="chapter" data-level="13.6" data-path="muestreo.html"><a href="muestreo.html#trabajar-con-potencia-power-analysis"><i class="fa fa-check"></i><b>13.6</b> Trabajar con potencia (power analysis)</a>
+<ul>
 <li class="chapter" data-level="13.6.1" data-path="muestreo.html"><a href="muestreo.html#utilziar-la-función-pwr.t.test---power-calculations-for-t-tests-of-means"><i class="fa fa-check"></i><b>13.6.1</b> Utilziar la función pwr.t.test() - Power calculations for t-tests of means</a></li>
 </ul></li>
 <li class="chapter" data-level="13.7" data-path="muestreo.html"><a href="muestreo.html#ejercicio-8"><i class="fa fa-check"></i><b>13.7</b> Ejercicio 8</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="arbolDec.html"><a href="arbolDec.html"><i class="fa fa-check"></i><b>14</b> Árbol de decisión - Decision Tree</a><ul>
+<li class="chapter" data-level="14" data-path="arbolDec.html"><a href="arbolDec.html"><i class="fa fa-check"></i><b>14</b> Árbol de decisión - Decision Tree</a>
+<ul>
 <li class="chapter" data-level="14.1" data-path="arbolDec.html"><a href="arbolDec.html#objetivo-9"><i class="fa fa-check"></i><b>14.1</b> Objetivo</a></li>
 <li class="chapter" data-level="14.2" data-path="arbolDec.html"><a href="arbolDec.html#cargar-los-datos"><i class="fa fa-check"></i><b>14.2</b> Cargar los datos</a></li>
 <li class="chapter" data-level="14.3" data-path="arbolDec.html"><a href="arbolDec.html#explorar-los-datos"><i class="fa fa-check"></i><b>14.3</b> Explorar los datos</a></li>
@@ -273,7 +332,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="14.9" data-path="arbolDec.html"><a href="arbolDec.html#evaluar-el-desempeño-del-modelo-árbol-de-decisión"><i class="fa fa-check"></i><b>14.9</b> Evaluar el desempeño del modelo (árbol de decisión)</a></li>
 <li class="chapter" data-level="14.10" data-path="arbolDec.html"><a href="arbolDec.html#ejercicio-9"><i class="fa fa-check"></i><b>14.10</b> Ejercicio 9</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="regrLog.html"><a href="regrLog.html"><i class="fa fa-check"></i><b>15</b> Regresión logística (modelo logit)</a><ul>
+<li class="chapter" data-level="15" data-path="regrLog.html"><a href="regrLog.html"><i class="fa fa-check"></i><b>15</b> Regresión logística (modelo logit)</a>
+<ul>
 <li class="chapter" data-level="15.1" data-path="regrLog.html"><a href="regrLog.html#objetivo-10"><i class="fa fa-check"></i><b>15.1</b> Objetivo</a></li>
 <li class="chapter" data-level="15.2" data-path="regrLog.html"><a href="regrLog.html#cargar-los-datos-históricos-de-un-archivo-csv"><i class="fa fa-check"></i><b>15.2</b> Cargar los datos históricos de un archivo csv</a></li>
 <li class="chapter" data-level="15.3" data-path="regrLog.html"><a href="regrLog.html#explorar-los-datos-1"><i class="fa fa-check"></i><b>15.3</b> Explorar los datos</a></li>
@@ -286,75 +346,152 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="15.10" data-path="regrLog.html"><a href="regrLog.html#convertir-estas-probabilidades-en-dos-clases-1-y-0-buena-paga-y-mala-paga"><i class="fa fa-check"></i><b>15.10</b> Convertir estas probabilidades en dos clases: 1 y 0 (“buena paga” y “mala paga”)</a></li>
 <li class="chapter" data-level="15.11" data-path="regrLog.html"><a href="regrLog.html#ejercicio-10"><i class="fa fa-check"></i><b>15.11</b> Ejercicio 10</a></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="normalizar.html"><a href="normalizar.html"><i class="fa fa-check"></i><b>16</b> Escalar y normalizar (estandarizar datos)</a><ul>
+<li class="chapter" data-level="16" data-path="normalizar.html"><a href="normalizar.html"><i class="fa fa-check"></i><b>16</b> Escalar y normalizar (estandarizar datos)</a>
+<ul>
 <li class="chapter" data-level="16.1" data-path="normalizar.html"><a href="normalizar.html#objetivo-11"><i class="fa fa-check"></i><b>16.1</b> Objetivo</a></li>
 <li class="chapter" data-level="16.2" data-path="normalizar.html"><a href="normalizar.html#cargar-los-datos-históricos-de-un-archivo-csv-1"><i class="fa fa-check"></i><b>16.2</b> Cargar los datos históricos de un archivo csv</a></li>
 <li class="chapter" data-level="16.3" data-path="normalizar.html"><a href="normalizar.html#analizar-los-datos-de-la-columna-credit.amount-monto-del-crédito"><i class="fa fa-check"></i><b>16.3</b> Analizar los datos de la columna “Credit.Amount” (monto del crédito)</a></li>
 <li class="chapter" data-level="16.4" data-path="normalizar.html"><a href="normalizar.html#escalar-los-datos"><i class="fa fa-check"></i><b>16.4</b> Escalar los datos</a></li>
-<li class="chapter" data-level="16.5" data-path="normalizar.html"><a href="normalizar.html#la-normalización-de-los-datos"><i class="fa fa-check"></i><b>16.5</b> La normalización de los datos</a><ul>
+<li class="chapter" data-level="16.5" data-path="normalizar.html"><a href="normalizar.html#la-normalización-de-los-datos"><i class="fa fa-check"></i><b>16.5</b> La normalización de los datos</a>
+<ul>
 <li class="chapter" data-level="16.5.1" data-path="normalizar.html"><a href="normalizar.html#comprobar-el-resultado"><i class="fa fa-check"></i><b>16.5.1</b> Comprobar el resultado</a></li>
 </ul></li>
-<li class="chapter" data-level="16.6" data-path="normalizar.html"><a href="normalizar.html#escala-logarítmica"><i class="fa fa-check"></i><b>16.6</b> Escala logarítmica</a><ul>
+<li class="chapter" data-level="16.6" data-path="normalizar.html"><a href="normalizar.html#escala-logarítmica"><i class="fa fa-check"></i><b>16.6</b> Escala logarítmica</a>
+<ul>
 <li class="chapter" data-level="16.6.1" data-path="normalizar.html"><a href="normalizar.html#un-ejemplo---retornos-logarítmicos"><i class="fa fa-check"></i><b>16.6.1</b> Un ejemplo - retornos logarítmicos</a></li>
 </ul></li>
 <li class="chapter" data-level="16.7" data-path="normalizar.html"><a href="normalizar.html#creando-variables-dummy-one-hot-encoding"><i class="fa fa-check"></i><b>16.7</b> Creando variables dummy (one-hot encoding)</a></li>
 <li class="chapter" data-level="16.8" data-path="normalizar.html"><a href="normalizar.html#ejercicio-11"><i class="fa fa-check"></i><b>16.8</b> Ejercicio 11</a></li>
 </ul></li>
-<li class="chapter" data-level="17" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html"><i class="fa fa-check"></i><b>17</b> Posibles soluciones</a><ul>
-<li class="chapter" data-level="17.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-1-1"><i class="fa fa-check"></i><b>17.1</b> Ejercicio 1</a><ul>
-<li class="chapter" data-level="17.1.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado"><i class="fa fa-check"></i><b>17.1.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.1.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución"><i class="fa fa-check"></i><b>17.1.2</b> Posible solución</a></li>
+<li class="chapter" data-level="17" data-path="rn.html"><a href="rn.html"><i class="fa fa-check"></i><b>17</b> Red Neuronal</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="rn.html"><a href="rn.html#objetivo-12"><i class="fa fa-check"></i><b>17.1</b> Objetivo</a></li>
+<li class="chapter" data-level="17.2" data-path="rn.html"><a href="rn.html#cargar-datos"><i class="fa fa-check"></i><b>17.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="17.3" data-path="rn.html"><a href="rn.html#normalizar-datos"><i class="fa fa-check"></i><b>17.3</b> Normalizar datos</a></li>
+<li class="chapter" data-level="17.4" data-path="rn.html"><a href="rn.html#particionar-los-datos-2"><i class="fa fa-check"></i><b>17.4</b> Particionar los datos</a></li>
+<li class="chapter" data-level="17.5" data-path="rn.html"><a href="rn.html#crear-la-red-neuronal"><i class="fa fa-check"></i><b>17.5</b> Crear la Red Neuronal</a></li>
+<li class="chapter" data-level="17.6" data-path="rn.html"><a href="rn.html#realizar-la-predicción"><i class="fa fa-check"></i><b>17.6</b> Realizar la predicción</a></li>
 </ul></li>
-<li class="chapter" data-level="17.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-2-1"><i class="fa fa-check"></i><b>17.2</b> Ejercicio 2</a><ul>
-<li class="chapter" data-level="17.2.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-a"><i class="fa fa-check"></i><b>17.2.1</b> Enunciado - parte a</a></li>
-<li class="chapter" data-level="17.2.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-1"><i class="fa fa-check"></i><b>17.2.2</b> Posible solución</a></li>
-<li class="chapter" data-level="17.2.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-b"><i class="fa fa-check"></i><b>17.2.3</b> Enunciado - parte b</a></li>
-<li class="chapter" data-level="17.2.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-2"><i class="fa fa-check"></i><b>17.2.4</b> Posible solución</a></li>
-<li class="chapter" data-level="17.2.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-c"><i class="fa fa-check"></i><b>17.2.5</b> Enunciado - parte c</a></li>
-<li class="chapter" data-level="17.2.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-3"><i class="fa fa-check"></i><b>17.2.6</b> Posible solución</a></li>
-<li class="chapter" data-level="17.2.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-d"><i class="fa fa-check"></i><b>17.2.7</b> Enunciado - parte d</a></li>
-<li class="chapter" data-level="17.2.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-4"><i class="fa fa-check"></i><b>17.2.8</b> Posible solución</a></li>
-<li class="chapter" data-level="17.2.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-e"><i class="fa fa-check"></i><b>17.2.9</b> Enunciado - parte e</a></li>
-<li class="chapter" data-level="17.2.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-5"><i class="fa fa-check"></i><b>17.2.10</b> Posible solución</a></li>
+<li class="chapter" data-level="18" data-path="VaR.html"><a href="VaR.html"><i class="fa fa-check"></i><b>18</b> Determinar el VaR</a>
+<ul>
+<li class="chapter" data-level="18.1" data-path="VaR.html"><a href="VaR.html#objetivo-13"><i class="fa fa-check"></i><b>18.1</b> Objetivo</a>
+<ul>
+<li class="chapter" data-level="18.1.1" data-path="VaR.html"><a href="VaR.html#obtener-unos-datos-serie-de-tiempo-st"><i class="fa fa-check"></i><b>18.1.1</b> Obtener unos datos (Serie de tiempo, ST)</a></li>
 </ul></li>
-<li class="chapter" data-level="17.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-3-1"><i class="fa fa-check"></i><b>17.3</b> Ejercicio 3</a><ul>
-<li class="chapter" data-level="17.3.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-1"><i class="fa fa-check"></i><b>17.3.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.3.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-6"><i class="fa fa-check"></i><b>17.3.2</b> Posible solución</a></li>
+<li class="chapter" data-level="18.2" data-path="VaR.html"><a href="VaR.html#determinar-retornos-log"><i class="fa fa-check"></i><b>18.2</b> Determinar retornos log</a></li>
+<li class="chapter" data-level="18.3" data-path="VaR.html"><a href="VaR.html#generar-estadística-de-datos"><i class="fa fa-check"></i><b>18.3</b> Generar estadística de datos</a>
+<ul>
+<li class="chapter" data-level="18.3.1" data-path="VaR.html"><a href="VaR.html#volatilidad"><i class="fa fa-check"></i><b>18.3.1</b> Volatilidad</a></li>
+<li class="chapter" data-level="18.3.2" data-path="VaR.html"><a href="VaR.html#retorno-diario"><i class="fa fa-check"></i><b>18.3.2</b> Retorno diario</a></li>
+<li class="chapter" data-level="18.3.3" data-path="VaR.html"><a href="VaR.html#supuestos-para-el-cálculo-del-var"><i class="fa fa-check"></i><b>18.3.3</b> Supuestos para el cálculo del VaR</a></li>
 </ul></li>
-<li class="chapter" data-level="17.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-4-1"><i class="fa fa-check"></i><b>17.4</b> Ejercicio 4</a><ul>
-<li class="chapter" data-level="17.4.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-2"><i class="fa fa-check"></i><b>17.4.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.4.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-7"><i class="fa fa-check"></i><b>17.4.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-5-1"><i class="fa fa-check"></i><b>17.5</b> Ejercicio 5</a><ul>
-<li class="chapter" data-level="17.5.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-3"><i class="fa fa-check"></i><b>17.5.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.5.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-8"><i class="fa fa-check"></i><b>17.5.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-6-1"><i class="fa fa-check"></i><b>17.6</b> Ejercicio 6</a><ul>
-<li class="chapter" data-level="17.6.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-4"><i class="fa fa-check"></i><b>17.6.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.6.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-9"><i class="fa fa-check"></i><b>17.6.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-7-1"><i class="fa fa-check"></i><b>17.7</b> Ejercicio 7</a><ul>
-<li class="chapter" data-level="17.7.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-5"><i class="fa fa-check"></i><b>17.7.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.7.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-10"><i class="fa fa-check"></i><b>17.7.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-8-1"><i class="fa fa-check"></i><b>17.8</b> Ejercicio 8</a><ul>
-<li class="chapter" data-level="17.8.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-6"><i class="fa fa-check"></i><b>17.8.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.8.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-11"><i class="fa fa-check"></i><b>17.8.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-9-1"><i class="fa fa-check"></i><b>17.9</b> Ejercicio 9</a><ul>
-<li class="chapter" data-level="17.9.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-7"><i class="fa fa-check"></i><b>17.9.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.9.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-12"><i class="fa fa-check"></i><b>17.9.2</b> Posible Solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-10-1"><i class="fa fa-check"></i><b>17.10</b> Ejercicio 10</a><ul>
-<li class="chapter" data-level="17.10.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-8"><i class="fa fa-check"></i><b>17.10.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.10.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-13"><i class="fa fa-check"></i><b>17.10.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.11" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-11-1"><i class="fa fa-check"></i><b>17.11</b> Ejercicio 11</a><ul>
-<li class="chapter" data-level="17.11.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-9"><i class="fa fa-check"></i><b>17.11.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.11.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-14"><i class="fa fa-check"></i><b>17.11.2</b> Posible solución</a></li>
+<li class="chapter" data-level="18.4" data-path="VaR.html"><a href="VaR.html#var"><i class="fa fa-check"></i><b>18.4</b> VaR</a>
+<ul>
+<li class="chapter" data-level="18.4.1" data-path="VaR.html"><a href="VaR.html#var-paramétrico"><i class="fa fa-check"></i><b>18.4.1</b> VaR paramétrico</a></li>
+<li class="chapter" data-level="18.4.2" data-path="VaR.html"><a href="VaR.html#var-histórico"><i class="fa fa-check"></i><b>18.4.2</b> VaR histórico</a></li>
+<li class="chapter" data-level="18.4.3" data-path="VaR.html"><a href="VaR.html#var-montecarlo"><i class="fa fa-check"></i><b>18.4.3</b> VaR Montecarlo</a></li>
+<li class="chapter" data-level="18.4.4" data-path="VaR.html"><a href="VaR.html#comparativo-de-los-tres-vars"><i class="fa fa-check"></i><b>18.4.4</b> Comparativo de los tres VaRs</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="18" data-path="palabras-finales.html"><a href="palabras-finales.html"><i class="fa fa-check"></i><b>18</b> Palabras finales</a></li>
+<li class="chapter" data-level="19" data-path="ST.html"><a href="ST.html"><i class="fa fa-check"></i><b>19</b> Serie de tiempo</a>
+<ul>
+<li class="chapter" data-level="19.1" data-path="ST.html"><a href="ST.html#objetivo-14"><i class="fa fa-check"></i><b>19.1</b> Objetivo</a></li>
+<li class="chapter" data-level="19.2" data-path="ST.html"><a href="ST.html#cargar-datos-1"><i class="fa fa-check"></i><b>19.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="19.3" data-path="ST.html"><a href="ST.html#graficar-la-serie"><i class="fa fa-check"></i><b>19.3</b> Graficar la serie</a></li>
+<li class="chapter" data-level="19.4" data-path="ST.html"><a href="ST.html#comprobar-si-es-estacionaria"><i class="fa fa-check"></i><b>19.4</b> Comprobar, si es estacionaria</a></li>
+<li class="chapter" data-level="19.5" data-path="ST.html"><a href="ST.html#identificando-una-serie-no-estacionaria"><i class="fa fa-check"></i><b>19.5</b> Identificando una serie no estacionaria</a>
+<ul>
+<li class="chapter" data-level="19.5.1" data-path="ST.html"><a href="ST.html#convertir-a-estacionaria"><i class="fa fa-check"></i><b>19.5.1</b> Convertir a estacionaria</a></li>
+<li class="chapter" data-level="19.5.2" data-path="ST.html"><a href="ST.html#retornos-log"><i class="fa fa-check"></i><b>19.5.2</b> Retornos log</a></li>
+<li class="chapter" data-level="19.5.3" data-path="ST.html"><a href="ST.html#diferenciar-1st-order"><i class="fa fa-check"></i><b>19.5.3</b> Diferenciar (1st order)</a></li>
+</ul></li>
+<li class="chapter" data-level="19.6" data-path="ST.html"><a href="ST.html#arima"><i class="fa fa-check"></i><b>19.6</b> ARIMA</a>
+<ul>
+<li class="chapter" data-level="19.6.1" data-path="ST.html"><a href="ST.html#acf"><i class="fa fa-check"></i><b>19.6.1</b> acf</a></li>
+<li class="chapter" data-level="19.6.2" data-path="ST.html"><a href="ST.html#pacf"><i class="fa fa-check"></i><b>19.6.2</b> pacf</a></li>
+<li class="chapter" data-level="19.6.3" data-path="ST.html"><a href="ST.html#auto.arima"><i class="fa fa-check"></i><b>19.6.3</b> auto.arima</a></li>
+</ul></li>
+<li class="chapter" data-level="19.7" data-path="ST.html"><a href="ST.html#pronóstico"><i class="fa fa-check"></i><b>19.7</b> Pronóstico</a></li>
+<li class="chapter" data-level="19.8" data-path="ST.html"><a href="ST.html#ejercicio"><i class="fa fa-check"></i><b>19.8</b> Ejercicio</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="prophet.html"><a href="prophet.html"><i class="fa fa-check"></i><b>20</b> Serie de tiempo con Prophet</a>
+<ul>
+<li class="chapter" data-level="20.1" data-path="prophet.html"><a href="prophet.html#objetivo-15"><i class="fa fa-check"></i><b>20.1</b> Objetivo</a></li>
+<li class="chapter" data-level="20.2" data-path="prophet.html"><a href="prophet.html#cargar-datos-2"><i class="fa fa-check"></i><b>20.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="20.3" data-path="prophet.html"><a href="prophet.html#convertir-a-data-frame"><i class="fa fa-check"></i><b>20.3</b> Convertir a data frame</a></li>
+<li class="chapter" data-level="20.4" data-path="prophet.html"><a href="prophet.html#realizar-el-pronóstico-con-prophet"><i class="fa fa-check"></i><b>20.4</b> Realizar el pronóstico con prophet</a>
+<ul>
+<li class="chapter" data-level="20.4.1" data-path="prophet.html"><a href="prophet.html#crear-el-modelo"><i class="fa fa-check"></i><b>20.4.1</b> Crear el modelo</a></li>
+<li class="chapter" data-level="20.4.2" data-path="prophet.html"><a href="prophet.html#pronosticar---predict"><i class="fa fa-check"></i><b>20.4.2</b> Pronosticar - predict</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html"><i class="fa fa-check"></i><b>21</b> Posibles soluciones</a>
+<ul>
+<li class="chapter" data-level="21.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-1-1"><i class="fa fa-check"></i><b>21.1</b> Ejercicio 1</a>
+<ul>
+<li class="chapter" data-level="21.1.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado"><i class="fa fa-check"></i><b>21.1.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.1.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución"><i class="fa fa-check"></i><b>21.1.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-2-1"><i class="fa fa-check"></i><b>21.2</b> Ejercicio 2</a>
+<ul>
+<li class="chapter" data-level="21.2.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-a"><i class="fa fa-check"></i><b>21.2.1</b> Enunciado - parte a</a></li>
+<li class="chapter" data-level="21.2.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-1"><i class="fa fa-check"></i><b>21.2.2</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-b"><i class="fa fa-check"></i><b>21.2.3</b> Enunciado - parte b</a></li>
+<li class="chapter" data-level="21.2.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-2"><i class="fa fa-check"></i><b>21.2.4</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-c"><i class="fa fa-check"></i><b>21.2.5</b> Enunciado - parte c</a></li>
+<li class="chapter" data-level="21.2.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-3"><i class="fa fa-check"></i><b>21.2.6</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-d"><i class="fa fa-check"></i><b>21.2.7</b> Enunciado - parte d</a></li>
+<li class="chapter" data-level="21.2.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-4"><i class="fa fa-check"></i><b>21.2.8</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-e"><i class="fa fa-check"></i><b>21.2.9</b> Enunciado - parte e</a></li>
+<li class="chapter" data-level="21.2.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-5"><i class="fa fa-check"></i><b>21.2.10</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-3-1"><i class="fa fa-check"></i><b>21.3</b> Ejercicio 3</a>
+<ul>
+<li class="chapter" data-level="21.3.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-1"><i class="fa fa-check"></i><b>21.3.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.3.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-6"><i class="fa fa-check"></i><b>21.3.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-4-1"><i class="fa fa-check"></i><b>21.4</b> Ejercicio 4</a>
+<ul>
+<li class="chapter" data-level="21.4.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-2"><i class="fa fa-check"></i><b>21.4.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.4.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-7"><i class="fa fa-check"></i><b>21.4.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-5-1"><i class="fa fa-check"></i><b>21.5</b> Ejercicio 5</a>
+<ul>
+<li class="chapter" data-level="21.5.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-3"><i class="fa fa-check"></i><b>21.5.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.5.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-8"><i class="fa fa-check"></i><b>21.5.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-6-1"><i class="fa fa-check"></i><b>21.6</b> Ejercicio 6</a>
+<ul>
+<li class="chapter" data-level="21.6.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-4"><i class="fa fa-check"></i><b>21.6.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.6.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-9"><i class="fa fa-check"></i><b>21.6.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-7-1"><i class="fa fa-check"></i><b>21.7</b> Ejercicio 7</a>
+<ul>
+<li class="chapter" data-level="21.7.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-5"><i class="fa fa-check"></i><b>21.7.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.7.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-10"><i class="fa fa-check"></i><b>21.7.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-8-1"><i class="fa fa-check"></i><b>21.8</b> Ejercicio 8</a>
+<ul>
+<li class="chapter" data-level="21.8.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-6"><i class="fa fa-check"></i><b>21.8.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.8.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-11"><i class="fa fa-check"></i><b>21.8.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-9-1"><i class="fa fa-check"></i><b>21.9</b> Ejercicio 9</a>
+<ul>
+<li class="chapter" data-level="21.9.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-7"><i class="fa fa-check"></i><b>21.9.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.9.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-12"><i class="fa fa-check"></i><b>21.9.2</b> Posible Solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-10-1"><i class="fa fa-check"></i><b>21.10</b> Ejercicio 10</a>
+<ul>
+<li class="chapter" data-level="21.10.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-8"><i class="fa fa-check"></i><b>21.10.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.10.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-13"><i class="fa fa-check"></i><b>21.10.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.11" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-11-1"><i class="fa fa-check"></i><b>21.11</b> Ejercicio 11</a>
+<ul>
+<li class="chapter" data-level="21.11.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-9"><i class="fa fa-check"></i><b>21.11.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.11.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-14"><i class="fa fa-check"></i><b>21.11.2</b> Posible solución</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="palabras-finales.html"><a href="palabras-finales.html"><i class="fa fa-check"></i><b>22</b> Palabras finales</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -375,13 +512,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="cargar" class="section level1">
+<div id="cargar" class="section level1" number="4">
 <h1><span class="header-section-number">Sección 4</span> Cargar datos a R/RStudio</h1>
-<div id="objetivo-2" class="section level2">
+<div id="objetivo-2" class="section level2" number="4.1">
 <h2><span class="header-section-number">4.1</span> Objetivo</h2>
 <p>El objetivo de esta sección consiste en explicar diferentes escenarios para cargar (“importar”) datos de diferentes fuentes a R / RStudio. Esto como una condición previa para analizar posteriormente estos datos. La explicación incluye fuentes de datos financieros como la cotización de acciones.</p>
 </div>
-<div id="leer-datos-desde-un-archivo-de-tipo-csv-y-xlsx" class="section level2">
+<div id="leer-datos-desde-un-archivo-de-tipo-csv-y-xlsx" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Leer datos desde un archivo de tipo csv y xlsx</h2>
 <p>Primero, vamos a generar manualmente un archivo en MS-Excel con los siguientes datos:</p>
 <table>
@@ -479,72 +616,70 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </tbody>
 </table>
 <ul>
-<li>Determinar su directorio de trabajo para R, utilizando la función getwd()</li>
-<li>Guardar este archivo como <strong>csv</strong> (comma separated value), bajo el nombre “test1csv.csv”, en su directorio de trabajo (working directory de R)</li>
-<li><p>Guardarlo también como archivo de Excel (xlsx), bajo el nombre “test1excel.xlsx”, en su directorio de trabajo de R</p></li>
-<li>Ahora, leer el contenido del archivo csv, utilizando en RStudio la función read.csv(), tomando en cuenta que los datos tienen un “encabezado” y asignar el resultado a una variable “dataset”</li>
-<li>Visualizar el contenido de la tabla de datos (dataset), utilizando la función View()</li>
-<li>Determinar la clase del (objeto) “dataset”</li>
-<li>Determinar la estructura de “dataset”, utilizando la función str()</li>
-<li><p>Mostrar “Meier”, que es un elemento en la fila con el id “5”, columna #3 del “dataset” (quinta fila, tercera columna)</p></li>
+<li><p>Determinar su directorio de trabajo para R, utilizando la función getwd()</p></li>
+<li><p>Guardar este archivo como <strong>csv</strong> (comma separated value), bajo el nombre “test1csv.csv,” en su directorio de trabajo (working directory de R)</p></li>
+<li><p>Guardarlo también como archivo de Excel (xlsx), bajo el nombre “test1excel.xlsx,” en su directorio de trabajo de R</p></li>
+<li><p>Ahora, leer el contenido del archivo csv, utilizando en RStudio la función read.csv(), tomando en cuenta que los datos tienen un “encabezado” y asignar el resultado a una variable “dataset”</p></li>
+<li><p>Visualizar el contenido de la tabla de datos (dataset), utilizando la función View()</p></li>
+<li><p>Determinar la clase del (objeto) “dataset”</p></li>
+<li><p>Determinar la estructura de “dataset,” utilizando la función str()</p></li>
+<li><p>Mostrar “Meier,” que es un elemento en la fila con el id “5,” columna #3 del “dataset” (quinta fila, tercera columna)</p></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dataset &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;test1csv.csv&#39;</span>, <span class="dt">sep =</span> <span class="st">&#39;;&#39;</span>) <span class="co"># si el separador es coma o punto coma, depende como Excel almacena el archivo csv...</span>
-<span class="kw">View</span>(dataset)
-<span class="kw">class</span>(dataset)</code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="cargar.html#cb230-1" aria-hidden="true" tabindex="-1"></a>dataset <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&#39;test1csv.csv&#39;</span>, <span class="at">sep =</span> <span class="st">&#39;;&#39;</span>) <span class="co"># si el separador es coma o punto coma, depende como Excel almacena el archivo csv...</span></span>
+<span id="cb230-2"><a href="cargar.html#cb230-2" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(dataset)</span>
+<span id="cb230-3"><a href="cargar.html#cb230-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(dataset)</code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="cargar.html#cb232-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dataset)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    10 obs. of  6 variables:
 ##  $ id          : int  1 2 3 4 5 6 7 8 9 10
-##  $ Nombre      : Factor w/ 10 levels &quot;Andres&quot;,&quot;Bill&quot;,..: 7 8 4 3 10 9 1 2 5 6
-##  $ Apellido    : Factor w/ 10 levels &quot;Arango&quot;,&quot;Arias&quot;,..: 10 1 9 7 6 8 3 5 2 4
+##  $ Nombre      : chr  &quot;Jimmy&quot; &quot;Joe&quot; &quot;Diana&quot; &quot;Cristina&quot; ...
+##  $ Apellido    : chr  &quot;Toro&quot; &quot;Arango&quot; &quot;Ramirez&quot; &quot;Mesa&quot; ...
 ##  $ Ingresos    : int  4000000 3500000 3000000 2500000 2000000 1500000 1000000 750000 500000 450000
 ##  $ Egresos     : int  3500000 4000000 3000000 2000000 1000000 1400000 1000000 800000 500000 450000
 ##  $ Calificación: int  80 20 50 70 70 45 40 10 12 10</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dataset[<span class="dv">5</span>,<span class="dv">3</span>]</code></pre></div>
-<pre><code>## [1] Meier
-## 10 Levels: Arango Arias Avelaez Gomez Jaramillo Meier Mesa ... Toro</code></pre>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="cargar.html#cb234-1" aria-hidden="true" tabindex="-1"></a>dataset[<span class="dv">5</span>,<span class="dv">3</span>]</span></code></pre></div>
+<pre><code>## [1] &quot;Meier&quot;</code></pre>
 <ul>
 <li>Ahora, leer el contenido del archivo xlsx, utilizando en RStudio la función read_excel() del paquete readxl, tomando en cuenta que los datos tienen un “encabezado” y asignar el resultado a la variable “dataset2”</li>
 <li>Visualizar el contenido de la tabla de datos (dataset2), utilizando la función View()</li>
 <li>Determinar la clase del “dataset2”</li>
-<li>Determinar la estructura de “dataset2”, utilizando la función str()</li>
+<li>Determinar la estructura de “dataset2,” utilizando la función str()</li>
 <li>Mostrar los ingresos de la persona “Javier Gómez” (observación en la fila #10 y columna #4), que es parte del “dataset2”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readxl)</code></pre></div>
-<pre><code>## Warning: package &#39;readxl&#39; was built under R version 3.5.3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dataset2 &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="st">&#39;test1excel.xlsx&#39;</span>, <span class="dt">sheet=</span><span class="st">&#39;Hoja2&#39;</span>) 
-<span class="co"># en el proceso de guardar como xlxs se genera esta hoja 2</span>
-<span class="kw">View</span>(dataset2)
-<span class="kw">class</span>(dataset2)</code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="cargar.html#cb236-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb236-2"><a href="cargar.html#cb236-2" aria-hidden="true" tabindex="-1"></a>dataset2 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&#39;test1excel.xlsx&#39;</span>, <span class="at">sheet=</span><span class="st">&#39;Hoja2&#39;</span>) </span>
+<span id="cb236-3"><a href="cargar.html#cb236-3" aria-hidden="true" tabindex="-1"></a><span class="co"># en el proceso de guardar como xlxs se genera esta hoja 2</span></span>
+<span id="cb236-4"><a href="cargar.html#cb236-4" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(dataset2)</span>
+<span id="cb236-5"><a href="cargar.html#cb236-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(dataset2)</span></code></pre></div>
 <pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(dataset2)</code></pre></div>
-<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    10 obs. of  6 variables:
-##  $ id          : num  1 2 3 4 5 6 7 8 9 10
-##  $ Nombre      : chr  &quot;Jimmy&quot; &quot;Joe&quot; &quot;Diana&quot; &quot;Cristina&quot; ...
-##  $ Apellido    : chr  &quot;Toro&quot; &quot;Arango&quot; &quot;Ramirez&quot; &quot;Mesa&quot; ...
-##  $ Ingresos    : num  4000000 3500000 3000000 2500000 2000000 1500000 1000000 750000 500000 450000
-##  $ Egresos     : num  3500000 4000000 3000000 2000000 1000000 1400000 1000000 800000 500000 450000
-##  $ Calificación: num  80 20 50 70 70 45 40 10 12 10</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dataset[<span class="dv">10</span>,<span class="dv">4</span>]</code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="cargar.html#cb238-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dataset2)</span></code></pre></div>
+<pre><code>## tibble [10 x 6] (S3: tbl_df/tbl/data.frame)
+##  $ id          : num [1:10] 1 2 3 4 5 6 7 8 9 10
+##  $ Nombre      : chr [1:10] &quot;Jimmy&quot; &quot;Joe&quot; &quot;Diana&quot; &quot;Cristina&quot; ...
+##  $ Apellido    : chr [1:10] &quot;Toro&quot; &quot;Arango&quot; &quot;Ramirez&quot; &quot;Mesa&quot; ...
+##  $ Ingresos    : num [1:10] 4000000 3500000 3000000 2500000 2000000 1500000 1000000 750000 500000 450000
+##  $ Egresos     : num [1:10] 3500000 4000000 3000000 2000000 1000000 1400000 1000000 800000 500000 450000
+##  $ Calificación: num [1:10] 80 20 50 70 70 45 40 10 12 10</code></pre>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="cargar.html#cb240-1" aria-hidden="true" tabindex="-1"></a>dataset[<span class="dv">10</span>,<span class="dv">4</span>]</span></code></pre></div>
 <pre><code>## [1] 450000</code></pre>
 <ul>
 <li>Explorar la función file.choose() para el archivo csv, utilizando el comando “dataset3 &lt;- read.csv(file.choose(), header=TRUE)”</li>
-<li>Explorar la estructura de #dataset3&quot;</li>
+<li>Explorar la estructura de #dataset3"</li>
 <li>Cambiar el código para los parámetros de la función read.csv() de tal forma, que se utiliza “stringsAsFactors=FALSE” para evitar que los datos de tipo “string” se convierten en una variable categórica (factor)</li>
 </ul>
 <p>Solución:</p>
 <p>dataset3 &lt;- read.csv(file.choose(), header=TRUE)</p>
 <p>Nota: El comando file.choose() abre una ventana nueva, que permite seleccionar un archivo en cualquier parte del equipo de cómputo o en una memoria externa.</p>
 </div>
-<div id="leer-datos-desde-un-archivo-csv-de-una-página-web-url" class="section level2">
+<div id="leer-datos-desde-un-archivo-csv-de-una-página-web-url" class="section level2" number="4.3">
 <h2><span class="header-section-number">4.3</span> Leer datos desde un archivo csv de una página web (url)</h2>
 <ul>
-<li>Cargar datos de solicitudes de crédito de la siguiente url, donde se encuentra un archivo “german_credit.csv”: url=“<a href="http://freakonometrics.free.fr/german_credit.csv" class="uri">http://freakonometrics.free.fr/german_credit.csv</a>” y asignar el resultado a una variable “credito”. Tomar en cuenta que estos datos tienen un encabezado y que las columnas están separadas por coma.</li>
+<li>Cargar datos de solicitudes de crédito de la siguiente url, donde se encuentra un archivo “german_credit.csv”: url=“<a href="http://freakonometrics.free.fr/german_credit.csv" class="uri">http://freakonometrics.free.fr/german_credit.csv</a>” y asignar el resultado a una variable “credito.” Tomar en cuenta que estos datos tienen un encabezado y que las columnas están separadas por coma.</li>
 <li>Analizar la estructura de los datos “credito”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url=<span class="st">&quot;http://freakonometrics.free.fr/german_credit.csv&quot;</span>
-credito &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url, <span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>)
-<span class="kw">str</span>(credito)</code></pre></div>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="cargar.html#cb242-1" aria-hidden="true" tabindex="-1"></a>url<span class="ot">=</span><span class="st">&quot;http://freakonometrics.free.fr/german_credit.csv&quot;</span></span>
+<span id="cb242-2"><a href="cargar.html#cb242-2" aria-hidden="true" tabindex="-1"></a>credito <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">&quot;,&quot;</span>)</span>
+<span id="cb242-3"><a href="cargar.html#cb242-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(credito)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    1000 obs. of  21 variables:
 ##  $ Creditability                    : int  1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Account.Balance                  : int  1 1 2 1 1 1 1 1 4 2 ...
@@ -568,35 +703,35 @@ credito &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url, <spa
 ##  $ Telephone                        : int  1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Foreign.Worker                   : int  1 1 1 2 2 2 2 2 1 1 ...</code></pre>
 </div>
-<div id="leer-datos-de-acciones-utilizando-el-paquete-quantmod" class="section level2">
+<div id="leer-datos-de-acciones-utilizando-el-paquete-quantmod" class="section level2" number="4.4">
 <h2><span class="header-section-number">4.4</span> Leer datos de acciones, utilizando el paquete quantmod</h2>
 <ul>
 <li>Cargar el paquete “quantmod”</li>
 <li>Analizar con el comando de “help” (?) el contenido de este paquete</li>
 <li>Este paquete requiere que se defina (al principio) un entorno (environment): new.env() que se asigna a una variable, p.ej. con el nombre “stockData”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(quantmod)
-?quantmod
-stockData &lt;-<span class="st"> </span><span class="kw">new.env</span>() <span class="co">#Generar un entorno nuevo </span>
-<span class="co"># para que quandmod pueda guardar los datos en este entorno</span></code></pre></div>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="cargar.html#cb244-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(quantmod)</span>
+<span id="cb244-2"><a href="cargar.html#cb244-2" aria-hidden="true" tabindex="-1"></a>?quantmod</span>
+<span id="cb244-3"><a href="cargar.html#cb244-3" aria-hidden="true" tabindex="-1"></a>stockData <span class="ot">&lt;-</span> <span class="fu">new.env</span>() <span class="co">#Generar un entorno nuevo </span></span>
+<span id="cb244-4"><a href="cargar.html#cb244-4" aria-hidden="true" tabindex="-1"></a><span class="co"># para que quandmod pueda guardar los datos en este entorno</span></span></code></pre></div>
 <ul>
 <li>Definir una fecha de inicio y final para bajar los datos.</li>
 <li>Utilizar como fecha final la fecha actual y como fecha de inicio una fecha “cercana” a la fecha final</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">startDate =<span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;2020-01-20&quot;</span>)
-endDate =<span class="st"> </span><span class="kw">Sys.Date</span>()</code></pre></div>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="cargar.html#cb245-1" aria-hidden="true" tabindex="-1"></a>startDate <span class="ot">=</span> <span class="fu">as.Date</span>(<span class="st">&quot;2021-12-30&quot;</span>)</span>
+<span id="cb245-2"><a href="cargar.html#cb245-2" aria-hidden="true" tabindex="-1"></a>endDate <span class="ot">=</span> <span class="fu">Sys.Date</span>()</span></code></pre></div>
 <ul>
 <li>Definir una lista de los tickers (empresas) para las cuales se requieren los datos. P.ej. Amazon: ticker - AMZN</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tickers &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;AMZN&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="cargar.html#cb246-1" aria-hidden="true" tabindex="-1"></a>tickers <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;AMZN&quot;</span>)</span></code></pre></div>
 <ul>
 <li>Descargar los datos históricos de la/s acción/es (para todos los tickers), utilizando la función getsymbols() de quandmod y como fuente yahoo (src = “yahoo”)</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getSymbols</span>(tickers, 
-           <span class="dt">env =</span> stockData, 
-           <span class="dt">src =</span> <span class="st">&quot;yahoo&quot;</span>, 
-           <span class="dt">from =</span> startDate, 
-           <span class="dt">to =</span> endDate)</code></pre></div>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="cargar.html#cb247-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getSymbols</span>(tickers, </span>
+<span id="cb247-2"><a href="cargar.html#cb247-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">env =</span> stockData, </span>
+<span id="cb247-3"><a href="cargar.html#cb247-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">src =</span> <span class="st">&quot;yahoo&quot;</span>, </span>
+<span id="cb247-4"><a href="cargar.html#cb247-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">from =</span> startDate, </span>
+<span id="cb247-5"><a href="cargar.html#cb247-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">to =</span> endDate)</span></code></pre></div>
 <pre><code>## &#39;getSymbols&#39; currently uses auto.assign=TRUE by default, but will
 ## use auto.assign=FALSE in 0.5-0. You will still be able to use
 ## &#39;loadSymbols&#39; to automatically load data. getOption(&quot;getSymbols.env&quot;)
@@ -610,25 +745,18 @@ endDate =<span class="st"> </span><span class="kw">Sys.Date</span>()</code></pre
 <li>Analizar las primeras 6 filas de estos datos ya descargados</li>
 <li>Observar la clase de los datos (class())</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(stockData<span class="op">$</span>AMZN)</code></pre></div>
-<pre><code>##            AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume
-## 2020-01-21   1865.00   1894.27  1860.00    1892.00     3707800
-## 2020-01-22   1896.09   1902.50  1883.34    1887.46     3216300
-## 2020-01-23   1885.11   1889.98  1872.76    1884.58     2484600
-## 2020-01-24   1891.37   1894.99  1847.44    1861.64     3766200
-## 2020-01-27   1820.00   1841.00  1815.34    1828.34     3528500
-## 2020-01-28   1840.50   1858.11  1830.02    1853.25     2808000
-##            AMZN.Adjusted
-## 2020-01-21       1892.00
-## 2020-01-22       1887.46
-## 2020-01-23       1884.58
-## 2020-01-24       1861.64
-## 2020-01-27       1828.34
-## 2020-01-28       1853.25</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(stockData) <span class="co"># environment</span></code></pre></div>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="cargar.html#cb250-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(stockData<span class="sc">$</span>AMZN)</span></code></pre></div>
+<pre><code>##            AMZN.Open AMZN.High AMZN.Low AMZN.Close AMZN.Volume AMZN.Adjusted
+## 2021-12-30   3394.00   3417.76  3370.48    3372.89     1879200       3372.89
+## 2021-12-31   3379.12   3387.00  3331.17    3334.34     2391500       3334.34
+## 2022-01-03   3351.00   3414.07  3323.21    3408.09     3176000       3408.09
+## 2022-01-04   3408.76   3428.00  3326.99    3350.44     3536300       3350.44
+## 2022-01-05   3337.66   3342.53  3287.14    3287.14     3215100       3287.14
+## 2022-01-06   3269.01   3296.00  3238.74    3265.08     2597900       3265.08</code></pre>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="cargar.html#cb252-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(stockData) <span class="co"># environment</span></span></code></pre></div>
 <pre><code>## [1] &quot;environment&quot;</code></pre>
 </div>
-<div id="leer-datos-de-una-tabla-de-una-página-web-wikipedia" class="section level2">
+<div id="leer-datos-de-una-tabla-de-una-página-web-wikipedia" class="section level2" number="4.5">
 <h2><span class="header-section-number">4.5</span> Leer datos de una tabla de una página web: wikipedia</h2>
 <ul>
 <li>Instalar y cargar los paquetes “tidyverse” y “rvest”</li>
@@ -638,59 +766,55 @@ endDate =<span class="st"> </span><span class="kw">Sys.Date</span>()</code></pre
 <li>Observar el contenido de la variable “tab”</li>
 <li>Escoger la primera tabla con: tab[[1]]</li>
 <li>Transformar a un data frame con: tab &lt;- tab[[1]] %&gt;% html_table(header = TRUE, fill = TRUE)</li>
-<li>Observar la clase de la variable “tab”&quot;</li>
+<li>Observar la clase de la variable “tab”"</li>
 <li>Mostrar su contenido</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
-<span class="kw">library</span>(rvest)</code></pre></div>
-<pre><code>## Loading required package: xml2</code></pre>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="cargar.html#cb254-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb254-2"><a href="cargar.html#cb254-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;rvest&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     pluck</code></pre>
 <pre><code>## The following object is masked from &#39;package:readr&#39;:
 ## 
 ##     guess_encoding</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">url =<span class="st"> &quot;https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population&quot;</span>
-
-urldata &lt;-<span class="st"> </span><span class="kw">read_html</span>(url)
-<span class="kw">class</span>(urldata)</code></pre></div>
+<div class="sourceCode" id="cb257"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb257-1"><a href="cargar.html#cb257-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">=</span> <span class="st">&quot;https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population&quot;</span></span>
+<span id="cb257-2"><a href="cargar.html#cb257-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb257-3"><a href="cargar.html#cb257-3" aria-hidden="true" tabindex="-1"></a>urldata <span class="ot">&lt;-</span> <span class="fu">read_html</span>(url)</span>
+<span id="cb257-4"><a href="cargar.html#cb257-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(urldata)</span></code></pre></div>
 <pre><code>## [1] &quot;xml_document&quot; &quot;xml_node&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab &lt;-<span class="st"> </span>urldata <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_nodes</span>(<span class="st">&quot;table&quot;</span>)
-
-tab</code></pre></div>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="cargar.html#cb259-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> urldata <span class="sc">%&gt;%</span> <span class="fu">html_nodes</span>(<span class="st">&quot;table&quot;</span>)</span>
+<span id="cb259-2"><a href="cargar.html#cb259-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb259-3"><a href="cargar.html#cb259-3" aria-hidden="true" tabindex="-1"></a>tab</span></code></pre></div>
 <pre><code>## {xml_nodeset (2)}
-## [1] &lt;table class=&quot;wikitable sortable mw-datatable&quot; style=&quot;margin:auto;te ...
-## [2] &lt;table class=&quot;nowraplinks hlist mw-collapsible autocollapse navbox-i ...</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab[[<span class="dv">1</span>]] <span class="co"># el primer elemento es la tabla que se quiere cargar...</span></code></pre></div>
-<pre><code>## {xml_node}
-## &lt;table class=&quot;wikitable sortable mw-datatable&quot; style=&quot;margin:auto;text-align:right&quot;&gt;
-## [1] &lt;tbody&gt;\n&lt;tr&gt;\n&lt;th data-sort-type=&quot;number&quot;&gt;Rank&lt;/th&gt;\n&lt;th&gt;Country&lt;br ...</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tab &lt;-<span class="st"> </span>tab[[<span class="dv">1</span>]] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">html_table</span>(<span class="dt">header =</span> <span class="ot">TRUE</span>, <span class="dt">fill =</span> <span class="ot">TRUE</span>)
-<span class="kw">class</span>(tab) <span class="co"># data frame</span></code></pre></div>
-<pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">View</span>(tab) 
-<span class="co"># los contenidos se cargaron, más o menos, bien, </span>
-<span class="co"># en términos del formato ...</span></code></pre></div>
+## [1] &lt;table class=&quot;wikitable sortable&quot;&gt;&lt;tbody&gt;\n&lt;tr&gt;\n&lt;th&gt;Rank&lt;/th&gt;\n&lt;th&gt;\n&lt;a  ...
+## [2] &lt;table class=&quot;nowraplinks hlist mw-collapsible autocollapse navbox-inner&quot; ...</code></pre>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="cargar.html#cb261-1" aria-hidden="true" tabindex="-1"></a>tab[[<span class="dv">1</span>]] <span class="co"># el primer elemento es la tabla que se quiere cargar...</span></span></code></pre></div>
+<pre><code>## {html_node}
+## &lt;table class=&quot;wikitable sortable&quot;&gt;
+## [1] &lt;tbody&gt;\n&lt;tr&gt;\n&lt;th&gt;Rank&lt;/th&gt;\n&lt;th&gt;\n&lt;a href=&quot;/wiki/List_of_sovereign_stat ...</code></pre>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="cargar.html#cb263-1" aria-hidden="true" tabindex="-1"></a>tab <span class="ot">&lt;-</span> tab[[<span class="dv">1</span>]] <span class="sc">%&gt;%</span> <span class="fu">html_table</span>(<span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">fill =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb263-2"><a href="cargar.html#cb263-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(tab) <span class="co"># data frame</span></span></code></pre></div>
+<pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="cargar.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(tab) </span>
+<span id="cb265-2"><a href="cargar.html#cb265-2" aria-hidden="true" tabindex="-1"></a><span class="co"># los contenidos se cargaron, más o menos, bien, </span></span>
+<span id="cb265-3"><a href="cargar.html#cb265-3" aria-hidden="true" tabindex="-1"></a><span class="co"># en términos del formato ...</span></span></code></pre></div>
 </div>
-<div id="cargar-un-conjunto-de-datos-que-viene-con-r" class="section level2">
+<div id="cargar-un-conjunto-de-datos-que-viene-con-r" class="section level2" number="4.6">
 <h2><span class="header-section-number">4.6</span> Cargar un conjunto de datos, que viene con R</h2>
 <p>Con la instalación básica de R vienen algunos datasets (pre-loaded datasets in R)</p>
 <ul>
 <li>Utilizar el paquete (library) “datasets” y la función data() para imprimir a la pantalla una lista con los conjuntos de datos disponibles</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(datasets)
-<span class="kw">data</span>() <span class="co"># abre una pestaña en RStudio donde se muestran todos los datasets disponibles</span></code></pre></div>
+<div class="sourceCode" id="cb266"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb266-1"><a href="cargar.html#cb266-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(datasets)</span>
+<span id="cb266-2"><a href="cargar.html#cb266-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>() <span class="co"># abre una pestaña en RStudio donde se muestran todos los datasets disponibles</span></span></code></pre></div>
 <ul>
-<li>Cargar el dataset con el nombre “EuStockMarkets”, utilizando la función data()</li>
+<li>Cargar el dataset con el nombre “EuStockMarkets,” utilizando la función data()</li>
 <li>Convertir este datset a un data frame y asignar el resultado a la variable “dataset.Eur”</li>
 <li>Mostrar las primeras 10 filas de “dataset.Eur”</li>
 <li>Mostrar la estructura de “dataset.Eur”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">data</span>(<span class="st">&quot;EuStockMarkets&quot;</span>)
-dataset.Eur &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(EuStockMarkets)
-<span class="kw">head</span>(dataset.Eur, <span class="dt">n=</span><span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="cargar.html#cb267-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;EuStockMarkets&quot;</span>)</span>
+<span id="cb267-2"><a href="cargar.html#cb267-2" aria-hidden="true" tabindex="-1"></a>dataset.Eur <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(EuStockMarkets)</span>
+<span id="cb267-3"><a href="cargar.html#cb267-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dataset.Eur, <span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div>
 <pre><code>##        DAX    SMI    CAC   FTSE
 ## 1  1628.75 1678.1 1772.8 2443.6
 ## 2  1613.63 1688.5 1750.5 2460.2
@@ -702,345 +826,297 @@ dataset.Eur &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(
 ## 8  1640.17 1703.6 1757.4 2508.4
 ## 9  1635.47 1697.5 1754.0 2510.5
 ## 10 1645.89 1716.3 1754.3 2497.4</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(dataset.Eur)</code></pre></div>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="cargar.html#cb269-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(dataset.Eur)</span></code></pre></div>
 <pre><code>## &#39;data.frame&#39;:    1860 obs. of  4 variables:
 ##  $ DAX : num  1629 1614 1607 1621 1618 ...
 ##  $ SMI : num  1678 1688 1679 1684 1687 ...
 ##  $ CAC : num  1773 1750 1718 1708 1723 ...
 ##  $ FTSE: num  2444 2460 2448 2470 2485 ...</code></pre>
 </div>
-<div id="cargar-datos-financieros-con-el-paquete-tidyquant" class="section level2">
+<div id="cargar-datos-financieros-con-el-paquete-tidyquant" class="section level2" number="4.7">
 <h2><span class="header-section-number">4.7</span> Cargar datos financieros con el paquete tidyquant</h2>
-<div id="renta-variable---precio-de-acciones" class="section level3">
+<div id="renta-variable---precio-de-acciones" class="section level3" number="4.7.1">
 <h3><span class="header-section-number">4.7.1</span> Renta variable - precio de acciones</h3>
-<p>Con respecto al paquete “tidyquant”, ver también el siguiente vínculo: <a href="https://rdrr.io/cran/tidyquant/man/tq_get.html" class="uri">https://rdrr.io/cran/tidyquant/man/tq_get.html</a></p>
+<p>Con respecto al paquete “tidyquant,” ver también el siguiente vínculo: <a href="https://rdrr.io/cran/tidyquant/man/tq_get.html" class="uri">https://rdrr.io/cran/tidyquant/man/tq_get.html</a></p>
 <ul>
 <li>Encontrar todas las bolsas disponibles, utilizando la función tq_exchange_options()</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyquant)</code></pre></div>
-<pre><code>## Warning: package &#39;tidyquant&#39; was built under R version 3.5.3</code></pre>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="cargar.html#cb271-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyquant)</span></code></pre></div>
 <pre><code>## Loading required package: lubridate</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;lubridate&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:base&#39;:
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
-##     date</code></pre>
+##     date, intersect, setdiff, union</code></pre>
 <pre><code>## Loading required package: PerformanceAnalytics</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;PerformanceAnalytics&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:graphics&#39;:
 ## 
 ##     legend</code></pre>
-<pre><code>## == Need to Learn tidyquant? ===============
+<pre><code>## == Need to Learn tidyquant? ====================================================
 ## Business Science offers a 1-hour course - Learning Lab #9: Performance Analysis &amp; Portfolio Optimization with tidyquant!
 ## &lt;/&gt; Learn more at: https://university.business-science.io/p/learning-labs-pro &lt;/&gt;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tq_exchange_options</span>() </code></pre></div>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="cargar.html#cb279-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tq_exchange_options</span>() </span></code></pre></div>
 <pre><code>## [1] &quot;AMEX&quot;   &quot;NASDAQ&quot; &quot;NYSE&quot;</code></pre>
 <ul>
 <li>Encontrar todos los indices búrsatiles disponibles, utilizando la función tq_index_options()</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tq_index_options</span>() </code></pre></div>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="cargar.html#cb281-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tq_index_options</span>() </span></code></pre></div>
 <pre><code>## [1] &quot;DOW&quot;       &quot;DOWGLOBAL&quot; &quot;SP400&quot;     &quot;SP500&quot;     &quot;SP600&quot;</code></pre>
 <ul>
 <li>Explorar el índice S&amp;P500 (SP500), utilizando la función glimpse(), que es parecida a str(). Se requiere el paquete XLConnect</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(XLConnect)</code></pre></div>
-<pre><code>## Warning: package &#39;XLConnect&#39; was built under R version 3.5.3</code></pre>
-<pre><code>## Loading required package: XLConnectJars</code></pre>
-<pre><code>## Warning: package &#39;XLConnectJars&#39; was built under R version 3.5.3</code></pre>
-<pre><code>## XLConnect 0.2-15 by Mirai Solutions GmbH [aut],
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="cargar.html#cb283-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(XLConnect)</span></code></pre></div>
+<pre><code>## XLConnect 1.0.5 by Mirai Solutions GmbH [aut],
 ##   Martin Studer [cre],
 ##   The Apache Software Foundation [ctb, cph] (Apache POI),
-##   Graph Builder [ctb, cph] (Curvesapi Java library)</code></pre>
-<pre><code>## http://www.mirai-solutions.com
+##   Graph Builder [ctb, cph] (Curvesapi Java library),
+##   Brett Woolridge [ctb, cph] (SparseBitSet Java library)</code></pre>
+<pre><code>## https://mirai-solutions.ch
 ## https://github.com/miraisolutions/xlconnect</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">glimpse</span>(<span class="kw">tq_index</span>(<span class="st">&quot;SP500&quot;</span>))</code></pre></div>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="cargar.html#cb286-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(<span class="fu">tq_index</span>(<span class="st">&quot;SP500&quot;</span>))</span></code></pre></div>
 <pre><code>## Getting holdings for SP500</code></pre>
-<pre><code>## Observations: 506
-## Variables: 8
-## $ symbol         &lt;chr&gt; &quot;AAPL&quot;, &quot;MSFT&quot;, &quot;AMZN&quot;, &quot;FB&quot;, &quot;BRK.B&quot;, &quot;GOOGL&quot;,...
-## $ company        &lt;chr&gt; &quot;Apple Inc.&quot;, &quot;Microsoft Corporation&quot;, &quot;Amazon....
-## $ identifier     &lt;chr&gt; &quot;03783310&quot;, &quot;59491810&quot;, &quot;02313510&quot;, &quot;30303M10&quot;,...
-## $ sedol          &lt;chr&gt; &quot;2046251&quot;, &quot;2588173&quot;, &quot;2000019&quot;, &quot;B7TL820&quot;, &quot;20...
-## $ weight         &lt;dbl&gt; 0.049707688, 0.048436500, 0.028628617, 0.018528...
-## $ sector         &lt;chr&gt; &quot;Information Technology&quot;, &quot;Information Technolo...
-## $ shares_held    &lt;dbl&gt; 48051176, 87766840, 4791285, 27685640, 22503532...
-## $ local_currency &lt;chr&gt; &quot;USD&quot;, &quot;USD&quot;, &quot;USD&quot;, &quot;USD&quot;, &quot;USD&quot;, &quot;USD&quot;, &quot;USD&quot;...</code></pre>
+<pre><code>## Rows: 505
+## Columns: 8
+## $ symbol         &lt;chr&gt; &quot;AAPL&quot;, &quot;MSFT&quot;, &quot;AMZN&quot;, &quot;GOOGL&quot;, &quot;GOOG&quot;, &quot;FB&quot;, &quot;TSLA&quot;, ~
+## $ company        &lt;chr&gt; &quot;Apple Inc.&quot;, &quot;Microsoft Corporation&quot;, &quot;Amazon.com Inc.~
+## $ identifier     &lt;chr&gt; &quot;03783310&quot;, &quot;59491810&quot;, &quot;02313510&quot;, &quot;02079K30&quot;, &quot;02079K~
+## $ sedol          &lt;chr&gt; &quot;2046251&quot;, &quot;2588173&quot;, &quot;2000019&quot;, &quot;BYVY8G0&quot;, &quot;BYY88Y7&quot;, ~
+## $ weight         &lt;dbl&gt; 0.070742807, 0.061674925, 0.033466765, 0.021378555, 0.0~
+## $ sector         &lt;chr&gt; &quot;Information Technology&quot;, &quot;Information Technology&quot;, &quot;Co~
+## $ shares_held    &lt;dbl&gt; 168445170, 81144456, 4713625, 3251019, 3022066, 2557330~
+## $ local_currency &lt;chr&gt; &quot;USD&quot;, &quot;USD&quot;, &quot;USD&quot;, &quot;USD&quot;, &quot;USD&quot;, &quot;USD&quot;, &quot;USD&quot;, &quot;USD&quot;,~</code></pre>
 <ul>
 <li>Utilizar la función tq_get_options() para obtener una lista con opciones para obtener (get) datos financieros</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tq_get_options</span>() <span class="co"># vamos a utilizar opción [1] &quot;stock.prices&quot;</span></code></pre></div>
-<pre><code>##  [1] &quot;stock.prices&quot;        &quot;stock.prices.google&quot; &quot;stock.prices.japan&quot; 
-##  [4] &quot;financials&quot;          &quot;key.ratios&quot;          &quot;dividends&quot;          
-##  [7] &quot;splits&quot;              &quot;economic.data&quot;       &quot;exchange.rates&quot;     
-## [10] &quot;metal.prices&quot;        &quot;quandl&quot;              &quot;quandl.datatable&quot;   
-## [13] &quot;alphavantager&quot;       &quot;rblpapi&quot;</code></pre>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="cargar.html#cb289-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tq_get_options</span>() <span class="co"># vamos a utilizar opción [1] &quot;stock.prices&quot;</span></span></code></pre></div>
+<pre><code>##  [1] &quot;stock.prices&quot;       &quot;stock.prices.japan&quot; &quot;dividends&quot;         
+##  [4] &quot;splits&quot;             &quot;economic.data&quot;      &quot;quandl&quot;            
+##  [7] &quot;quandl.datatable&quot;   &quot;tiingo&quot;             &quot;tiingo.iex&quot;        
+## [10] &quot;tiingo.crypto&quot;      &quot;alphavantager&quot;      &quot;alphavantage&quot;      
+## [13] &quot;rblpapi&quot;</code></pre>
 <ul>
 <li>Obtener los precios (stock.prices) de los últimos 10 dias de las siguientes acciones: Facebook (FB) y Microsoft (MSFT), utilizando la función tq_get()</li>
 <li>Mostrar las últimas 6 registros de estas acciones, utilizando la función tail()</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">start &lt;-<span class="st"> </span><span class="kw">Sys.Date</span>() <span class="op">-</span><span class="st"> </span><span class="dv">10</span>
-
-acciones &lt;-<span class="st"> </span><span class="kw">tq_get</span>(<span class="kw">c</span>(<span class="st">&quot;FB&quot;</span>, <span class="st">&quot;MSFT&quot;</span>),
-                      <span class="dt">get  =</span> <span class="kw">c</span>(<span class="st">&quot;stock.prices&quot;</span>),
-                      <span class="dt">from =</span> start,
-                      <span class="dt">to   =</span> <span class="kw">Sys.Date</span>()) 
-
-<span class="co"># se puede entrar también una fecha específica (entre comillas), como p.ej.: &quot;2020-02-01&quot;</span>
-<span class="kw">tail</span>(acciones)</code></pre></div>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="cargar.html#cb291-1" aria-hidden="true" tabindex="-1"></a>start <span class="ot">&lt;-</span> <span class="fu">Sys.Date</span>() <span class="sc">-</span> <span class="dv">10</span></span>
+<span id="cb291-2"><a href="cargar.html#cb291-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb291-3"><a href="cargar.html#cb291-3" aria-hidden="true" tabindex="-1"></a>acciones <span class="ot">&lt;-</span> <span class="fu">tq_get</span>(<span class="fu">c</span>(<span class="st">&quot;FB&quot;</span>, <span class="st">&quot;MSFT&quot;</span>),</span>
+<span id="cb291-4"><a href="cargar.html#cb291-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">get  =</span> <span class="fu">c</span>(<span class="st">&quot;stock.prices&quot;</span>),</span>
+<span id="cb291-5"><a href="cargar.html#cb291-5" aria-hidden="true" tabindex="-1"></a>                      <span class="at">from =</span> start,</span>
+<span id="cb291-6"><a href="cargar.html#cb291-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">to   =</span> <span class="fu">Sys.Date</span>()) </span>
+<span id="cb291-7"><a href="cargar.html#cb291-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb291-8"><a href="cargar.html#cb291-8" aria-hidden="true" tabindex="-1"></a><span class="co"># se puede entrar también una fecha específica (entre comillas), como p.ej.: &quot;2020-02-01&quot;</span></span>
+<span id="cb291-9"><a href="cargar.html#cb291-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(acciones)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 8
 ##   symbol date        open  high   low close   volume adjusted
 ##   &lt;chr&gt;  &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1 MSFT   2020-01-24  168.  168.  164.  165. 24918100     165.
-## 2 MSFT   2020-01-27  161.  163.  160.  162. 32078100     162.
-## 3 MSFT   2020-01-28  164.  166.  163.  165. 24899900     165.
-## 4 MSFT   2020-01-29  168.  169.  166.  168. 34754500     168.
-## 5 MSFT   2020-01-30  174.  174.  171.  173. 51597500     173.
-## 6 MSFT   2020-01-31  172.  172.  170.  170. 36113300     170.</code></pre>
+## 1 MSFT   2022-01-21  303.  304.  296.  296. 57118300     296.
+## 2 MSFT   2022-01-24  292.  297.  276.  296. 86035400     296.
+## 3 MSFT   2022-01-25  292.  295.  285.  288. 72848600     288.
+## 4 MSFT   2022-01-26  308.  308.  293.  297. 90428900     297.
+## 5 MSFT   2022-01-27  303.  307.  298.  300. 53376900     300.
+## 6 MSFT   2022-01-28  300.  308.  294.  308. 49717000     308.</code></pre>
 <ul>
 <li>Extraer (mostrar) los primeros registros de los precios (stock.prices) para el símbolo de “MSFT”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a2 &lt;-<span class="st"> </span>acciones[acciones<span class="op">$</span>symbol<span class="op">==</span><span class="st">&quot;MSFT&quot;</span>, ] 
-<span class="kw">head</span>(a2)</code></pre></div>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="cargar.html#cb293-1" aria-hidden="true" tabindex="-1"></a>a2 <span class="ot">&lt;-</span> acciones[acciones<span class="sc">$</span>symbol<span class="sc">==</span><span class="st">&quot;MSFT&quot;</span>, ] </span>
+<span id="cb293-2"><a href="cargar.html#cb293-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(a2)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 8
 ##   symbol date        open  high   low close   volume adjusted
 ##   &lt;chr&gt;  &lt;date&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-## 1 MSFT   2020-01-22  167.  167.  166.  166. 24138800     166.
-## 2 MSFT   2020-01-23  166.  167.  165.  167. 19680800     167.
-## 3 MSFT   2020-01-24  168.  168.  164.  165. 24918100     165.
-## 4 MSFT   2020-01-27  161.  163.  160.  162. 32078100     162.
-## 5 MSFT   2020-01-28  164.  166.  163.  165. 24899900     165.
-## 6 MSFT   2020-01-29  168.  169.  166.  168. 34754500     168.</code></pre>
+## 1 MSFT   2022-01-21  303.  304.  296.  296. 57118300     296.
+## 2 MSFT   2022-01-24  292.  297.  276.  296. 86035400     296.
+## 3 MSFT   2022-01-25  292.  295.  285.  288. 72848600     288.
+## 4 MSFT   2022-01-26  308.  308.  293.  297. 90428900     297.
+## 5 MSFT   2022-01-27  303.  307.  298.  300. 53376900     300.
+## 6 MSFT   2022-01-28  300.  308.  294.  308. 49717000     308.</code></pre>
 </div>
-<div id="renta-fija" class="section level3">
+<div id="renta-fija" class="section level3" number="4.7.2">
 <h3><span class="header-section-number">4.7.2</span> Renta fija</h3>
 <p>Aquí, se trata de cargar 1-Y y 3-M bonos libre de riesgos (EE.UU. treasury bills) utilizando R</p>
-<p>Utilizar nuevamente el paquete tidyquant y la función “tq_get()” para bajar los datos de precios para bonos del estado de la página web de <a href="https://fred.stlouisfed.org/">FRED, Federal Reserve Bank of St. Louis Economic Data</a>. Se deben bajar los datos para “TB1YR” y “TB3MS”. Es decir, treasury bills de un año (1YR) y de tres meses (3MS) <a href="https://bookdown.org/sstoeckl/Tidy_Portfoliomanagement_in_R/s-2Data.html#fnref1">Stöckl, S. (21/09/2018). Tidy Portfoliomanagement in R</a>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyquant)
-tbills &lt;-<span class="st"> </span><span class="kw">tq_get</span>(<span class="kw">c</span>(<span class="st">&quot;TB1YR&quot;</span>,<span class="st">&quot;TB3MS&quot;</span>), <span class="dt">get =</span> <span class="st">&quot;economic.data&quot;</span>) <span class="op">%&gt;%</span>
-<span class="st">  </span><span class="kw">group_by</span>(symbol)
-
-<span class="kw">head</span>(tbills)</code></pre></div>
+<p>Utilizar nuevamente el paquete tidyquant y la función “tq_get()” para bajar los datos de precios para bonos del estado de la página web de <a href="https://fred.stlouisfed.org/">FRED, Federal Reserve Bank of St. Louis Economic Data</a>.
+Se deben bajar los datos para “TB1YR” y “TB3MS.” Es decir, treasury bills de un año (1YR) y de tres meses (3MS) <a href="https://bookdown.org/sstoeckl/Tidy_Portfoliomanagement_in_R/s-2Data.html#fnref1">Stöckl, S. (21/09/2018). Tidy Portfoliomanagement in R</a>.</p>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="cargar.html#cb295-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyquant)</span>
+<span id="cb295-2"><a href="cargar.html#cb295-2" aria-hidden="true" tabindex="-1"></a>tbills <span class="ot">&lt;-</span> <span class="fu">tq_get</span>(<span class="fu">c</span>(<span class="st">&quot;TB1YR&quot;</span>,<span class="st">&quot;TB3MS&quot;</span>), <span class="at">get =</span> <span class="st">&quot;economic.data&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb295-3"><a href="cargar.html#cb295-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(symbol)</span>
+<span id="cb295-4"><a href="cargar.html#cb295-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb295-5"><a href="cargar.html#cb295-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(tbills)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 3
 ## # Groups:   symbol [1]
 ##   symbol date       price
 ##   &lt;chr&gt;  &lt;date&gt;     &lt;dbl&gt;
-## 1 TB1YR  2010-01-01  0.32
-## 2 TB1YR  2010-02-01  0.33
-## 3 TB1YR  2010-03-01  0.37
-## 4 TB1YR  2010-04-01  0.42
-## 5 TB1YR  2010-05-01  0.35
-## 6 TB1YR  2010-06-01  0.3</code></pre>
+## 1 TB1YR  2012-01-01  0.11
+## 2 TB1YR  2012-02-01  0.15
+## 3 TB1YR  2012-03-01  0.18
+## 4 TB1YR  2012-04-01  0.18
+## 5 TB1YR  2012-05-01  0.19
+## 6 TB1YR  2012-06-01  0.18</code></pre>
 </div>
 </div>
-<div id="cargar-datos-de-criptomonedas" class="section level2">
+<div id="cargar-datos-de-criptomonedas" class="section level2" number="4.8">
 <h2><span class="header-section-number">4.8</span> Cargar datos de criptomonedas</h2>
 <ul>
-<li>Utilizar el paquete “coinmarketcapr”</li>
-<li>Descargar las criptomonedas “top”, utilizando el comando get_marketcap_ticker_all() de este paquete, y asignar el resultado a una variable “top_cc”</li>
+<li>Utilizar el paquete “crypto2,” que permite descargar datos de criptomonedas (sin necesidad de utilizar el API de CoinMarketCap)</li>
+<li>Descargar la lista de criptomonedas “disponibles,” utilizando el comando crypto_list() de este paquete, y asignar el resultado a una variable “list_coins”</li>
 <li>Analizar la clase de esta variable</li>
-<li>Mostrar las primeras 6 filas de esta variable, utilizando la función kable(), aquí (head(top_cc)), la cual es parte del paquete knitr, y analizar estos datos</li>
+<li>Mostrar las primeras 6 filas de esta variable, utilizando la función kable(), aquí (head(list_coins)), la cual es parte del paquete knitr, y analizar estos datos</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(coinmarketcapr)</code></pre></div>
-<pre><code>## Warning: package &#39;coinmarketcapr&#39; was built under R version 3.5.3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(knitr)</code></pre></div>
-<pre><code>## Warning: package &#39;knitr&#39; was built under R version 3.5.3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">top_cc &lt;-<span class="st"> </span><span class="kw">get_marketcap_ticker_all</span>()
-<span class="kw">class</span>(top_cc) <span class="co">#top_cc es un dataframe</span></code></pre></div>
-<pre><code>## [1] &quot;data.frame&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># kable es un generador de tablas (del paquete knitr) y muestra las primeras filas (head) de los datos</span>
-<span class="kw">kable</span>(<span class="kw">head</span>(top_cc))</code></pre></div>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb297-1"><a href="cargar.html#cb297-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(crypto2)</span>
+<span id="cb297-2"><a href="cargar.html#cb297-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb297-3"><a href="cargar.html#cb297-3" aria-hidden="true" tabindex="-1"></a>list_coins<span class="ot">&lt;-</span><span class="fu">crypto_list</span>(<span class="at">only_active =</span> <span class="cn">TRUE</span>, <span class="at">add_untracked =</span> <span class="cn">FALSE</span>) <span class="co"># los parámetros only_active y add_untracked son opcionales</span></span>
+<span id="cb297-4"><a href="cargar.html#cb297-4" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(list_coins) <span class="co">#top_cc es un dataframe</span></span></code></pre></div>
+<pre><code>## [1] &quot;tbl_df&quot;     &quot;tbl&quot;        &quot;data.frame&quot;</code></pre>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb299-1"><a href="cargar.html#cb299-1" aria-hidden="true" tabindex="-1"></a><span class="co"># kable es un generador de tablas (del paquete knitr) y muestra las primeras filas (head) de los datos</span></span>
+<span id="cb299-2"><a href="cargar.html#cb299-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(list_coins))</span></code></pre></div>
 <table>
 <thead>
 <tr class="header">
-<th align="left">id</th>
+<th align="right">id</th>
 <th align="left">name</th>
 <th align="left">symbol</th>
+<th align="left">slug</th>
 <th align="right">rank</th>
-<th align="right">price_usd</th>
-<th align="right">price_btc</th>
-<th align="right">X24h_volume_usd</th>
-<th align="right">market_cap_usd</th>
-<th align="right">available_supply</th>
-<th align="right">total_supply</th>
-<th align="right">max_supply</th>
-<th align="right">percent_change_1h</th>
-<th align="right">percent_change_24h</th>
-<th align="right">percent_change_7d</th>
-<th align="left">last_updated</th>
+<th align="right">is_active</th>
+<th align="left">first_historical_data</th>
+<th align="left">last_historical_data</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">bitcoin</td>
+<td align="right">1</td>
 <td align="left">Bitcoin</td>
 <td align="left">BTC</td>
+<td align="left">bitcoin</td>
 <td align="right">1</td>
-<td align="right">9271.5543421</td>
-<td align="right">1.0000000</td>
-<td align="right">25638305975</td>
-<td align="right">168695115358</td>
-<td align="right">18194912</td>
-<td align="right">18194912</td>
-<td align="right">2.1e+07</td>
-<td align="right">-0.56</td>
-<td align="right">-1.54</td>
-<td align="right">10.75</td>
-<td align="left">2020-02-01 22:05:35</td>
+<td align="right">1</td>
+<td align="left">2013-04-28</td>
+<td align="left">2022-01-31</td>
 </tr>
 <tr class="even">
-<td align="left">ethereum</td>
-<td align="left">Ethereum</td>
-<td align="left">ETH</td>
 <td align="right">2</td>
-<td align="right">180.6471887</td>
-<td align="right">0.0194710</td>
-<td align="right">11294932872</td>
-<td align="right">19785728746</td>
-<td align="right">109526912</td>
-<td align="right">109526912</td>
-<td align="right">NA</td>
-<td align="right">-0.60</td>
-<td align="right">-1.28</td>
-<td align="right">11.77</td>
-<td align="left">2020-02-01 22:05:25</td>
+<td align="left">Litecoin</td>
+<td align="left">LTC</td>
+<td align="left">litecoin</td>
+<td align="right">22</td>
+<td align="right">1</td>
+<td align="left">2013-04-28</td>
+<td align="left">2022-01-31</td>
 </tr>
 <tr class="odd">
-<td align="left">xrp</td>
-<td align="left">XRP</td>
-<td align="left">XRP</td>
 <td align="right">3</td>
-<td align="right">0.2378220</td>
-<td align="right">0.0000256</td>
-<td align="right">1541267122</td>
-<td align="right">10389387196</td>
-<td align="right">43685558183</td>
-<td align="right">99991098384</td>
-<td align="right">1.0e+11</td>
-<td align="right">-0.39</td>
-<td align="right">-1.67</td>
-<td align="right">7.53</td>
-<td align="left">2020-02-01 22:05:02</td>
+<td align="left">Namecoin</td>
+<td align="left">NMC</td>
+<td align="left">namecoin</td>
+<td align="right">754</td>
+<td align="right">1</td>
+<td align="left">2013-04-28</td>
+<td align="left">2022-01-31</td>
 </tr>
 <tr class="even">
-<td align="left">bitcoin-cash</td>
-<td align="left">Bitcoin Cash</td>
-<td align="left">BCH</td>
 <td align="right">4</td>
-<td align="right">372.1437445</td>
-<td align="right">0.0401114</td>
-<td align="right">3039252922</td>
-<td align="right">6793828288</td>
-<td align="right">18255925</td>
-<td align="right">18255925</td>
-<td align="right">2.1e+07</td>
-<td align="right">-0.86</td>
-<td align="right">-3.20</td>
-<td align="right">18.69</td>
-<td align="left">2020-02-01 22:05:11</td>
+<td align="left">Terracoin</td>
+<td align="left">TRC</td>
+<td align="left">terracoin</td>
+<td align="right">1866</td>
+<td align="right">1</td>
+<td align="left">2013-04-28</td>
+<td align="left">2022-01-31</td>
 </tr>
 <tr class="odd">
-<td align="left">bitcoin-sv</td>
-<td align="left">Bitcoin SV</td>
-<td align="left">BSV</td>
 <td align="right">5</td>
-<td align="right">274.2430120</td>
-<td align="right">0.0295592</td>
-<td align="right">1882718867</td>
-<td align="right">5005771980</td>
-<td align="right">18253052</td>
-<td align="right">18253052</td>
-<td align="right">2.1e+07</td>
-<td align="right">-0.75</td>
-<td align="right">-3.77</td>
-<td align="right">4.44</td>
-<td align="left">2020-02-01 22:05:13</td>
+<td align="left">Peercoin</td>
+<td align="left">PPC</td>
+<td align="left">peercoin</td>
+<td align="right">835</td>
+<td align="right">1</td>
+<td align="left">2013-04-28</td>
+<td align="left">2022-01-31</td>
 </tr>
 <tr class="even">
-<td align="left">tether</td>
-<td align="left">Tether</td>
-<td align="left">USDT</td>
 <td align="right">6</td>
-<td align="right">0.9983953</td>
-<td align="right">0.0001076</td>
-<td align="right">33800908445</td>
-<td align="right">4634917703</td>
-<td align="right">4642367414</td>
-<td align="right">4776930644</td>
-<td align="right">NA</td>
-<td align="right">-0.25</td>
-<td align="right">-0.11</td>
-<td align="right">-0.25</td>
-<td align="left">2020-02-01 22:05:21</td>
+<td align="left">Novacoin</td>
+<td align="left">NVC</td>
+<td align="left">novacoin</td>
+<td align="right">2159</td>
+<td align="right">1</td>
+<td align="left">2013-04-28</td>
+<td align="left">2022-01-31</td>
 </tr>
 </tbody>
 </table>
-<div id="para-cargar-datos-históricos-de-criptomonedas" class="section level3">
+<div id="para-cargar-datos-históricos-de-criptomonedas" class="section level3" number="4.8.1">
 <h3><span class="header-section-number">4.8.1</span> Para cargar datos históricos de criptomonedas</h3>
 <ul>
-<li>Utilizar el paquete crypto de R</li>
-<li>y la función crypto_history(), p.ej. para bajar los datos para Bitcoin, en términos de la última cotización (parámetro “limit” = 1)</li>
-<li>Asignar el resultado a una variable “bitc”</li>
-<li>Mostrar las primeras seis filas de “bitc”</li>
-<li>Mostrar los primeros seis valores de la columna “close” de “bitc”</li>
+<li>Utilizar el paquete crypto2 de R</li>
+<li>y la función crypto_history() para bajar los datos a partir de cierta fecha. Aquí 01/01/2021</li>
+<li>Asignar el resultado a una variable “all_coins”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(crypto)</code></pre></div>
-<pre><code>## Warning: package &#39;crypto&#39; was built under R version 3.5.3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">moneda &lt;-<span class="st"> &#39;BTC&#39;</span> <span class="co">#&quot;bitcoin&quot;</span>
-<span class="co">#start &lt;- &#39;20191201&#39; </span>
-limit &lt;-<span class="st"> </span><span class="dv">1</span> <span class="co"># últimos 1 cotizaciones</span>
-bitc &lt;-<span class="st"> </span><span class="kw">crypto_history</span>(<span class="dt">coin =</span> moneda, 
-                                             <span class="dt">limit =</span> limit,
-                                             <span class="dt">sleep =</span> <span class="fl">7.5</span>)</code></pre></div>
-<pre><code>## &lt;U+2665&gt; If this helps you become rich please consider donating</code></pre>
-<pre><code>## </code></pre>
-<pre><code>## ERC-20: 0x375923Bf82F0b728d23A5704261a6e16341fd860</code></pre>
-<pre><code>## XRP: rK59semLsuJZEWftxBFhWuNE6uhznjz2bK</code></pre>
-<pre><code>## </code></pre>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="cargar.html#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(crypto2)</span>
+<span id="cb300-2"><a href="cargar.html#cb300-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Descargando precios para la lista de de criptomonedas (véase código anterior), mediante &quot;web scrapping&quot;</span></span>
+<span id="cb300-3"><a href="cargar.html#cb300-3" aria-hidden="true" tabindex="-1"></a>all_coins <span class="ot">&lt;-</span> <span class="fu">crypto_history</span>(<span class="at">coin_list=</span>list_coins, <span class="at">start_date =</span> <span class="st">&#39;20220101&#39;</span>, <span class="at">limit=</span><span class="dv">10</span>)</span></code></pre></div>
 <pre><code>## &gt; Scraping historical crypto data</code></pre>
 <pre><code>## </code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(bitc)</code></pre></div>
-<pre><code>##      slug symbol    name       date ranknow   open   high    low  close
-## 1 bitcoin    BTC Bitcoin 2013-04-28       1 135.30 135.98 132.10 134.21
-## 2 bitcoin    BTC Bitcoin 2013-04-29       1 134.44 147.49 134.00 144.54
-## 3 bitcoin    BTC Bitcoin 2013-04-30       1 144.00 146.93 134.05 139.00
-## 4 bitcoin    BTC Bitcoin 2013-05-01       1 139.00 139.89 107.72 116.99
-## 5 bitcoin    BTC Bitcoin 2013-05-02       1 116.38 125.60  92.28 105.21
-## 6 bitcoin    BTC Bitcoin 2013-05-03       1 106.25 108.13  79.10  97.75
-##   volume     market close_ratio spread
-## 1      0 1488566728   0.5438144   3.88
-## 2      0 1603768865   0.7813195  13.49
-## 3      0 1542813125   0.3843168  12.88
-## 4      0 1298954594   0.2881567  32.17
-## 5      0 1168517495   0.3880552  33.32
-## 6      0 1085995169   0.6424389  29.03</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(bitc[,<span class="st">&quot;close&quot;</span>]) <span class="co"># primeras seis filas de la columna &quot;close&quot;</span></code></pre></div>
-<pre><code>## [1] 134.21 144.54 139.00 116.99 105.21  97.75</code></pre>
+<pre><code>## &gt; Processing historical crypto data</code></pre>
+<pre><code>## </code></pre>
+<ul>
+<li>seleccionar las siguientes columnas (atributos): timestamp, symbol y close</li>
+<li>filtrar los datos por la cripotmoneda Bitcoin (BTC)</li>
+<li>luego, mostrar los útlimos 10 registros</li>
+</ul>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="cargar.html#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="co"># filtrar los datos por Bitcoin</span></span>
+<span id="cb305-2"><a href="cargar.html#cb305-2" aria-hidden="true" tabindex="-1"></a>bitc <span class="ot">&lt;-</span> all_coins <span class="sc">%&gt;%</span> </span>
+<span id="cb305-3"><a href="cargar.html#cb305-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(timestamp, symbol, close) <span class="sc">%&gt;%</span> </span>
+<span id="cb305-4"><a href="cargar.html#cb305-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(symbol<span class="sc">==</span><span class="st">&#39;BTC&#39;</span>)</span>
+<span id="cb305-5"><a href="cargar.html#cb305-5" aria-hidden="true" tabindex="-1"></a><span class="co">#mostrar los últimos 10 precios</span></span>
+<span id="cb305-6"><a href="cargar.html#cb305-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb305-7"><a href="cargar.html#cb305-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(<span class="fu">kable</span>(bitc), <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;|2022-01-21 23:59:59 |BTC    | 36457.32|&quot;
+##  [2] &quot;|2022-01-22 23:59:59 |BTC    | 35030.25|&quot;
+##  [3] &quot;|2022-01-23 23:59:59 |BTC    | 36276.80|&quot;
+##  [4] &quot;|2022-01-24 23:59:59 |BTC    | 36654.33|&quot;
+##  [5] &quot;|2022-01-25 23:59:59 |BTC    | 36954.00|&quot;
+##  [6] &quot;|2022-01-26 23:59:59 |BTC    | 36852.12|&quot;
+##  [7] &quot;|2022-01-27 23:59:59 |BTC    | 37138.23|&quot;
+##  [8] &quot;|2022-01-28 23:59:59 |BTC    | 37784.33|&quot;
+##  [9] &quot;|2022-01-29 23:59:59 |BTC    | 38138.18|&quot;
+## [10] &quot;|2022-01-30 23:59:59 |BTC    | 37917.60|&quot;</code></pre>
 </div>
 </div>
-<div id="cargar-datos-de-eurostat-con-r" class="section level2">
+<div id="cargar-datos-de-eurostat-con-r" class="section level2" number="4.9">
 <h2><span class="header-section-number">4.9</span> Cargar datos de Eurostat con R</h2>
 <p>Eurostat es la oficina estadística de la Unión Europea. Su misión es proporcionar estadísticas de alta calidad para Europa.</p>
 <ul>
 <li>Instalar y utilizar el paquete (library) eurostat <a href="https://ropengov.github.io/eurostat">R Tools for Eurostat open data</a></li>
-<li>Explorar el manual para el paquete “eurostat”, utilizando el comando ?eurostat</li>
-<li>Véase también: <a href="http://ropengov.github.io/eurostat/articles/cheatsheet.html" class="uri">http://ropengov.github.io/eurostat/articles/cheatsheet.html</a></li>
+<li>Explorar el manual para el paquete “eurostat,” utilizando el comando ?eurostat</li>
+<li>Véase también: Leo Lahti, Janne Huovari, Markus Kainu, Przemyslaw Biecek. Retrieval and analysis of Eurostat open data with the eurostat package. R Journal 9(1):385-392, 2017. Version 3.7.9 doi: 10.32614/RJ-2017-019 Package URL: <a href="http://ropengov.github.io/eurostat" class="uri">http://ropengov.github.io/eurostat</a> Article URL: <a href="https://journal.r-project.org/archive/2017/RJ-2017-019/index.html" class="uri">https://journal.r-project.org/archive/2017/RJ-2017-019/index.html</a></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr) <span class="co"># debe ser una versión de dplyr mayor a 0.8</span>
-<span class="kw">library</span>(eurostat) <span class="co"># R Tools para Eurostat open data (requiere versión dplyr &gt; 0.8)</span></code></pre></div>
-<pre><code>## Warning: package &#39;eurostat&#39; was built under R version 3.5.3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?eurostat <span class="co"># página de ayuda</span></code></pre></div>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="cargar.html#cb307-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) <span class="co"># parte del tidyverse</span></span>
+<span id="cb307-2"><a href="cargar.html#cb307-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(eurostat) <span class="co"># R Tools para Eurostat open data </span></span>
+<span id="cb307-3"><a href="cargar.html#cb307-3" aria-hidden="true" tabindex="-1"></a>?eurostat <span class="co"># página de ayuda</span></span></code></pre></div>
 <ul>
-<li>Cargar los datos desde Eurostat, utilizando la función get_eurostat(), y asignar el resultado a una variable “contenido” (tabla de contenido). Nota: La carga de estos datos se demora un rato</li>
+<li>Cargar los datos desde Eurostat, utilizando la función get_eurostat(), y asignar el resultado a una variable “contenido” (tabla de contenido).
+Nota: La carga de estos datos se demora un rato</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(eurostat)
-contenido &lt;-<span class="st"> </span><span class="kw">get_eurostat_toc</span>()</code></pre></div>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="cargar.html#cb308-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(eurostat)</span>
+<span id="cb308-2"><a href="cargar.html#cb308-2" aria-hidden="true" tabindex="-1"></a>contenido <span class="ot">&lt;-</span> <span class="fu">get_eurostat_toc</span>()</span></code></pre></div>
 <ul>
 <li>Mostrar para el contenido las primeras filas en una tabla, utilizando knitr::kable()… Esto requiere el paquete “knitr”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(knitr)
-<span class="kw">kable</span>(<span class="kw">head</span>(contenido))</code></pre></div>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="cargar.html#cb309-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb309-2"><a href="cargar.html#cb309-2" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(contenido))</span></code></pre></div>
 <table>
+<colgroup>
+<col width="38%" />
+<col width="6%" />
+<col width="5%" />
+<col width="13%" />
+<col width="18%" />
+<col width="7%" />
+<col width="6%" />
+<col width="4%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">title</th>
@@ -1108,18 +1184,29 @@ contenido &lt;-<span class="st"> </span><span class="kw">get_eurostat_toc</span>
 <td align="left">Consumers - monthly data</td>
 <td align="left">ei_bsco_m</td>
 <td align="left">dataset</td>
-<td align="left">30.01.2020</td>
-<td align="left">31.01.2020</td>
+<td align="left">28.01.2022</td>
+<td align="left">28.01.2022</td>
 <td align="left">1980M01</td>
-<td align="left">2020M01</td>
+<td align="left">2022M01</td>
 <td align="left">NA</td>
 </tr>
 </tbody>
 </table>
-<p>Utilizando la función search_eurostat(), se puede buscar en la tabla de contenido, p.ej. por conjuntos de datos (datasets), que están relacionados con las “tasas de intéres” (interest rates): kable(head(search_eurostat(“interest rates”)), n=25)</p>
+<p>Utilizando la función search_eurostat(), se puede buscar en la tabla de contenido, p.ej. por conjuntos de datos (datasets), que están relacionados con las “tasas de intéres” (interest rates):
+kable(head(search_eurostat(“interest rates”)), n=25)</p>
 <p>Donde n=5 limita el resultado a 5 filas</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">kable</span>(<span class="kw">head</span>(<span class="kw">search_eurostat</span>(<span class="st">&quot;interest rates&quot;</span>)), <span class="dt">n=</span><span class="dv">5</span>)</code></pre></div>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="cargar.html#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(<span class="fu">search_eurostat</span>(<span class="st">&quot;interest rates&quot;</span>)), <span class="at">n=</span><span class="dv">5</span>)</span></code></pre></div>
 <table>
+<colgroup>
+<col width="45%" />
+<col width="7%" />
+<col width="4%" />
+<col width="11%" />
+<col width="15%" />
+<col width="6%" />
+<col width="5%" />
+<col width="3%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th align="left">title</th>
@@ -1137,94 +1224,137 @@ contenido &lt;-<span class="st"> </span><span class="kw">get_eurostat_toc</span>
 <td align="left">Candidate countries and potential candidates: exchange rates and interest rates</td>
 <td align="left">cpc_ecexint</td>
 <td align="left">dataset</td>
-<td align="left">18.03.2019</td>
-<td align="left">18.03.2019</td>
+<td align="left">17.03.2020</td>
+<td align="left">08.02.2021</td>
 <td align="left">2005</td>
-<td align="left">2018</td>
-<td align="left">NA</td>
-</tr>
-<tr class="even">
-<td align="left">ENP countries: exchange rates and interest rates</td>
-<td align="left">enpr_ecexint</td>
-<td align="left">dataset</td>
-<td align="left">14.01.2020</td>
-<td align="left">14.01.2020</td>
-<td align="left">2005</td>
-<td align="left">2018</td>
-<td align="left">NA</td>
-</tr>
-<tr class="odd">
-<td align="left">Money market interest rates - annual data</td>
-<td align="left">irt_st_a</td>
-<td align="left">dataset</td>
-<td align="left">06.01.2020</td>
-<td align="left">06.01.2020</td>
-<td align="left">1970</td>
 <td align="left">2019</td>
 <td align="left">NA</td>
 </tr>
 <tr class="even">
-<td align="left">Money market interest rates - quarterly data</td>
-<td align="left">irt_st_q</td>
+<td align="left">Money market interest rates</td>
+<td align="left">enpe_irt_st</td>
 <td align="left">dataset</td>
-<td align="left">08.01.2020</td>
-<td align="left">06.01.2020</td>
-<td align="left">1970Q1</td>
-<td align="left">2019Q4</td>
+<td align="left">26.01.2022</td>
+<td align="left">26.01.2022</td>
+<td align="left">2005</td>
+<td align="left">2021</td>
 <td align="left">NA</td>
 </tr>
 <tr class="odd">
+<td align="left">ENP countries: exchange rates and interest rates</td>
+<td align="left">enpr_ecexint</td>
+<td align="left">dataset</td>
+<td align="left">14.01.2020</td>
+<td align="left">08.02.2021</td>
+<td align="left">2005</td>
+<td align="left">2018</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="left">Money market interest rates - annual data</td>
+<td align="left">irt_st_a</td>
+<td align="left">dataset</td>
+<td align="left">06.01.2022</td>
+<td align="left">06.01.2022</td>
+<td align="left">1970</td>
+<td align="left">2021</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">Money market interest rates - quarterly data</td>
+<td align="left">irt_st_q</td>
+<td align="left">dataset</td>
+<td align="left">06.01.2022</td>
+<td align="left">06.01.2022</td>
+<td align="left">1970Q1</td>
+<td align="left">2021Q4</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
 <td align="left">Money market interest rates - monthly data</td>
 <td align="left">irt_st_m</td>
 <td align="left">dataset</td>
-<td align="left">14.01.2020</td>
-<td align="left">06.01.2020</td>
+<td align="left">14.01.2022</td>
+<td align="left">06.01.2022</td>
 <td align="left">1970M01</td>
-<td align="left">2019M12</td>
+<td align="left">2021M12</td>
 <td align="left">NA</td>
 </tr>
 </tbody>
 </table>
 <p>Nota: Los códigos para el conjunto de datos se pueden buscar también en la base de datos de Eurostat. Esta base de datos proporciona códigos en forma de un árbol de navegación de datos, entre paréntesis después de cada conjunto de datos: <a href="https://ec.europa.eu/eurostat/data/database" class="uri">https://ec.europa.eu/eurostat/data/database</a></p>
 <p>Para descargar los datos de un conjunto de datos, utilizar la función search_eurostat() de la siguiente forma, donde code[1] es importante para que este id sea el code correspondiente, que se muestra en la tabla anterior</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">id &lt;-<span class="st"> </span><span class="kw">search_eurostat</span>(<span class="st">&quot;Money market interest rates - annual data&quot;</span>, 
-                         <span class="dt">type =</span> <span class="st">&quot;dataset&quot;</span>)<span class="op">$</span>code[<span class="dv">1</span>]
-<span class="kw">print</span>(id)</code></pre></div>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="cargar.html#cb311-1" aria-hidden="true" tabindex="-1"></a>id <span class="ot">&lt;-</span> <span class="fu">search_eurostat</span>(<span class="st">&quot;Money market interest rates - annual data&quot;</span>, </span>
+<span id="cb311-2"><a href="cargar.html#cb311-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">type =</span> <span class="st">&quot;dataset&quot;</span>)<span class="sc">$</span>code[<span class="dv">1</span>]</span>
+<span id="cb311-3"><a href="cargar.html#cb311-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(id)</span></code></pre></div>
 <pre><code>## [1] &quot;irt_st_a&quot;</code></pre>
-<p>Ahora, se puede “aprovechar” de este “id”, de la siguiente forma, utilizando la función get_eurostat() y asignando el resultado a una variable “datos”</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">datos &lt;-<span class="st"> </span><span class="kw">get_eurostat</span>(id, <span class="dt">time_format =</span> <span class="st">&quot;num&quot;</span>)</code></pre></div>
-<pre><code>## Table irt_st_a cached at C:\Users\CHRIST~1\AppData\Local\Temp\RtmpoHKXHL/eurostat/irt_st_a_num_code_TF.rds</code></pre>
+<p>Ahora, se puede “aprovechar” de este “id,” de la siguiente forma, utilizando la función get_eurostat() y asignando el resultado a una variable “datos”</p>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="cargar.html#cb313-1" aria-hidden="true" tabindex="-1"></a>datos <span class="ot">&lt;-</span> <span class="fu">get_eurostat</span>(id, <span class="at">time_format =</span> <span class="st">&quot;num&quot;</span>)</span></code></pre></div>
+<pre><code>## Table irt_st_a cached at C:\Users\CHRIST~1\AppData\Local\Temp\Rtmp8sAfnc/eurostat/irt_st_a_num_code_FF.rds</code></pre>
 <ul>
-<li>Ver los “datos”, utilizando la función str() y con head(), los primeros 5 registros de “datos”</li>
+<li>Ver los “datos,” utilizando la función str() y con head(), los primeros 5 registros de “datos”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(datos)</code></pre></div>
-<pre><code>## Classes &#39;tbl_df&#39;, &#39;tbl&#39; and &#39;data.frame&#39;:    1399 obs. of  4 variables:
-##  $ int_rt: Factor w/ 5 levels &quot;IRT_DTD&quot;,&quot;IRT_M1&quot;,..: 1 1 2 2 2 2 3 3 3 4 ...
-##  $ geo   : Factor w/ 15 levels &quot;EA&quot;,&quot;UK&quot;,&quot;DK&quot;,..: 1 2 3 1 4 2 3 1 2 3 ...
-##  $ time  : num  2019 2019 2019 2019 2019 ...
-##  $ values: num  -0.39 0.67 -0.44 -0.4 -0.16 0.72 -0.06 -0.22 1 -0.37 ...</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(datos, <span class="dt">n=</span><span class="dv">5</span>)</code></pre></div>
+<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="cargar.html#cb315-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(datos)</span></code></pre></div>
+<pre><code>## tibble [3,224 x 4] (S3: tbl_df/tbl/data.frame)
+##  $ int_rt: chr [1:3224] &quot;IRT_DTD&quot; &quot;IRT_DTD&quot; &quot;IRT_DTD&quot; &quot;IRT_DTD&quot; ...
+##  $ geo   : chr [1:3224] &quot;BG&quot; &quot;CZ&quot; &quot;DK&quot; &quot;EA&quot; ...
+##  $ time  : num [1:3224] 2021 2021 2021 2021 2021 ...
+##  $ values: num [1:3224] NA NA -0.369 -0.483 NA ...</code></pre>
+<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="cargar.html#cb317-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(datos, <span class="at">n=</span><span class="dv">5</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 4
 ##   int_rt  geo    time values
-##   &lt;fct&gt;   &lt;fct&gt; &lt;dbl&gt;  &lt;dbl&gt;
-## 1 IRT_DTD EA     2019  -0.39
-## 2 IRT_DTD UK     2019   0.67
-## 3 IRT_M1  DK     2019  -0.44
-## 4 IRT_M1  EA     2019  -0.4 
-## 5 IRT_M1  SE     2019  -0.16</code></pre>
+##   &lt;chr&gt;   &lt;chr&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 IRT_DTD BG     2021 NA    
+## 2 IRT_DTD CZ     2021 NA    
+## 3 IRT_DTD DK     2021 -0.369
+## 4 IRT_DTD EA     2021 -0.483
+## 5 IRT_DTD HR     2021 NA</code></pre>
 </div>
-<div id="ejercicio-3" class="section level2">
+<div id="ejercicio-3" class="section level2" number="4.10">
 <h2><span class="header-section-number">4.10</span> Ejercicio 3</h2>
 <ul>
-<li><p>Crear un archivo de tipo CSV con los siguientes datos, distribuidos en cinco filas y 4 columnas, y separados por punto y coma (;):</p></li>
-<li>#;Estrato;Ingresos;Nombre</li>
-<li>1;1;100.0;Jaime</li>
-<li>2;2;150;María</li>
-<li>3;2;140;Paula</li>
-<li><p>4;5;90;Cristina</p></li>
+<li>Crear un archivo de tipo CSV con los siguientes datos, distribuidos en cinco filas y 4 columnas, y separados por punto y coma (;):</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Id</th>
+<th>Estrato</th>
+<th>Ingresos</th>
+<th>Nombre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+<td>100.0</td>
+<td>Jaime</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2</td>
+<td>150</td>
+<td>María</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>2</td>
+<td>140</td>
+<td>Paula</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>5</td>
+<td>90</td>
+<td>Cristina</td>
+</tr>
+</tbody>
+</table>
+<ul>
 <li>Cargar estos datos desde el archivo csv a una variable “dataset10” en R / RStudio. Los datos de las primeras tres columnas deben ser numéricos (int o num) y de la última de tipo “character” (chr)</li>
 <li>Mostrar la estructura del “dataset10” en la pantalla</li>
-<li><p>Cambiar el nombre de la primera columna al texto “numero”</p></li>
+<li>Cambiar el nombre de la primera columna al texto “numero”</li>
 </ul>
 
 </div>
@@ -1239,7 +1369,6 @@ contenido &lt;-<span class="st"> </span><span class="kw">get_eurostat_toc</span>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1258,6 +1387,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -1277,10 +1407,15 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["r_libro_cl.pdf", "r_libro_cl.epub"],
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
-}
+},
+"info": null
 });
 });
 </script>
@@ -1290,7 +1425,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))

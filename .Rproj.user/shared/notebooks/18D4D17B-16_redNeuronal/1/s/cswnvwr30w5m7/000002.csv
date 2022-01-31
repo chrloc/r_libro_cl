@@ -1,0 +1,2 @@
+"0","# eliminar la columna Telephone de los datos"
+"0","mis.datos$Telephone <- NULL"

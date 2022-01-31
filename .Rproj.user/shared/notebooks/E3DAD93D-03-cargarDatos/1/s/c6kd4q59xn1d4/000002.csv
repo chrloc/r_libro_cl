@@ -1,0 +1,11 @@
+"0","datos <- get_eurostat(id, time_format = ""num"")"
+"2","probando la URL 'https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&file=data%2Firt_st_a.tsv.gz'
+"
+"2","Content type 'application/octet-stream;charset=UTF-8'"
+"2"," length 5258 bytes
+"
+"2","downloaded 5258 bytes
+
+"
+"2","Table irt_st_a cached at C:\Users\CHRIST~1\AppData\Local\Temp\Rtmp2bqEIb/eurostat/irt_st_a_num_code_FF.rds
+"

@@ -1,0 +1,6 @@
+"0","x <- 10:1"
+"0","y <- -4:5"
+"0","q <- c(""Manzana"", ""Pera"", ""Piña"", ""Naranja"", ""Mandarina"","
+"0","			  ""Banano"", ""Durazno"", ""Uva"", ""Fresa"", ""Melocotón"")"
+"0","df <-  data.frame(x, y, q)"
+"0","df"

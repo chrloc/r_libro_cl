@@ -1,8 +1,6 @@
 "0","library(OutrankingTools)"
-"2","package ‘OutrankingTools’ was built under R version 3.5.3"
 "2","Loading required package: igraph
 "
-"2","package ‘igraph’ was built under R version 3.5.3"
 "2","
 Attaching package: ‘igraph’
 
@@ -30,6 +28,11 @@ Attaching package: ‘igraph’
 "2","The following object is masked from ‘package:tibble’:
 
     as_data_frame
+
+"
+"2","The following object is masked from ‘package:DescTools’:
+
+    %c%
 
 "
 "2","The following objects are masked from ‘package:stats’:

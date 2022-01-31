@@ -1,0 +1,12 @@
+"0","library(datasets)"
+"0","data() # abre una pestaña en RStudio donde se muestran todos los datasets disponibles"
+"2","Warning in for (k in seq_len(nBlocks)) s[k] <- paste0(s[k], paste(words[lowerBlockIndex[k]:upperBlockIndex[k]],  :"
+"2","
+ "
+"2"," cerrando la conenexion 4 (https://query1.finance.yahoo.com/v7/finance/download/AMZN?period1=1642636800&period2=1642550400&interval=1d&events=history&crumb=aLAhlso7gP2) que no esta siendo utilizada 
+"
+"2","Warning in for (k in seq_len(nBlocks)) s[k] <- paste0(s[k], paste(words[lowerBlockIndex[k]:upperBlockIndex[k]],  :"
+"2","
+ "
+"2"," cerrando la conenexion 3 (https://query2.finance.yahoo.com/v7/finance/download/AMZN?period1=1642636800&period2=1642550400&interval=1d&events=history&crumb=JRyrXufnW6w) que no esta siendo utilizada 
+"

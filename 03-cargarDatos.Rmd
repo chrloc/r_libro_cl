@@ -95,7 +95,7 @@ stockData <- new.env() #Generar un entorno nuevo
 - Utilizar como fecha final la fecha actual y como fecha de inicio una fecha "cercana" a la fecha final
 
 ```{r}
-startDate = as.Date("2020-01-20")
+startDate = as.Date("2021-12-30")
 endDate = Sys.Date()
 ```
 
@@ -251,39 +251,47 @@ head(tbills)
 
 ## Cargar datos de criptomonedas
 
-- Utilizar el paquete "coinmarketcapr"
-- Descargar las criptomonedas "top", utilizando el comando get_marketcap_ticker_all() de este paquete, y asignar el resultado a una variable "top_cc"
+- Utilizar el paquete "crypto2", que permite descargar datos de criptomonedas (sin necesidad de utilizar el API de CoinMarketCap)
+- Descargar la lista de criptomonedas "disponibles", utilizando el comando crypto_list() de este paquete, y asignar el resultado a una variable "list_coins"
 - Analizar la clase de esta variable
-- Mostrar las primeras 6 filas de esta variable, utilizando la función kable(), aquí (head(top_cc)), la cual es parte del paquete knitr, y analizar estos datos
+- Mostrar las primeras 6 filas de esta variable, utilizando la función kable(), aquí (head(list_coins)), la cual es parte del paquete knitr, y analizar estos datos
 
 ```{r}
-library(coinmarketcapr)
+library(crypto2)
 library(knitr)
-top_cc <- get_marketcap_ticker_all()
-class(top_cc) #top_cc es un dataframe
+list_coins<-crypto_list(only_active = TRUE, add_untracked = FALSE) # los parámetros only_active y add_untracked son opcionales
+class(list_coins) #top_cc es un dataframe
 # kable es un generador de tablas (del paquete knitr) y muestra las primeras filas (head) de los datos
-kable(head(top_cc))
+kable(head(list_coins))
 ```
 
 ### Para cargar datos históricos de criptomonedas
 
-- Utilizar el paquete crypto de R
-- y la función crypto_history(), p.ej. para bajar los datos para Bitcoin, en términos de la última cotización (parámetro "limit" = 1) 
-- Asignar el resultado a una variable "bitc"
-- Mostrar las primeras seis filas de "bitc"
-- Mostrar los primeros seis valores de la columna "close" de "bitc"
+- Utilizar el paquete crypto2 de R
+- y la función crypto_history() para bajar los datos a partir de cierta fecha. Aquí 01/01/2021
+- Asignar el resultado a una variable "all_coins"
+
 
 ```{r}
-library(crypto)
-moneda <- 'BTC' #"bitcoin"
-#start <- '20191201' 
-limit <- 1 # últimos 1 cotizaciones
-bitc <- crypto_history(coin = moneda, 
-											 limit = limit,
-											 sleep = 7.5)
-head(bitc)
-head(bitc[,"close"]) # primeras seis filas de la columna "close"
+library(crypto2)
+# Descargando precios para la lista de de criptomonedas (véase código anterior), mediante "web scrapping"
+all_coins <- crypto_history(coin_list=list_coins, start_date = '20220101', limit=10)
 ```
+
+- seleccionar las siguientes columnas (atributos): timestamp, symbol y close
+- filtrar los datos por la cripotmoneda Bitcoin (BTC)
+- luego, mostrar los útlimos 10 registros
+
+```{r}
+# filtrar los datos por Bitcoin
+bitc <- all_coins %>% 
+  select(timestamp, symbol, close) %>% 
+  filter(symbol=='BTC')
+#mostrar los últimos 10 precios
+library(knitr)
+tail(kable(bitc), 10)
+```
+
 
 ## Cargar datos de Eurostat con R
 
@@ -291,11 +299,11 @@ Eurostat es la oficina estadística de la Unión Europea. Su misión es proporci
 
 - Instalar y utilizar el paquete (library) eurostat [R Tools for Eurostat open data]( https://ropengov.github.io/eurostat)
 - Explorar el manual para el paquete "eurostat", utilizando el comando ?eurostat
-- Véase también: http://ropengov.github.io/eurostat/articles/cheatsheet.html
+- Véase también: Leo Lahti, Janne Huovari, Markus Kainu, Przemyslaw Biecek. Retrieval and analysis of Eurostat open data with the eurostat package. R Journal 9(1):385-392, 2017. Version 3.7.9 doi: 10.32614/RJ-2017-019 Package URL: http://ropengov.github.io/eurostat Article URL: https://journal.r-project.org/archive/2017/RJ-2017-019/index.html
 
 ```{r}
-library(dplyr) # debe ser una versión de dplyr mayor a 0.8
-library(eurostat) # R Tools para Eurostat open data (requiere versión dplyr > 0.8)
+library(dplyr) # parte del tidyverse
+library(eurostat) # R Tools para Eurostat open data 
 ?eurostat # página de ayuda
 ```
 
@@ -351,11 +359,13 @@ head(datos, n=5)
 
 - Crear un archivo de tipo CSV con los siguientes datos, distribuidos en cinco filas y 4 columnas, y separados por punto y coma (;):
 
-- \#;Estrato;Ingresos;Nombre
-- 1;1;100.0;Jaime
-- 2;2;150;María
-- 3;2;140;Paula
-- 4;5;90;Cristina
+| Id    | Estrato | Ingresos   | Nombre |
+|-------|---------|------------|--------|
+| 1     | 1       | 100.0     |  Jaime  |
+| 2     | 2       | 150       |  María  |
+| 3     | 2       | 140       |  Paula  |
+| 4     | 5       |  90       | Cristina|
+
 
 - Cargar estos datos desde el archivo csv a una variable "dataset10" en R / RStudio. Los datos de las primeras tres columnas deben ser numéricos (int o num) y de la última de tipo "character" (chr)
 - Mostrar la estructura del "dataset10" en la pantalla

@@ -1,6 +1,0 @@
-"0","library(ggplot2)"
-"0","library(farver)"
-"2","package ‘farver’ was built under R version 3.5.3"
-"0","dataset.boxplot <- ggplot(data=dataset, aes(x = as.factor(Creditability), y = Credit.Amount))"
-"0","# agregar la capa del boxplot mediante la funciÃ³n geom_boxplot()"
-"0","dataset.boxplot + geom_boxplot()"

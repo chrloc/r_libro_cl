@@ -1,0 +1,4 @@
+"0","#predicción"
+"0","prediccion_RN <- rn_model$net.result"
+"0","resultados <- data.frame(actual=test$Creditability, pred=rn_model.resultados$net.result)"
+"0","head(resultados)"

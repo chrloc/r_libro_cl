@@ -1,0 +1,15 @@
+h1:cargar Cargar datos a R/RStudio
+h2:objetivo Objetivo
+h2:leer-datos-desde-un-archivo-de-tipo-csv-y-xlsx Leer datos desde un archivo de tipo csv y xlsx
+h2:leer-datos-desde-un-archivo-csv-de-una-página-web-url Leer datos desde un archivo csv de una página web (url)
+h2:leer-datos-de-acciones-utilizando-el-paquete-quantmod Leer datos de acciones, utilizando el paquete quantmod
+h2:leer-datos-de-una-tabla-de-una-página-web-wikipedia Leer datos de una tabla de una página web: wikipedia
+h2:cargar-un-conjunto-de-datos-que-viene-con-r Cargar un conjunto de datos, que viene con R
+h2:cargar-datos-financieros-con-el-paquete-tidyquant Cargar datos financieros con el paquete tidyquant
+h3:renta-variable---precio-de-acciones Renta variable - precio de acciones
+h3:renta-fija Renta fija
+h2:cargar-datos-de-criptomonedas Cargar datos de criptomonedas
+h3:para-cargar-datos-históricos-de-criptomonedas Para cargar datos históricos de criptomonedas
+h2:cargar-datos-de-eurostat-con-r Cargar datos de Eurostat con R
+h2:ejercicio-3 Ejercicio 3
+

@@ -1,0 +1,8 @@
+h1:prophet Serie de tiempo con Prophet
+h2:objetivo Objetivo
+h2:cargar-datos Cargar datos
+h2:convertir-a-data-frame Convertir a data frame
+h2:realizar-el-pronóstico-con-prophet Realizar el pronóstico con prophet
+h3:crear-el-modelo Crear el modelo
+h3:pronosticar---predict Pronosticar - predict
+

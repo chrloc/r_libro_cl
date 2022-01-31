@@ -1,0 +1,1 @@
+"0","modelo.lineal <- lm(utilidad ~ publicidad, data = datosPubl)"

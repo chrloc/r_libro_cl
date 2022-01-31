@@ -1,0 +1,1 @@
+"0","credit_pred <- predict(credit_DT_model, credit_test)"

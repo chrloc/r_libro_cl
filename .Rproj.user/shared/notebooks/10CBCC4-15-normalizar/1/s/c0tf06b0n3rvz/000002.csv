@@ -1,0 +1,5 @@
+"0","library(dummies)"
+"0","df1 <- data.frame(id = 1:4, year = 2016:2019)"
+"0","df1 <- cbind(df1, dummy(df1$year, sep = """"))"
+"2","non-list contrasts argument ignored"
+"0","print(df1)"

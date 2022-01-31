@@ -13,7 +13,7 @@ Bajar el archivo de los datos de la internet y leer los datos del archivo y asig
 url <- "http://freakonometrics.free.fr/german_credit.csv"
 dataset <- read.csv(url, header = TRUE, sep = ",")
 
-```{r}
+```{r adStart}
 url <- "http://freakonometrics.free.fr/german_credit.csv"
 dataset <- read.csv(url, header = TRUE, sep = ",")
 # Estos mismos datos también se pueden bajar de la siguiente dirección:
@@ -130,7 +130,7 @@ str(dataset$Creditability_Default)
 - Utilizar la función sample() y la semilla 123 para hacer los resultados reproducibles (set.seed())
 - Nota: La cantidad de los datos se puede determinar con: nrow(dataset)
 
-```{r}
+```{r adParticioning}
 set.seed(123)
 d = sort(sample(nrow(dataset),nrow(dataset)*0.66, replace=FALSE))
 # dividir en una conjunto de training y test set
@@ -155,8 +155,8 @@ Como se puede observar a través del resultado, las proporciones no se conservar
 - Mostrar los resultados (output), utilizando la función summary() y analizarlos
 - ¿Cuál es la variable más importante para estimar, si un cliente es de "buena paga" o "mala paga"?
 
-```{r}
-library(C50)
+```{r c50}
+if(!require(C50)) install.packages('C50'); library(C50)
 ?C5.0
 # create the DT
 credit_DT_model <- C5.0(credit_train[ , -c(1,20)], credit_train$Creditability_Default) # -1 excluye la columna Creditability_Default y -20 la columna del Telephone
@@ -179,8 +179,8 @@ credit_pred <- predict(credit_DT_model, credit_test)
 - Explicar, cómo se debe interpretar el contenido de la tabla
 - ¿Cuántos "0" clasificó bien el modelo?
 
-```{r}
-library(gmodels)
+```{r adEnd}
+if(!require(gmodels)) install.packages('gmodels'); library(gmodels)
 CrossTable(credit_test$Creditability_Default, credit_pred)
 #Alternativa
 table(credit_test$Creditability_Default, credit_pred)

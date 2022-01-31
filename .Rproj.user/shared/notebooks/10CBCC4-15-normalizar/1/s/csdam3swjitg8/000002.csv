@@ -1,0 +1,32 @@
+"0","if(!require(scales)) install.packages('scales'); library(scales)"
+"2","Loading required package: scales
+"
+"2","
+Attaching package: ‘scales’
+
+"
+"2","The following object is masked from ‘package:purrr’:
+
+    discard
+
+"
+"2","The following object is masked from ‘package:readr’:
+
+    col_factor
+
+"
+"0","?scales"
+"0","datos$Credit.Amount2 <- rescale(datos$Credit.Amount)"
+"0","head(datos$Credit.Amount2)"
+"1","[1]"
+"1"," 0.04396390"
+"1"," 0.14025531"
+"1"," 0.03251898"
+"1"," 0.10300429"
+"1"," 0.10570045"
+"1","
+"
+"1","[6]"
+"1"," 0.10955211"
+"1","
+"

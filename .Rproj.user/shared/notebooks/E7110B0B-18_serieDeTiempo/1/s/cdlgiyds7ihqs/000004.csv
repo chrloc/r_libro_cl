@@ -1,0 +1,2 @@
+"0","# Aplicar la función acf() del paquete stats"
+"0","acf(precios$GOOG.Adjusted)"

@@ -1,0 +1,189 @@
+# Determinar el VaR {#VaR}
+
+## Objetivo
+
+Determinar, de diferentes formas, el valor en riesgo (VaR, value at risk):
+
+- VaR paramétrico
+- VaR histórico
+- VaR Montecarlo
+
+
+### Obtener unos datos (Serie de tiempo, ST)
+
+- Descargar desde yahoo finance datos para Google (ticker: GOOG), para el periodo 2018-01-01 hasta 2021-03-10, utilizando el paquete "quantmod"
+- Utilizar para el serie de tiempo el precio "adjusted close" (GOOG.Adjusted)
+- Mostrar los últimos 6 registros descargados
+
+```{r varStart}
+library(quantmod)
+stockEnv <- new.env()
+tickers <- 'GOOG'
+
+startdate <- '2018-01-01'
+enddate <- '2021-03-10'
+
+getSymbols(tickers,
+					 env=stockEnv,
+					 src='yahoo',
+					 from = startdate,
+					 to = enddate)
+
+#stockEnv$GOOG
+
+data <- stockEnv$GOOG
+#str(data)
+#head(data)
+print(tail(data$GOOG.Adjusted))
+```
+
+## Determinar retornos log
+
+- Luego, determinar los retornos log para estos precios
+
+```{r}
+log_returns <- diff(log(data$GOOG.Adjusted), lag=1)
+head(log_returns, 2)
+tail(log_returns, 2)
+```
+
+- Quitar NA que se generó por lag
+- sobre escribir NA por el valor del segundo log return
+
+```{r}
+dim(log_returns)
+log_returns[1,1] <- log_returns[2,1]
+```
+
+- Presentar el resumen de los log returns (multiplacado por 100)
+
+```{r}
+# resumen
+summary(log_returns*100)
+```
+
+## Generar estadística de datos
+
+- Generar una variable "statistics" con la siguiente estadística:
+- la longitud de los datos (¿cuantos registros hay?)
+- el precio promedio
+- el promedio de los log returns
+- la desviación estándar de los log returns
+- los retornos log anualizados: (255 * mean(log_returns))
+
+```{r}
+# estadistica
+statistics <- c(length(data$GOOG.Adjusted), mean(data$GOOG.Adjusted), mean(log_returns), sd(log_returns), 255*mean(log_returns))
+statistics
+```
+
+- Asignar los siguientes nombres para la estadísticas calculados: "Total days", "Average price", "Daily change", "Daily volatility", "Annualized returns"
+- Mostrar la el contenido de la variable "statistics" en pantalla
+
+```{r}
+# asignar nombres
+names(statistics) <-  c("Total days", "Average price", "Daily change", "Daily volatility", "Annualized returns")
+statistics
+```
+
+### Volatilidad
+
+- Generar una variable "volatility" a partir de "statistics" y
+- Mostrar el contenido de la variable generada en pantalla
+
+```{r}
+volatility <- statistics[4]
+volatility
+```
+
+### Retorno diario
+
+- Generar una variable "daily.return" a partir de "statistics" y
+- Mostrar el contenido de la variable generada en pantalla
+
+```{r}
+# daily average return (nota: anualizado = "drift")
+daily.return <- statistics[3]
+daily.return
+```
+
+### Supuestos para el cálculo del VaR
+
+- Determinar el VaR (Valor en Riesgo)
+- Asumir que se tienen 5000 acciones (de Google)
+- Determinar el valor del portafolio con base en esta cantidad y el último precio y asignar el resultado a una variable "value.portafolio"
+- Mostrar el valor del portafolio en la pantalla
+- Asumir una duración (holding.period) de un día y
+- alpha de 0.01
+- Es decir, un nivel de confianza (confidence) de 1-alpha (99%)
+- Eso para calcular finalmente un VaR99%
+
+## VaR
+
+```{r}
+# Determinar el VaR
+# Parámetros de entrada
+cantidad <- 5000 # cantidad de activos ("stocks")
+value1 <- tail(data$GOOG.Adjusted,1) # ultimo precio
+value.portfolio <- value1 * cantidad
+print(value.portfolio)
+holding.period <- 1 # dimensión de tiempo para el VaR
+alpha <- 0.01 # nivel de confianza = 99%
+confidence <- 1-alpha  # VaR99%
+```
+
+### VaR paramétrico
+
+- Determinar el VaR parmétrico
+- Mostrar su valor en la pantalla
+
+```{r}
+# Calcular el VaR - versión VAR paramétrico
+parametric.var <- abs(value.portfolio * qnorm(1-confidence, 0, 1)*volatility * sqrt(holding.period))
+names(parametric.var) <- "Parametric VaR"
+parametric.var
+```
+
+### VaR histórico
+
+- Determinar el VaR histórico y
+- Mostrar su valor en la pantalla
+
+```{r}
+# Calcular el VaR - versión VaR histórico
+historical.var <- abs(quantile(log_returns, 1-confidence)*value.portfolio)
+names(historical.var) <- "Historical VaR"
+historical.var
+```
+
+### VaR Montecarlo
+
+- Determinar el VaR con base en una simulación Montecarlo
+
+```{r}
+# Calcular el VaR - versión VaR Montecarlo
+# Diferencia principal: parte de retornos simulados
+# Montecarlo (MC): 10000 iteraciones "intentos hipotéticos con resepcto a los retornos")
+MC.returns <-  rnorm(10000, statistics[3], statistics[4] )
+# MC.returns # log_returns simulados
+MC.var <- abs(quantile(MC.returns, 1-confidence)*value.portfolio)
+names(MC.var) <- "MC VaR"
+MC.var
+```
+
+### Comparativo de los tres VaRs
+
+- Mostrar los 3 VaRs calculados en una "tabla" (en un vector)
+
+```{r varEnd}
+# resultado
+var.vector <- c(parametric.var[[1]], historical.var[[1]], MC.var[[1]])
+names(var.vector) <- c("VaR paramétrico", "VaR histórico", "VaR MC")
+var.vector
+
+# un inversionista debe esperarar de sufrir pérdidas mayor a 534556,3 $ en 5% de los casos
+```
+
+Es decir, un inversionista debe esperarar de sufrir pérdidas mayor a 534556,3 $ en 5% de los casos.
+
+

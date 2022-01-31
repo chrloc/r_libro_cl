@@ -1,0 +1,44 @@
+"0","if(!require('ez')) install.packages('ez'); library(ez)"
+"2","Loading required package: ez
+"
+"2","there is no package called ‘ez’"
+"2","WARNING: Rtools is required to build R packages but is not currently installed. Please download and install the appropriate version of Rtools before proceeding:
+
+https://cran.rstudio.com/bin/windows/Rtools/
+"
+"2","Installing package into ‘C:/Users/Christian/Documents/R/win-library/4.1’
+(as ‘lib’ is unspecified)
+"
+"2","probando la URL 'https://cran.uni-muenster.de/bin/windows/contrib/4.1/ez_4.4-0.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 334020 bytes (326 KB)
+"
+"2","downloaded 326 KB
+
+"
+"1","package â€˜ezâ€™ successfully unpacked and MD5 sums checked
+"
+"1","
+"
+"1",""
+"1","The downloaded binary packages are in
+	C:\Users\Christian\AppData\Local\Temp\Rtmp6j2QoY\downloaded_packages"
+"1",""
+"1","
+"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
+"0","ezPrecis(dataset)"
+"1","Data frame dimensions:"
+"1"," "
+"1","1000"
+"1"," "
+"1","rows,"
+"1"," "
+"1","21"
+"1"," "
+"1","columns
+"

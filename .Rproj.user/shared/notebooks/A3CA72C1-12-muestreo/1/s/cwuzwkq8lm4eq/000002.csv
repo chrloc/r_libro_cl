@@ -1,0 +1,64 @@
+"0","if(!require(pwr)) install.packages('pwr'); library(pwr)"
+"2","Loading required package: pwr
+"
+"2","there is no package called ‘pwr’"
+"2","WARNING: Rtools is required to build R packages but is not currently installed. Please download and install the appropriate version of Rtools before proceeding:
+
+https://cran.rstudio.com/bin/windows/Rtools/
+"
+"2","Installing package into ‘C:/Users/Christian/Documents/R/win-library/4.1’
+(as ‘lib’ is unspecified)
+"
+"2","probando la URL 'https://cran.uni-muenster.de/bin/windows/contrib/4.1/pwr_1.3-0.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 160453 bytes (156 KB)
+"
+"2","downloaded 156 KB
+
+"
+"1","package â€˜pwrâ€™ successfully unpacked and MD5 sums checked
+"
+"1","
+"
+"1",""
+"1","The downloaded binary packages are in
+	C:\Users\Christian\AppData\Local\Temp\Rtmp6j2QoY\downloaded_packages"
+"1",""
+"1","
+"
+"0","?pwr.t.test"
+"0","pwr.t.test(d=.75, sig.level=.05, power=.8, type=""two.sample"", alternative=""two.sided"")"
+"1","
+    "
+"1"," "
+"1","Two-sample t test power calculation"
+"1"," "
+"1","
+
+"
+"1","              n = 28.89959"
+"1","
+"
+"1","              d = 0.75"
+"1","
+"
+"1","      sig.level = 0.05"
+"1","
+"
+"1","          power = 0.8"
+"1","
+"
+"1","    alternative = two.sided"
+"1","
+"
+"1","
+"
+"1",""
+"1","NOTE: "
+"1",""
+"1","n is number in *each* group"
+"1",""
+"1","
+
+"

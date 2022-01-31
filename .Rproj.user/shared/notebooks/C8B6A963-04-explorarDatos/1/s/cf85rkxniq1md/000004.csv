@@ -1,0 +1,13 @@
+"0","if(!require('Amelia')) install.packages('Amelia'); library(Amelia)"
+"2","Loading required package: Amelia
+"
+"2","Loading required package: Rcpp
+"
+"2","## 
+## Amelia II: Multiple Imputation
+## (Version 1.8.0, built: 2021-05-26)
+## Copyright (C) 2005-2022 James Honaker, Gary King and Matthew Blackwell
+## Refer to http://gking.harvard.edu/amelia/ for more information
+## 
+"
+"0","missmap(dataset, main=""Datos faltantes en el conjunto de datos - dataset"", col=c(""red"",""grey""),legend=FALSE)"

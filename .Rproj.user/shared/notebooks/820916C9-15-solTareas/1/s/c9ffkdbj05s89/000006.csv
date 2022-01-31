@@ -1,3 +1,0 @@
-"0","iris.por.species <- iris.por.species %>% "
-"0","  summarize(promedio = mean(Sepal.Length))"
-"0","tail(iris.por.species, 3)"

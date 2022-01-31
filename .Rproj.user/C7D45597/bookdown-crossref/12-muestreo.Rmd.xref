@@ -1,0 +1,16 @@
+h1:muestreo Muestreo - sampling
+h2:objetivo Objetivo
+h2:muestreo-aleatorio-simple---simple-random-sampling Muestreo aleatorio simple - Simple Random Sampling
+h2:proceso-de-muestreo-para-realizar-una-encuesta Proceso de muestreo para realizar una encuesta
+h3:creamos-nuestra-propia-función-en-r Creamos  en R
+h3:definir-los-valores-para-los-parámetros-de-la-función-muestra.n Definir los valores para los parámetros de la función 
+h3:llamar-la-función-muestra.n-y-observar-el-resultado Llamar la función  y observar el resultado
+h3:para-poblaciones-mayor-que-100.000-personas Para poblaciones mayor que 100.000 personas
+h3:definir-los-valores-para-los-parámetros-de-la-función-muestra.n.2 Definir los valores para los parámetros de la función 
+h3:llamar-usar-la-función Llamar (usar) la función
+h2:muestreo-para-un-problema-de-datos-masivos-big-data Muestreo para un problema de datos masivos (big data)
+h2:muestreo-estratificado---stratified-sampling Muestreo estratificado - Stratified sampling
+h2:trabajar-con-potencia-power-analysis Trabajar con potencia (power analysis)
+h3:utilziar-la-función-pwr.t.test---power-calculations-for-t-tests-of-means Utilziar la función pwr.t.test() - Power calculations for t-tests of means
+h2:ejercicio-8 Ejercicio 8
+

@@ -1,0 +1,2 @@
+"0","train_data2 <- train_data[ ,!(colnames(train_data) %in% c(""Duration_Credit_Month"", ""Purpose"", ""Length_current_employment"", ""Guarantors"", ""Duration_current_address"", ""Age_years"", ""Concurrent_Credits"", ""No_of_Credits_at_this_Bank"", ""Occupation"", ""No.of.dependents"", ""Telephone"",  ""Foreign_Worker"")) ]"
+"0","head(train_data2)"

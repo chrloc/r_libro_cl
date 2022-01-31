@@ -1,0 +1,3 @@
+"0","if(!require(quantmod)) install.packages('quantmod'); library(quantmod)"
+"0","?quantmod"
+"0","stockData <- new.env() #Generar un entorno nuevo para que quantmod pueda guardar los datos en este entorno"

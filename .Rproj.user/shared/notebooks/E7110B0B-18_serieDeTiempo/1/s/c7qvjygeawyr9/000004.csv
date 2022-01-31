@@ -1,0 +1,7 @@
+"0","if(!require('ggplot2')) install.packages('ggplot2'); library(ggplot2)"
+"2","Loading required package: ggplot2
+"
+"2","non-uniform 'Rounding' sampler used"
+"0","# fortify convierte de la clase un xts / zoo en un data frame"
+"0","p <- ggplot(fortify(precios), aes(x=Index, y=GOOG.Adjusted)) + geom_line() + labs(x = 'Fecha', y = 'Precio GOOG', title = '')"
+"0","p"

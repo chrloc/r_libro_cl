@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Sección 10 MCDA: Outranking - sobre calificación | Una breve introducción a R con un enfoque financiero y administrativo</title>
   <meta name="description" content="Una breve introducción al lenguaje de programación R. Con unos ejemplos del área administrativo y de las finanzas." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Sección 10 MCDA: Outranking - sobre calificación | Una breve introducción a R con un enfoque financiero y administrativo" />
   <meta property="og:type" content="book" />
@@ -32,7 +32,9 @@
   
 <link rel="prev" href="regLineal.html"/>
 <link rel="next" href="ahp.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -48,50 +50,83 @@
 
 
 
-
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<script src="libs/viz-1.8.2/viz.js"></script>
-<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="libs/grViz-binding-1.0.5/grViz.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<script src="libs/Dygraph.Plugins.Unzoom-1.0/unzoom.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -110,32 +145,37 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisitos</a></li>
-<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introducción</a><ul>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introducción</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#objetivo"><i class="fa fa-check"></i><b>2.1</b> Objetivo</a></li>
 <li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#usar-r-como-calculadora"><i class="fa fa-check"></i><b>2.2</b> Usar R como “calculadora”</a></li>
 <li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#asignar-un-valor-numérico-a-una-variable"><i class="fa fa-check"></i><b>2.3</b> Asignar un valor numérico a una variable</a></li>
-<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#buscar-ayuda"><i class="fa fa-check"></i><b>2.4</b> Buscar ayuda</a><ul>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#buscar-ayuda"><i class="fa fa-check"></i><b>2.4</b> Buscar ayuda</a>
+<ul>
 <li class="chapter" data-level="2.4.1" data-path="intro.html"><a href="intro.html#un-ejemplo"><i class="fa fa-check"></i><b>2.4.1</b> Un ejemplo</a></li>
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#organizar-el-código"><i class="fa fa-check"></i><b>2.5</b> Organizar el código</a></li>
 <li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#una-opción-para-explorar-swirl"><i class="fa fa-check"></i><b>2.6</b> Una opción para explorar: Swirl</a></li>
 <li class="chapter" data-level="2.7" data-path="intro.html"><a href="intro.html#ejercicio-1"><i class="fa fa-check"></i><b>2.7</b> Ejercicio 1</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>3</b> Usar tipos de datos</a><ul>
+<li class="chapter" data-level="3" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>3</b> Usar tipos de datos</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="tipos.html"><a href="tipos.html#objetivo-1"><i class="fa fa-check"></i><b>3.1</b> Objetivo</a></li>
 <li class="chapter" data-level="3.2" data-path="tipos.html"><a href="tipos.html#datos-booleanos-y-operadores-de-lógica"><i class="fa fa-check"></i><b>3.2</b> Datos booleanos y operadores de lógica</a></li>
 <li class="chapter" data-level="3.3" data-path="tipos.html"><a href="tipos.html#tipo-de-dato-fecha"><i class="fa fa-check"></i><b>3.3</b> Tipo de dato fecha</a></li>
 <li class="chapter" data-level="3.4" data-path="tipos.html"><a href="tipos.html#tipo-de-dato-vector"><i class="fa fa-check"></i><b>3.4</b> Tipo de dato vector</a></li>
-<li class="chapter" data-level="3.5" data-path="tipos.html"><a href="tipos.html#vectores-de-caracteres-strings"><i class="fa fa-check"></i><b>3.5</b> Vectores de caracteres (strings)</a></li>
+<li class="chapter" data-level="3.5" data-path="tipos.html"><a href="tipos.html#vectores-de-carácteres-strings"><i class="fa fa-check"></i><b>3.5</b> Vectores de carácteres (strings)</a></li>
 <li class="chapter" data-level="3.6" data-path="tipos.html"><a href="tipos.html#acceder-a-elementos-de-un-vector"><i class="fa fa-check"></i><b>3.6</b> Acceder a elementos de un vector</a></li>
 <li class="chapter" data-level="3.7" data-path="tipos.html"><a href="tipos.html#factors-variables-categóricas"><i class="fa fa-check"></i><b>3.7</b> Factors (variables categóricas)</a></li>
 <li class="chapter" data-level="3.8" data-path="tipos.html"><a href="tipos.html#funciones-matemáticas-para-vectores"><i class="fa fa-check"></i><b>3.8</b> Funciones matemáticas para vectores</a></li>
 <li class="chapter" data-level="3.9" data-path="tipos.html"><a href="tipos.html#usar-pipes-un-concepto-interesante"><i class="fa fa-check"></i><b>3.9</b> Usar pipes (un concepto “interesante”)</a></li>
 <li class="chapter" data-level="3.10" data-path="tipos.html"><a href="tipos.html#data-frames"><i class="fa fa-check"></i><b>3.10</b> Data frames</a></li>
-<li class="chapter" data-level="3.11" data-path="tipos.html"><a href="tipos.html#listas"><i class="fa fa-check"></i><b>3.11</b> Listas</a><ul>
+<li class="chapter" data-level="3.11" data-path="tipos.html"><a href="tipos.html#listas"><i class="fa fa-check"></i><b>3.11</b> Listas</a>
+<ul>
 <li class="chapter" data-level="3.11.1" data-path="tipos.html"><a href="tipos.html#una-lista-de-listas"><i class="fa fa-check"></i><b>3.11.1</b> Una lista de listas</a></li>
 </ul></li>
-<li class="chapter" data-level="3.12" data-path="tipos.html"><a href="tipos.html#ejercicio-2"><i class="fa fa-check"></i><b>3.12</b> Ejercicio 2</a><ul>
+<li class="chapter" data-level="3.12" data-path="tipos.html"><a href="tipos.html#ejercicio-2"><i class="fa fa-check"></i><b>3.12</b> Ejercicio 2</a>
+<ul>
 <li class="chapter" data-level="3.12.1" data-path="tipos.html"><a href="tipos.html#parte-a"><i class="fa fa-check"></i><b>3.12.1</b> Parte a</a></li>
 <li class="chapter" data-level="3.12.2" data-path="tipos.html"><a href="tipos.html#parte-b"><i class="fa fa-check"></i><b>3.12.2</b> Parte b</a></li>
 <li class="chapter" data-level="3.12.3" data-path="tipos.html"><a href="tipos.html#parte-c"><i class="fa fa-check"></i><b>3.12.3</b> Parte c</a></li>
@@ -143,27 +183,32 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.12.5" data-path="tipos.html"><a href="tipos.html#parte-e"><i class="fa fa-check"></i><b>3.12.5</b> Parte e</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="cargar.html"><a href="cargar.html"><i class="fa fa-check"></i><b>4</b> Cargar datos a R/RStudio</a><ul>
+<li class="chapter" data-level="4" data-path="cargar.html"><a href="cargar.html"><i class="fa fa-check"></i><b>4</b> Cargar datos a R/RStudio</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="cargar.html"><a href="cargar.html#objetivo-2"><i class="fa fa-check"></i><b>4.1</b> Objetivo</a></li>
 <li class="chapter" data-level="4.2" data-path="cargar.html"><a href="cargar.html#leer-datos-desde-un-archivo-de-tipo-csv-y-xlsx"><i class="fa fa-check"></i><b>4.2</b> Leer datos desde un archivo de tipo csv y xlsx</a></li>
 <li class="chapter" data-level="4.3" data-path="cargar.html"><a href="cargar.html#leer-datos-desde-un-archivo-csv-de-una-página-web-url"><i class="fa fa-check"></i><b>4.3</b> Leer datos desde un archivo csv de una página web (url)</a></li>
 <li class="chapter" data-level="4.4" data-path="cargar.html"><a href="cargar.html#leer-datos-de-acciones-utilizando-el-paquete-quantmod"><i class="fa fa-check"></i><b>4.4</b> Leer datos de acciones, utilizando el paquete quantmod</a></li>
 <li class="chapter" data-level="4.5" data-path="cargar.html"><a href="cargar.html#leer-datos-de-una-tabla-de-una-página-web-wikipedia"><i class="fa fa-check"></i><b>4.5</b> Leer datos de una tabla de una página web: wikipedia</a></li>
 <li class="chapter" data-level="4.6" data-path="cargar.html"><a href="cargar.html#cargar-un-conjunto-de-datos-que-viene-con-r"><i class="fa fa-check"></i><b>4.6</b> Cargar un conjunto de datos, que viene con R</a></li>
-<li class="chapter" data-level="4.7" data-path="cargar.html"><a href="cargar.html#cargar-datos-financieros-con-el-paquete-tidyquant"><i class="fa fa-check"></i><b>4.7</b> Cargar datos financieros con el paquete tidyquant</a><ul>
+<li class="chapter" data-level="4.7" data-path="cargar.html"><a href="cargar.html#cargar-datos-financieros-con-el-paquete-tidyquant"><i class="fa fa-check"></i><b>4.7</b> Cargar datos financieros con el paquete tidyquant</a>
+<ul>
 <li class="chapter" data-level="4.7.1" data-path="cargar.html"><a href="cargar.html#renta-variable---precio-de-acciones"><i class="fa fa-check"></i><b>4.7.1</b> Renta variable - precio de acciones</a></li>
 <li class="chapter" data-level="4.7.2" data-path="cargar.html"><a href="cargar.html#renta-fija"><i class="fa fa-check"></i><b>4.7.2</b> Renta fija</a></li>
 </ul></li>
-<li class="chapter" data-level="4.8" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8</b> Cargar datos de criptomonedas</a><ul>
+<li class="chapter" data-level="4.8" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8</b> Cargar datos de criptomonedas</a>
+<ul>
 <li class="chapter" data-level="4.8.1" data-path="cargar.html"><a href="cargar.html#para-cargar-datos-históricos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8.1</b> Para cargar datos históricos de criptomonedas</a></li>
 </ul></li>
 <li class="chapter" data-level="4.9" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-eurostat-con-r"><i class="fa fa-check"></i><b>4.9</b> Cargar datos de Eurostat con R</a></li>
 <li class="chapter" data-level="4.10" data-path="cargar.html"><a href="cargar.html#ejercicio-3"><i class="fa fa-check"></i><b>4.10</b> Ejercicio 3</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="explorar.html"><a href="explorar.html"><i class="fa fa-check"></i><b>5</b> Explorar datos</a><ul>
+<li class="chapter" data-level="5" data-path="explorar.html"><a href="explorar.html"><i class="fa fa-check"></i><b>5</b> Explorar datos</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="explorar.html"><a href="explorar.html#objetivo-3"><i class="fa fa-check"></i><b>5.1</b> Objetivo</a></li>
 <li class="chapter" data-level="5.2" data-path="explorar.html"><a href="explorar.html#desarrollar-un-entendimiento-inicial-del-conjunto-de-datos"><i class="fa fa-check"></i><b>5.2</b> Desarrollar un entendimiento inicial del conjunto de datos</a></li>
-<li class="chapter" data-level="5.3" data-path="explorar.html"><a href="explorar.html#comprobar-si-existen-datos-faltantes"><i class="fa fa-check"></i><b>5.3</b> Comprobar, si existen datos faltantes</a><ul>
+<li class="chapter" data-level="5.3" data-path="explorar.html"><a href="explorar.html#comprobar-si-existen-datos-faltantes"><i class="fa fa-check"></i><b>5.3</b> Comprobar, si existen datos faltantes</a>
+<ul>
 <li class="chapter" data-level="5.3.1" data-path="explorar.html"><a href="explorar.html#opción-1"><i class="fa fa-check"></i><b>5.3.1</b> Opción 1</a></li>
 <li class="chapter" data-level="5.3.2" data-path="explorar.html"><a href="explorar.html#opción-2"><i class="fa fa-check"></i><b>5.3.2</b> Opción 2</a></li>
 <li class="chapter" data-level="5.3.3" data-path="explorar.html"><a href="explorar.html#opción-3"><i class="fa fa-check"></i><b>5.3.3</b> Opción 3</a></li>
@@ -174,32 +219,38 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.6" data-path="explorar.html"><a href="explorar.html#apalancarse-por-el-paquete-desctools"><i class="fa fa-check"></i><b>5.6</b> Apalancarse por el paquete DescTools</a></li>
 <li class="chapter" data-level="5.7" data-path="explorar.html"><a href="explorar.html#ejercicio-4"><i class="fa fa-check"></i><b>5.7</b> Ejercicio 4</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="tidy.html"><a href="tidy.html"><i class="fa fa-check"></i><b>6</b> El paquete tidyverse y su funcionalidad</a><ul>
+<li class="chapter" data-level="6" data-path="tidy.html"><a href="tidy.html"><i class="fa fa-check"></i><b>6</b> El paquete tidyverse y su funcionalidad</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="tidy.html"><a href="tidy.html#objetivo-y-contextualización"><i class="fa fa-check"></i><b>6.1</b> Objetivo y contextualización</a></li>
 <li class="chapter" data-level="6.2" data-path="tidy.html"><a href="tidy.html#tibble-parte-del-ecosistema-tidyverse"><i class="fa fa-check"></i><b>6.2</b> tibble (parte del ecosistema tidyverse)</a></li>
-<li class="chapter" data-level="6.3" data-path="tidy.html"><a href="tidy.html#utilizar-y-aplicar-funciones-del-tidyverse"><i class="fa fa-check"></i><b>6.3</b> Utilizar y aplicar funciones del tidyverse</a><ul>
+<li class="chapter" data-level="6.3" data-path="tidy.html"><a href="tidy.html#utilizar-y-aplicar-funciones-del-tidyverse"><i class="fa fa-check"></i><b>6.3</b> Utilizar y aplicar funciones del tidyverse</a>
+<ul>
 <li class="chapter" data-level="6.3.1" data-path="tidy.html"><a href="tidy.html#filter"><i class="fa fa-check"></i><b>6.3.1</b> filter</a></li>
-<li class="chapter" data-level="6.3.2" data-path="tidy.html"><a href="tidy.html#arrange"><i class="fa fa-check"></i><b>6.3.2</b> arrange</a></li>
-<li class="chapter" data-level="6.3.3" data-path="tidy.html"><a href="tidy.html#group_by-y-summarize"><i class="fa fa-check"></i><b>6.3.3</b> group_by y summarize</a></li>
+<li class="chapter" data-level="6.3.2" data-path="tidy.html"><a href="tidy.html#arrange-para-ordenar-datos"><i class="fa fa-check"></i><b>6.3.2</b> arrange (para ordenar datos)</a></li>
+<li class="chapter" data-level="6.3.3" data-path="tidy.html"><a href="tidy.html#group_by-y-summarize-contar-registros"><i class="fa fa-check"></i><b>6.3.3</b> group_by y summarize (contar registros)</a></li>
 <li class="chapter" data-level="6.3.4" data-path="tidy.html"><a href="tidy.html#select"><i class="fa fa-check"></i><b>6.3.4</b> select</a></li>
 <li class="chapter" data-level="6.3.5" data-path="tidy.html"><a href="tidy.html#mutate"><i class="fa fa-check"></i><b>6.3.5</b> mutate</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="tidy.html"><a href="tidy.html#ejercicio-más-avanzado"><i class="fa fa-check"></i><b>6.4</b> Ejercicio más avanzado</a><ul>
+<li class="chapter" data-level="6.4" data-path="tidy.html"><a href="tidy.html#ejercicio-más-avanzado"><i class="fa fa-check"></i><b>6.4</b> Ejercicio más avanzado</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="tidy.html"><a href="tidy.html#procesar-datos-bursátiles-con-pipes"><i class="fa fa-check"></i><b>6.4.1</b> Procesar datos bursátiles con pipes (%&gt;%)</a></li>
 </ul></li>
 <li class="chapter" data-level="6.5" data-path="tidy.html"><a href="tidy.html#ejercicio-5"><i class="fa fa-check"></i><b>6.5</b> Ejercicio 5</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="bucles.html"><a href="bucles.html"><i class="fa fa-check"></i><b>7</b> Bucles / ciclos</a><ul>
+<li class="chapter" data-level="7" data-path="bucles.html"><a href="bucles.html"><i class="fa fa-check"></i><b>7</b> Bucles / ciclos</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="bucles.html"><a href="bucles.html#objetivo-4"><i class="fa fa-check"></i><b>7.1</b> Objetivo</a></li>
-<li class="chapter" data-level="7.2" data-path="bucles.html"><a href="bucles.html#qué-son-las-funciones-del-tipo-apply"><i class="fa fa-check"></i><b>7.2</b> ¿Qué son las funciones del tipo “apply()”?</a></li>
-<li class="chapter" data-level="7.3" data-path="bucles.html"><a href="bucles.html#apply"><i class="fa fa-check"></i><b>7.3</b> apply</a><ul>
+<li class="chapter" data-level="7.2" data-path="bucles.html"><a href="bucles.html#qué-son-las-funciones-del-tipo-apply"><i class="fa fa-check"></i><b>7.2</b> ¿Qué son las funciones del tipo “apply()?”</a></li>
+<li class="chapter" data-level="7.3" data-path="bucles.html"><a href="bucles.html#apply"><i class="fa fa-check"></i><b>7.3</b> apply</a>
+<ul>
 <li class="chapter" data-level="7.3.1" data-path="bucles.html"><a href="bucles.html#apply-vs-for-for-loop"><i class="fa fa-check"></i><b>7.3.1</b> apply vs for (for loop)</a></li>
 </ul></li>
 <li class="chapter" data-level="7.4" data-path="bucles.html"><a href="bucles.html#lapply"><i class="fa fa-check"></i><b>7.4</b> lapply</a></li>
 <li class="chapter" data-level="7.5" data-path="bucles.html"><a href="bucles.html#sapply"><i class="fa fa-check"></i><b>7.5</b> sapply</a></li>
 <li class="chapter" data-level="7.6" data-path="bucles.html"><a href="bucles.html#ejercicio-6"><i class="fa fa-check"></i><b>7.6</b> Ejercicio 6</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="ajusteDistri.html"><a href="ajusteDistri.html"><i class="fa fa-check"></i><b>8</b> Ajuste de datos a una distribución</a><ul>
+<li class="chapter" data-level="8" data-path="ajusteDistri.html"><a href="ajusteDistri.html"><i class="fa fa-check"></i><b>8</b> Ajuste de datos a una distribución</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="ajusteDistri.html"><a href="ajusteDistri.html#objetivo-5"><i class="fa fa-check"></i><b>8.1</b> Objetivo</a></li>
 <li class="chapter" data-level="8.2" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-normal"><i class="fa fa-check"></i><b>8.2</b> Distribución normal</a></li>
 <li class="chapter" data-level="8.3" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-exponencial"><i class="fa fa-check"></i><b>8.3</b> Distribución exponencial</a></li>
@@ -207,34 +258,38 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="8.5" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-lognormal"><i class="fa fa-check"></i><b>8.5</b> Distribución lognormal</a></li>
 <li class="chapter" data-level="8.6" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-poisson-discreta"><i class="fa fa-check"></i><b>8.6</b> Distribución Poisson (discreta)</a></li>
 <li class="chapter" data-level="8.7" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-binomial"><i class="fa fa-check"></i><b>8.7</b> Distribución binomial</a></li>
-<li class="chapter" data-level="8.8" data-path="ajusteDistri.html"><a href="ajusteDistri.html#unir-todo-en-un-data-frame"><i class="fa fa-check"></i><b>8.8</b> Unir todo en un data frame</a></li>
+<li class="chapter" data-level="8.8" data-path="ajusteDistri.html"><a href="ajusteDistri.html#unir-todo-en-un-solo-data-frame"><i class="fa fa-check"></i><b>8.8</b> Unir todo en un solo data frame</a></li>
 <li class="chapter" data-level="8.9" data-path="ajusteDistri.html"><a href="ajusteDistri.html#realizar-el-ajuste"><i class="fa fa-check"></i><b>8.9</b> Realizar el ajuste</a></li>
 <li class="chapter" data-level="8.10" data-path="ajusteDistri.html"><a href="ajusteDistri.html#ejercicio-7"><i class="fa fa-check"></i><b>8.10</b> Ejercicio 7</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="regLineal.html"><a href="regLineal.html"><i class="fa fa-check"></i><b>9</b> Un modelo lineal “sencillo” (regresión lineal)</a><ul>
+<li class="chapter" data-level="9" data-path="regLineal.html"><a href="regLineal.html"><i class="fa fa-check"></i><b>9</b> Un modelo lineal “sencillo” (regresión lineal)</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="regLineal.html"><a href="regLineal.html#objetivo-6"><i class="fa fa-check"></i><b>9.1</b> Objetivo</a></li>
 <li class="chapter" data-level="9.2" data-path="regLineal.html"><a href="regLineal.html#cargar-datos-sobre-carros"><i class="fa fa-check"></i><b>9.2</b> Cargar datos sobre carros</a></li>
 <li class="chapter" data-level="9.3" data-path="regLineal.html"><a href="regLineal.html#crear-el-modelo-lineal-regresión-lineal"><i class="fa fa-check"></i><b>9.3</b> Crear el modelo lineal (regresión lineal)</a></li>
 <li class="chapter" data-level="9.4" data-path="regLineal.html"><a href="regLineal.html#realizar-una-predicción"><i class="fa fa-check"></i><b>9.4</b> Realizar una predicción</a></li>
+<li class="chapter" data-level="9.5" data-path="regLineal.html"><a href="regLineal.html#un-segundo-ejemplo-sencillo"><i class="fa fa-check"></i><b>9.5</b> Un segundo ejemplo sencillo</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="regLineal.html"><a href="regLineal.html#utilidad-en-función-del-gasto-para-publicidad"><i class="fa fa-check"></i><b>9.5.1</b> Utilidad en función del gasto para publicidad</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="electre1.html"><a href="electre1.html"><i class="fa fa-check"></i><b>10</b> MCDA: Outranking - sobre calificación</a><ul>
+</ul></li>
+<li class="chapter" data-level="10" data-path="electre1.html"><a href="electre1.html"><i class="fa fa-check"></i><b>10</b> MCDA: Outranking - sobre calificación</a>
+<ul>
 <li class="chapter" data-level="10.1" data-path="electre1.html"><a href="electre1.html#objetivo-y-contextualización-1"><i class="fa fa-check"></i><b>10.1</b> Objetivo y contextualización</a></li>
-<li class="chapter" data-level="10.2" data-path="electre1.html"><a href="electre1.html#datos"><i class="fa fa-check"></i><b>10.2</b> Datos</a></li>
+<li class="chapter" data-level="10.2" data-path="electre1.html"><a href="electre1.html#generar-datos"><i class="fa fa-check"></i><b>10.2</b> Generar datos</a></li>
 <li class="chapter" data-level="10.3" data-path="electre1.html"><a href="electre1.html#leer-los-datos-desde-un-archivo-de-excel"><i class="fa fa-check"></i><b>10.3</b> Leer los datos desde un archivo de Excel</a></li>
 <li class="chapter" data-level="10.4" data-path="electre1.html"><a href="electre1.html#analizar-el-paquete-outranking-tools-y-la-función-electre_1"><i class="fa fa-check"></i><b>10.4</b> Analizar el paquete Outranking Tools y la función electre_1()</a></li>
 <li class="chapter" data-level="10.5" data-path="electre1.html"><a href="electre1.html#transformar-los-datos-al-formato-requerido"><i class="fa fa-check"></i><b>10.5</b> Transformar los datos al formato requerido</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="ahp.html"><a href="ahp.html"><i class="fa fa-check"></i><b>11</b> Modelo AHP (Analytical Hierarchy Process)</a><ul>
+<li class="chapter" data-level="11" data-path="ahp.html"><a href="ahp.html"><i class="fa fa-check"></i><b>11</b> Modelo AHP (Analytical Hierarchy Process)</a>
+<ul>
 <li class="chapter" data-level="11.1" data-path="ahp.html"><a href="ahp.html#objetivo-7"><i class="fa fa-check"></i><b>11.1</b> Objetivo</a></li>
-<li class="chapter" data-level="11.2" data-path="ahp.html"><a href="ahp.html#cargar-los-paquetes-ahp-y-data.tree"><i class="fa fa-check"></i><b>11.2</b> Cargar los paquetes ahp y data.tree</a></li>
-<li class="chapter" data-level="11.3" data-path="ahp.html"><a href="ahp.html#mostrar-los-archivos-ejemplos-que-vienen-con-este-paquete-ahp-y-cargar-uno-de-estos"><i class="fa fa-check"></i><b>11.3</b> Mostrar los archivos (ejemplos), que vienen con este paquete ahp y cargar uno de estos</a></li>
-<li class="chapter" data-level="11.4" data-path="ahp.html"><a href="ahp.html#aplicar-ahp-utilizando-la-función-calculate"><i class="fa fa-check"></i><b>11.4</b> Aplicar ahp, utilizando la función calculate()</a></li>
-<li class="chapter" data-level="11.5" data-path="ahp.html"><a href="ahp.html#mostrar-el-problema-de-decisión-gráficamente-como-árbol"><i class="fa fa-check"></i><b>11.5</b> Mostrar el problema de decisión gráficamente (como árbol)</a></li>
-<li class="chapter" data-level="11.6" data-path="ahp.html"><a href="ahp.html#analizar-los-resultados-de-ahp"><i class="fa fa-check"></i><b>11.6</b> Analizar los resultados de ahp</a><ul>
-<li class="chapter" data-level="11.6.1" data-path="ahp.html"><a href="ahp.html#nota-solución-alternativa"><i class="fa fa-check"></i><b>11.6.1</b> Nota: solución alternativa</a></li>
+<li class="chapter" data-level="11.2" data-path="ahp.html"><a href="ahp.html#cargar-el-paquete-mcda"><i class="fa fa-check"></i><b>11.2</b> Cargar el paquete MCDA</a></li>
+<li class="chapter" data-level="11.3" data-path="ahp.html"><a href="ahp.html#alternativespairwisecomparisonslist"><i class="fa fa-check"></i><b>11.3</b> alternativesPairwiseComparisonsList</a></li>
+<li class="chapter" data-level="11.4" data-path="ahp.html"><a href="ahp.html#mostrar-resultado-con-ahp"><i class="fa fa-check"></i><b>11.4</b> Mostrar resultado con AHP</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="12" data-path="fuzzy.html"><a href="fuzzy.html"><i class="fa fa-check"></i><b>12</b> Modelo fuzzy (borroso)</a><ul>
+<li class="chapter" data-level="12" data-path="fuzzy.html"><a href="fuzzy.html"><i class="fa fa-check"></i><b>12</b> Modelo fuzzy (borroso)</a>
+<ul>
 <li class="chapter" data-level="12.1" data-path="fuzzy.html"><a href="fuzzy.html#objetivo-y-contextualización-2"><i class="fa fa-check"></i><b>12.1</b> Objetivo y contextualización</a></li>
 <li class="chapter" data-level="12.2" data-path="fuzzy.html"><a href="fuzzy.html#definir-el-universo-universe"><i class="fa fa-check"></i><b>12.2</b> Definir el universo (universe)</a></li>
 <li class="chapter" data-level="12.3" data-path="fuzzy.html"><a href="fuzzy.html#definir-las-variables"><i class="fa fa-check"></i><b>12.3</b> Definir las variables</a></li>
@@ -243,10 +298,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12.6" data-path="fuzzy.html"><a href="fuzzy.html#dos-ejemplos-fuzzy"><i class="fa fa-check"></i><b>12.6</b> Dos ejemplos fuzzy</a></li>
 <li class="chapter" data-level="12.7" data-path="fuzzy.html"><a href="fuzzy.html#finalmente-se-debe-resetear-el-universo"><i class="fa fa-check"></i><b>12.7</b> Finalmente se debe “resetear” el universo</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="muestreo.html"><a href="muestreo.html"><i class="fa fa-check"></i><b>13</b> Muestreo - sampling</a><ul>
+<li class="chapter" data-level="13" data-path="muestreo.html"><a href="muestreo.html"><i class="fa fa-check"></i><b>13</b> Muestreo - sampling</a>
+<ul>
 <li class="chapter" data-level="13.1" data-path="muestreo.html"><a href="muestreo.html#objetivo-8"><i class="fa fa-check"></i><b>13.1</b> Objetivo</a></li>
 <li class="chapter" data-level="13.2" data-path="muestreo.html"><a href="muestreo.html#muestreo-aleatorio-simple---simple-random-sampling"><i class="fa fa-check"></i><b>13.2</b> Muestreo aleatorio simple - Simple Random Sampling</a></li>
-<li class="chapter" data-level="13.3" data-path="muestreo.html"><a href="muestreo.html#proceso-de-muestreo-para-realizar-una-encuesta"><i class="fa fa-check"></i><b>13.3</b> Proceso de muestreo para realizar una encuesta</a><ul>
+<li class="chapter" data-level="13.3" data-path="muestreo.html"><a href="muestreo.html#proceso-de-muestreo-para-realizar-una-encuesta"><i class="fa fa-check"></i><b>13.3</b> Proceso de muestreo para realizar una encuesta</a>
+<ul>
 <li class="chapter" data-level="13.3.1" data-path="muestreo.html"><a href="muestreo.html#creamos-nuestra-propia-función-en-r"><i class="fa fa-check"></i><b>13.3.1</b> Creamos “nuestra propia función” en R</a></li>
 <li class="chapter" data-level="13.3.2" data-path="muestreo.html"><a href="muestreo.html#definir-los-valores-para-los-parámetros-de-la-función-muestra.n"><i class="fa fa-check"></i><b>13.3.2</b> Definir los valores para los parámetros de la función “muestra.n”</a></li>
 <li class="chapter" data-level="13.3.3" data-path="muestreo.html"><a href="muestreo.html#llamar-la-función-muestra.n-y-observar-el-resultado"><i class="fa fa-check"></i><b>13.3.3</b> Llamar la función “muestra.n” y observar el resultado</a></li>
@@ -256,12 +313,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="13.4" data-path="muestreo.html"><a href="muestreo.html#muestreo-para-un-problema-de-datos-masivos-big-data"><i class="fa fa-check"></i><b>13.4</b> Muestreo para un problema de datos masivos (big data)</a></li>
 <li class="chapter" data-level="13.5" data-path="muestreo.html"><a href="muestreo.html#muestreo-estratificado---stratified-sampling"><i class="fa fa-check"></i><b>13.5</b> Muestreo estratificado - Stratified sampling</a></li>
-<li class="chapter" data-level="13.6" data-path="muestreo.html"><a href="muestreo.html#trabajar-con-potencia-power-analysis"><i class="fa fa-check"></i><b>13.6</b> Trabajar con potencia (power analysis)</a><ul>
+<li class="chapter" data-level="13.6" data-path="muestreo.html"><a href="muestreo.html#trabajar-con-potencia-power-analysis"><i class="fa fa-check"></i><b>13.6</b> Trabajar con potencia (power analysis)</a>
+<ul>
 <li class="chapter" data-level="13.6.1" data-path="muestreo.html"><a href="muestreo.html#utilziar-la-función-pwr.t.test---power-calculations-for-t-tests-of-means"><i class="fa fa-check"></i><b>13.6.1</b> Utilziar la función pwr.t.test() - Power calculations for t-tests of means</a></li>
 </ul></li>
 <li class="chapter" data-level="13.7" data-path="muestreo.html"><a href="muestreo.html#ejercicio-8"><i class="fa fa-check"></i><b>13.7</b> Ejercicio 8</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="arbolDec.html"><a href="arbolDec.html"><i class="fa fa-check"></i><b>14</b> Árbol de decisión - Decision Tree</a><ul>
+<li class="chapter" data-level="14" data-path="arbolDec.html"><a href="arbolDec.html"><i class="fa fa-check"></i><b>14</b> Árbol de decisión - Decision Tree</a>
+<ul>
 <li class="chapter" data-level="14.1" data-path="arbolDec.html"><a href="arbolDec.html#objetivo-9"><i class="fa fa-check"></i><b>14.1</b> Objetivo</a></li>
 <li class="chapter" data-level="14.2" data-path="arbolDec.html"><a href="arbolDec.html#cargar-los-datos"><i class="fa fa-check"></i><b>14.2</b> Cargar los datos</a></li>
 <li class="chapter" data-level="14.3" data-path="arbolDec.html"><a href="arbolDec.html#explorar-los-datos"><i class="fa fa-check"></i><b>14.3</b> Explorar los datos</a></li>
@@ -273,7 +332,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="14.9" data-path="arbolDec.html"><a href="arbolDec.html#evaluar-el-desempeño-del-modelo-árbol-de-decisión"><i class="fa fa-check"></i><b>14.9</b> Evaluar el desempeño del modelo (árbol de decisión)</a></li>
 <li class="chapter" data-level="14.10" data-path="arbolDec.html"><a href="arbolDec.html#ejercicio-9"><i class="fa fa-check"></i><b>14.10</b> Ejercicio 9</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="regrLog.html"><a href="regrLog.html"><i class="fa fa-check"></i><b>15</b> Regresión logística (modelo logit)</a><ul>
+<li class="chapter" data-level="15" data-path="regrLog.html"><a href="regrLog.html"><i class="fa fa-check"></i><b>15</b> Regresión logística (modelo logit)</a>
+<ul>
 <li class="chapter" data-level="15.1" data-path="regrLog.html"><a href="regrLog.html#objetivo-10"><i class="fa fa-check"></i><b>15.1</b> Objetivo</a></li>
 <li class="chapter" data-level="15.2" data-path="regrLog.html"><a href="regrLog.html#cargar-los-datos-históricos-de-un-archivo-csv"><i class="fa fa-check"></i><b>15.2</b> Cargar los datos históricos de un archivo csv</a></li>
 <li class="chapter" data-level="15.3" data-path="regrLog.html"><a href="regrLog.html#explorar-los-datos-1"><i class="fa fa-check"></i><b>15.3</b> Explorar los datos</a></li>
@@ -286,75 +346,152 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="15.10" data-path="regrLog.html"><a href="regrLog.html#convertir-estas-probabilidades-en-dos-clases-1-y-0-buena-paga-y-mala-paga"><i class="fa fa-check"></i><b>15.10</b> Convertir estas probabilidades en dos clases: 1 y 0 (“buena paga” y “mala paga”)</a></li>
 <li class="chapter" data-level="15.11" data-path="regrLog.html"><a href="regrLog.html#ejercicio-10"><i class="fa fa-check"></i><b>15.11</b> Ejercicio 10</a></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="normalizar.html"><a href="normalizar.html"><i class="fa fa-check"></i><b>16</b> Escalar y normalizar (estandarizar datos)</a><ul>
+<li class="chapter" data-level="16" data-path="normalizar.html"><a href="normalizar.html"><i class="fa fa-check"></i><b>16</b> Escalar y normalizar (estandarizar datos)</a>
+<ul>
 <li class="chapter" data-level="16.1" data-path="normalizar.html"><a href="normalizar.html#objetivo-11"><i class="fa fa-check"></i><b>16.1</b> Objetivo</a></li>
 <li class="chapter" data-level="16.2" data-path="normalizar.html"><a href="normalizar.html#cargar-los-datos-históricos-de-un-archivo-csv-1"><i class="fa fa-check"></i><b>16.2</b> Cargar los datos históricos de un archivo csv</a></li>
 <li class="chapter" data-level="16.3" data-path="normalizar.html"><a href="normalizar.html#analizar-los-datos-de-la-columna-credit.amount-monto-del-crédito"><i class="fa fa-check"></i><b>16.3</b> Analizar los datos de la columna “Credit.Amount” (monto del crédito)</a></li>
 <li class="chapter" data-level="16.4" data-path="normalizar.html"><a href="normalizar.html#escalar-los-datos"><i class="fa fa-check"></i><b>16.4</b> Escalar los datos</a></li>
-<li class="chapter" data-level="16.5" data-path="normalizar.html"><a href="normalizar.html#la-normalización-de-los-datos"><i class="fa fa-check"></i><b>16.5</b> La normalización de los datos</a><ul>
+<li class="chapter" data-level="16.5" data-path="normalizar.html"><a href="normalizar.html#la-normalización-de-los-datos"><i class="fa fa-check"></i><b>16.5</b> La normalización de los datos</a>
+<ul>
 <li class="chapter" data-level="16.5.1" data-path="normalizar.html"><a href="normalizar.html#comprobar-el-resultado"><i class="fa fa-check"></i><b>16.5.1</b> Comprobar el resultado</a></li>
 </ul></li>
-<li class="chapter" data-level="16.6" data-path="normalizar.html"><a href="normalizar.html#escala-logarítmica"><i class="fa fa-check"></i><b>16.6</b> Escala logarítmica</a><ul>
+<li class="chapter" data-level="16.6" data-path="normalizar.html"><a href="normalizar.html#escala-logarítmica"><i class="fa fa-check"></i><b>16.6</b> Escala logarítmica</a>
+<ul>
 <li class="chapter" data-level="16.6.1" data-path="normalizar.html"><a href="normalizar.html#un-ejemplo---retornos-logarítmicos"><i class="fa fa-check"></i><b>16.6.1</b> Un ejemplo - retornos logarítmicos</a></li>
 </ul></li>
 <li class="chapter" data-level="16.7" data-path="normalizar.html"><a href="normalizar.html#creando-variables-dummy-one-hot-encoding"><i class="fa fa-check"></i><b>16.7</b> Creando variables dummy (one-hot encoding)</a></li>
 <li class="chapter" data-level="16.8" data-path="normalizar.html"><a href="normalizar.html#ejercicio-11"><i class="fa fa-check"></i><b>16.8</b> Ejercicio 11</a></li>
 </ul></li>
-<li class="chapter" data-level="17" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html"><i class="fa fa-check"></i><b>17</b> Posibles soluciones</a><ul>
-<li class="chapter" data-level="17.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-1-1"><i class="fa fa-check"></i><b>17.1</b> Ejercicio 1</a><ul>
-<li class="chapter" data-level="17.1.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado"><i class="fa fa-check"></i><b>17.1.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.1.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución"><i class="fa fa-check"></i><b>17.1.2</b> Posible solución</a></li>
+<li class="chapter" data-level="17" data-path="rn.html"><a href="rn.html"><i class="fa fa-check"></i><b>17</b> Red Neuronal</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="rn.html"><a href="rn.html#objetivo-12"><i class="fa fa-check"></i><b>17.1</b> Objetivo</a></li>
+<li class="chapter" data-level="17.2" data-path="rn.html"><a href="rn.html#cargar-datos"><i class="fa fa-check"></i><b>17.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="17.3" data-path="rn.html"><a href="rn.html#normalizar-datos"><i class="fa fa-check"></i><b>17.3</b> Normalizar datos</a></li>
+<li class="chapter" data-level="17.4" data-path="rn.html"><a href="rn.html#particionar-los-datos-2"><i class="fa fa-check"></i><b>17.4</b> Particionar los datos</a></li>
+<li class="chapter" data-level="17.5" data-path="rn.html"><a href="rn.html#crear-la-red-neuronal"><i class="fa fa-check"></i><b>17.5</b> Crear la Red Neuronal</a></li>
+<li class="chapter" data-level="17.6" data-path="rn.html"><a href="rn.html#realizar-la-predicción"><i class="fa fa-check"></i><b>17.6</b> Realizar la predicción</a></li>
 </ul></li>
-<li class="chapter" data-level="17.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-2-1"><i class="fa fa-check"></i><b>17.2</b> Ejercicio 2</a><ul>
-<li class="chapter" data-level="17.2.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-a"><i class="fa fa-check"></i><b>17.2.1</b> Enunciado - parte a</a></li>
-<li class="chapter" data-level="17.2.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-1"><i class="fa fa-check"></i><b>17.2.2</b> Posible solución</a></li>
-<li class="chapter" data-level="17.2.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-b"><i class="fa fa-check"></i><b>17.2.3</b> Enunciado - parte b</a></li>
-<li class="chapter" data-level="17.2.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-2"><i class="fa fa-check"></i><b>17.2.4</b> Posible solución</a></li>
-<li class="chapter" data-level="17.2.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-c"><i class="fa fa-check"></i><b>17.2.5</b> Enunciado - parte c</a></li>
-<li class="chapter" data-level="17.2.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-3"><i class="fa fa-check"></i><b>17.2.6</b> Posible solución</a></li>
-<li class="chapter" data-level="17.2.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-d"><i class="fa fa-check"></i><b>17.2.7</b> Enunciado - parte d</a></li>
-<li class="chapter" data-level="17.2.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-4"><i class="fa fa-check"></i><b>17.2.8</b> Posible solución</a></li>
-<li class="chapter" data-level="17.2.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-e"><i class="fa fa-check"></i><b>17.2.9</b> Enunciado - parte e</a></li>
-<li class="chapter" data-level="17.2.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-5"><i class="fa fa-check"></i><b>17.2.10</b> Posible solución</a></li>
+<li class="chapter" data-level="18" data-path="VaR.html"><a href="VaR.html"><i class="fa fa-check"></i><b>18</b> Determinar el VaR</a>
+<ul>
+<li class="chapter" data-level="18.1" data-path="VaR.html"><a href="VaR.html#objetivo-13"><i class="fa fa-check"></i><b>18.1</b> Objetivo</a>
+<ul>
+<li class="chapter" data-level="18.1.1" data-path="VaR.html"><a href="VaR.html#obtener-unos-datos-serie-de-tiempo-st"><i class="fa fa-check"></i><b>18.1.1</b> Obtener unos datos (Serie de tiempo, ST)</a></li>
 </ul></li>
-<li class="chapter" data-level="17.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-3-1"><i class="fa fa-check"></i><b>17.3</b> Ejercicio 3</a><ul>
-<li class="chapter" data-level="17.3.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-1"><i class="fa fa-check"></i><b>17.3.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.3.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-6"><i class="fa fa-check"></i><b>17.3.2</b> Posible solución</a></li>
+<li class="chapter" data-level="18.2" data-path="VaR.html"><a href="VaR.html#determinar-retornos-log"><i class="fa fa-check"></i><b>18.2</b> Determinar retornos log</a></li>
+<li class="chapter" data-level="18.3" data-path="VaR.html"><a href="VaR.html#generar-estadística-de-datos"><i class="fa fa-check"></i><b>18.3</b> Generar estadística de datos</a>
+<ul>
+<li class="chapter" data-level="18.3.1" data-path="VaR.html"><a href="VaR.html#volatilidad"><i class="fa fa-check"></i><b>18.3.1</b> Volatilidad</a></li>
+<li class="chapter" data-level="18.3.2" data-path="VaR.html"><a href="VaR.html#retorno-diario"><i class="fa fa-check"></i><b>18.3.2</b> Retorno diario</a></li>
+<li class="chapter" data-level="18.3.3" data-path="VaR.html"><a href="VaR.html#supuestos-para-el-cálculo-del-var"><i class="fa fa-check"></i><b>18.3.3</b> Supuestos para el cálculo del VaR</a></li>
 </ul></li>
-<li class="chapter" data-level="17.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-4-1"><i class="fa fa-check"></i><b>17.4</b> Ejercicio 4</a><ul>
-<li class="chapter" data-level="17.4.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-2"><i class="fa fa-check"></i><b>17.4.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.4.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-7"><i class="fa fa-check"></i><b>17.4.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-5-1"><i class="fa fa-check"></i><b>17.5</b> Ejercicio 5</a><ul>
-<li class="chapter" data-level="17.5.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-3"><i class="fa fa-check"></i><b>17.5.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.5.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-8"><i class="fa fa-check"></i><b>17.5.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-6-1"><i class="fa fa-check"></i><b>17.6</b> Ejercicio 6</a><ul>
-<li class="chapter" data-level="17.6.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-4"><i class="fa fa-check"></i><b>17.6.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.6.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-9"><i class="fa fa-check"></i><b>17.6.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-7-1"><i class="fa fa-check"></i><b>17.7</b> Ejercicio 7</a><ul>
-<li class="chapter" data-level="17.7.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-5"><i class="fa fa-check"></i><b>17.7.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.7.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-10"><i class="fa fa-check"></i><b>17.7.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-8-1"><i class="fa fa-check"></i><b>17.8</b> Ejercicio 8</a><ul>
-<li class="chapter" data-level="17.8.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-6"><i class="fa fa-check"></i><b>17.8.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.8.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-11"><i class="fa fa-check"></i><b>17.8.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-9-1"><i class="fa fa-check"></i><b>17.9</b> Ejercicio 9</a><ul>
-<li class="chapter" data-level="17.9.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-7"><i class="fa fa-check"></i><b>17.9.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.9.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-12"><i class="fa fa-check"></i><b>17.9.2</b> Posible Solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-10-1"><i class="fa fa-check"></i><b>17.10</b> Ejercicio 10</a><ul>
-<li class="chapter" data-level="17.10.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-8"><i class="fa fa-check"></i><b>17.10.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.10.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-13"><i class="fa fa-check"></i><b>17.10.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.11" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-11-1"><i class="fa fa-check"></i><b>17.11</b> Ejercicio 11</a><ul>
-<li class="chapter" data-level="17.11.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-9"><i class="fa fa-check"></i><b>17.11.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.11.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-14"><i class="fa fa-check"></i><b>17.11.2</b> Posible solución</a></li>
+<li class="chapter" data-level="18.4" data-path="VaR.html"><a href="VaR.html#var"><i class="fa fa-check"></i><b>18.4</b> VaR</a>
+<ul>
+<li class="chapter" data-level="18.4.1" data-path="VaR.html"><a href="VaR.html#var-paramétrico"><i class="fa fa-check"></i><b>18.4.1</b> VaR paramétrico</a></li>
+<li class="chapter" data-level="18.4.2" data-path="VaR.html"><a href="VaR.html#var-histórico"><i class="fa fa-check"></i><b>18.4.2</b> VaR histórico</a></li>
+<li class="chapter" data-level="18.4.3" data-path="VaR.html"><a href="VaR.html#var-montecarlo"><i class="fa fa-check"></i><b>18.4.3</b> VaR Montecarlo</a></li>
+<li class="chapter" data-level="18.4.4" data-path="VaR.html"><a href="VaR.html#comparativo-de-los-tres-vars"><i class="fa fa-check"></i><b>18.4.4</b> Comparativo de los tres VaRs</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="18" data-path="palabras-finales.html"><a href="palabras-finales.html"><i class="fa fa-check"></i><b>18</b> Palabras finales</a></li>
+<li class="chapter" data-level="19" data-path="ST.html"><a href="ST.html"><i class="fa fa-check"></i><b>19</b> Serie de tiempo</a>
+<ul>
+<li class="chapter" data-level="19.1" data-path="ST.html"><a href="ST.html#objetivo-14"><i class="fa fa-check"></i><b>19.1</b> Objetivo</a></li>
+<li class="chapter" data-level="19.2" data-path="ST.html"><a href="ST.html#cargar-datos-1"><i class="fa fa-check"></i><b>19.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="19.3" data-path="ST.html"><a href="ST.html#graficar-la-serie"><i class="fa fa-check"></i><b>19.3</b> Graficar la serie</a></li>
+<li class="chapter" data-level="19.4" data-path="ST.html"><a href="ST.html#comprobar-si-es-estacionaria"><i class="fa fa-check"></i><b>19.4</b> Comprobar, si es estacionaria</a></li>
+<li class="chapter" data-level="19.5" data-path="ST.html"><a href="ST.html#identificando-una-serie-no-estacionaria"><i class="fa fa-check"></i><b>19.5</b> Identificando una serie no estacionaria</a>
+<ul>
+<li class="chapter" data-level="19.5.1" data-path="ST.html"><a href="ST.html#convertir-a-estacionaria"><i class="fa fa-check"></i><b>19.5.1</b> Convertir a estacionaria</a></li>
+<li class="chapter" data-level="19.5.2" data-path="ST.html"><a href="ST.html#retornos-log"><i class="fa fa-check"></i><b>19.5.2</b> Retornos log</a></li>
+<li class="chapter" data-level="19.5.3" data-path="ST.html"><a href="ST.html#diferenciar-1st-order"><i class="fa fa-check"></i><b>19.5.3</b> Diferenciar (1st order)</a></li>
+</ul></li>
+<li class="chapter" data-level="19.6" data-path="ST.html"><a href="ST.html#arima"><i class="fa fa-check"></i><b>19.6</b> ARIMA</a>
+<ul>
+<li class="chapter" data-level="19.6.1" data-path="ST.html"><a href="ST.html#acf"><i class="fa fa-check"></i><b>19.6.1</b> acf</a></li>
+<li class="chapter" data-level="19.6.2" data-path="ST.html"><a href="ST.html#pacf"><i class="fa fa-check"></i><b>19.6.2</b> pacf</a></li>
+<li class="chapter" data-level="19.6.3" data-path="ST.html"><a href="ST.html#auto.arima"><i class="fa fa-check"></i><b>19.6.3</b> auto.arima</a></li>
+</ul></li>
+<li class="chapter" data-level="19.7" data-path="ST.html"><a href="ST.html#pronóstico"><i class="fa fa-check"></i><b>19.7</b> Pronóstico</a></li>
+<li class="chapter" data-level="19.8" data-path="ST.html"><a href="ST.html#ejercicio"><i class="fa fa-check"></i><b>19.8</b> Ejercicio</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="prophet.html"><a href="prophet.html"><i class="fa fa-check"></i><b>20</b> Serie de tiempo con Prophet</a>
+<ul>
+<li class="chapter" data-level="20.1" data-path="prophet.html"><a href="prophet.html#objetivo-15"><i class="fa fa-check"></i><b>20.1</b> Objetivo</a></li>
+<li class="chapter" data-level="20.2" data-path="prophet.html"><a href="prophet.html#cargar-datos-2"><i class="fa fa-check"></i><b>20.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="20.3" data-path="prophet.html"><a href="prophet.html#convertir-a-data-frame"><i class="fa fa-check"></i><b>20.3</b> Convertir a data frame</a></li>
+<li class="chapter" data-level="20.4" data-path="prophet.html"><a href="prophet.html#realizar-el-pronóstico-con-prophet"><i class="fa fa-check"></i><b>20.4</b> Realizar el pronóstico con prophet</a>
+<ul>
+<li class="chapter" data-level="20.4.1" data-path="prophet.html"><a href="prophet.html#crear-el-modelo"><i class="fa fa-check"></i><b>20.4.1</b> Crear el modelo</a></li>
+<li class="chapter" data-level="20.4.2" data-path="prophet.html"><a href="prophet.html#pronosticar---predict"><i class="fa fa-check"></i><b>20.4.2</b> Pronosticar - predict</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html"><i class="fa fa-check"></i><b>21</b> Posibles soluciones</a>
+<ul>
+<li class="chapter" data-level="21.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-1-1"><i class="fa fa-check"></i><b>21.1</b> Ejercicio 1</a>
+<ul>
+<li class="chapter" data-level="21.1.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado"><i class="fa fa-check"></i><b>21.1.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.1.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución"><i class="fa fa-check"></i><b>21.1.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-2-1"><i class="fa fa-check"></i><b>21.2</b> Ejercicio 2</a>
+<ul>
+<li class="chapter" data-level="21.2.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-a"><i class="fa fa-check"></i><b>21.2.1</b> Enunciado - parte a</a></li>
+<li class="chapter" data-level="21.2.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-1"><i class="fa fa-check"></i><b>21.2.2</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-b"><i class="fa fa-check"></i><b>21.2.3</b> Enunciado - parte b</a></li>
+<li class="chapter" data-level="21.2.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-2"><i class="fa fa-check"></i><b>21.2.4</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-c"><i class="fa fa-check"></i><b>21.2.5</b> Enunciado - parte c</a></li>
+<li class="chapter" data-level="21.2.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-3"><i class="fa fa-check"></i><b>21.2.6</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-d"><i class="fa fa-check"></i><b>21.2.7</b> Enunciado - parte d</a></li>
+<li class="chapter" data-level="21.2.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-4"><i class="fa fa-check"></i><b>21.2.8</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-e"><i class="fa fa-check"></i><b>21.2.9</b> Enunciado - parte e</a></li>
+<li class="chapter" data-level="21.2.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-5"><i class="fa fa-check"></i><b>21.2.10</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-3-1"><i class="fa fa-check"></i><b>21.3</b> Ejercicio 3</a>
+<ul>
+<li class="chapter" data-level="21.3.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-1"><i class="fa fa-check"></i><b>21.3.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.3.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-6"><i class="fa fa-check"></i><b>21.3.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-4-1"><i class="fa fa-check"></i><b>21.4</b> Ejercicio 4</a>
+<ul>
+<li class="chapter" data-level="21.4.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-2"><i class="fa fa-check"></i><b>21.4.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.4.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-7"><i class="fa fa-check"></i><b>21.4.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-5-1"><i class="fa fa-check"></i><b>21.5</b> Ejercicio 5</a>
+<ul>
+<li class="chapter" data-level="21.5.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-3"><i class="fa fa-check"></i><b>21.5.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.5.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-8"><i class="fa fa-check"></i><b>21.5.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-6-1"><i class="fa fa-check"></i><b>21.6</b> Ejercicio 6</a>
+<ul>
+<li class="chapter" data-level="21.6.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-4"><i class="fa fa-check"></i><b>21.6.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.6.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-9"><i class="fa fa-check"></i><b>21.6.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-7-1"><i class="fa fa-check"></i><b>21.7</b> Ejercicio 7</a>
+<ul>
+<li class="chapter" data-level="21.7.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-5"><i class="fa fa-check"></i><b>21.7.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.7.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-10"><i class="fa fa-check"></i><b>21.7.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-8-1"><i class="fa fa-check"></i><b>21.8</b> Ejercicio 8</a>
+<ul>
+<li class="chapter" data-level="21.8.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-6"><i class="fa fa-check"></i><b>21.8.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.8.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-11"><i class="fa fa-check"></i><b>21.8.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-9-1"><i class="fa fa-check"></i><b>21.9</b> Ejercicio 9</a>
+<ul>
+<li class="chapter" data-level="21.9.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-7"><i class="fa fa-check"></i><b>21.9.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.9.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-12"><i class="fa fa-check"></i><b>21.9.2</b> Posible Solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-10-1"><i class="fa fa-check"></i><b>21.10</b> Ejercicio 10</a>
+<ul>
+<li class="chapter" data-level="21.10.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-8"><i class="fa fa-check"></i><b>21.10.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.10.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-13"><i class="fa fa-check"></i><b>21.10.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.11" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-11-1"><i class="fa fa-check"></i><b>21.11</b> Ejercicio 11</a>
+<ul>
+<li class="chapter" data-level="21.11.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-9"><i class="fa fa-check"></i><b>21.11.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.11.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-14"><i class="fa fa-check"></i><b>21.11.2</b> Posible solución</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="palabras-finales.html"><a href="palabras-finales.html"><i class="fa fa-check"></i><b>22</b> Palabras finales</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -375,20 +512,24 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="electre1" class="section level1">
+<div id="electre1" class="section level1" number="10">
 <h1><span class="header-section-number">Sección 10</span> MCDA: Outranking - sobre calificación</h1>
-<div id="objetivo-y-contextualización-1" class="section level2">
+<div id="objetivo-y-contextualización-1" class="section level2" number="10.1">
 <h2><span class="header-section-number">10.1</span> Objetivo y contextualización</h2>
-<p>Uno de los riesgos que enfrentan las instituciones financieras y demás organizaciones tiene que ver con las personas. Una parte de este riesgo se refiere al proceso de la contratación del personal y como las organizaciones toman esas decisiones de la selección del personal. La selección de personal, en este caso para el área de la gestión de riesgos, requiere de la toma de decisiones, en la cual intervienen múltiples criterios. En el siguiente caso hipotético sencillo tenemos tres candidatos (alternativas) para el puesto del CRO (chief risk officer) en una entidad financiera, con sus respectivas características, ya evaluadas por expertos de la empresa.</p>
-<p>La siguiente tabla muestra, en las columnas, los tres candidatos para el cargo / puesto. En las filas se muestran los criterios de evaluación para los candidatos (personal). Para cada candidato se muestran los datos (valores numéricos) correspondientes que lo caracterizan. Donde: 1 = “no tan bueno”; 10 = “mejor calificación posible”. En la columna “MiniMax” se indica para cada uno de los criterios, si este se debe minimizar o maximizar. En el presente ejemplo, los valores de todos los criterios se deben maximizar. La columna “Peso” indica el peso (la ponderación) para cada criterio.</p>
+<p>Uno de los riesgos que enfrentan las instituciones financieras y demás organizaciones tiene que ver con las personas. Una parte de este riesgo se refiere al proceso de la contratación del personal y como las organizaciones toman esas decisiones de la selección del personal. La selección de personal, en este caso para el área de la gestión de riesgos, requiere de la toma de decisiones, en la cual intervienen múltiples criterios.
+En el siguiente caso hipotético sencillo tenemos tres candidatos (alternativas) para el puesto del CRO (chief risk officer) en una entidad financiera, con sus respectivas características, ya evaluadas por expertos de la empresa.</p>
+<p>La siguiente tabla muestra, en las columnas, los tres candidatos para el cargo / puesto. En las filas se muestran los criterios de evaluación para los candidatos (personal).
+Para cada candidato se muestran los datos (valores numéricos) correspondientes que lo caracterizan.
+Donde: 1 = “no tan bueno”; 10 = “mejor calificación posible.”
+En la columna “MiniMax” se indica para cada uno de los criterios, si este se debe minimizar o maximizar. En el presente ejemplo, los valores de todos los criterios se deben maximizar. La columna “Peso” indica el peso (la ponderación) para cada criterio.</p>
 <p>Para seleccionar la mejor alternativa, basado en estos criterios, la institución financiera pide su ayuda. La institución quiere que usted aplique el método ELECTRE_1() para evaluar las alternativas (candidatos). Usted debe aplicar ELECTRE basado en el paquete “OutrankingTools” de R, que implementa los algoritmos de sobre clasificación (outranking), que se pueden aplicar a estos problemas de MCDA (multiple criteria decision analysis).</p>
 <ul>
 <li>¿Cuál candidato se debe seleccionar?</li>
 <li>Es decir, ¿cuál candidato sobre califica (outranks) a otro?</li>
 </ul>
 </div>
-<div id="datos" class="section level2">
-<h2><span class="header-section-number">10.2</span> Datos</h2>
+<div id="generar-datos" class="section level2" number="10.2">
+<h2><span class="header-section-number">10.2</span> Generar datos</h2>
 <ul>
 <li>Primero, generar manualmente un archivo en MS-Excel (xlsx) con los siguientes datos:</li>
 </ul>
@@ -449,27 +590,25 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul>
 <li>Determinar su directorio de trabajo para R, utilizando la función getwd()</li>
 <li>Pegar los datos, que se muestran en la tabla anterior, a la primera hoja del Excel</li>
-<li>Guardar los datos como archivo de Excel (xlsx), bajo el nombre “electre_datos.xlsx”, en su directorio de trabajo de R</li>
+<li>Guardar los datos como archivo de Excel (xlsx), bajo el nombre “electre_datos.xlsx,” en su directorio de trabajo de R</li>
 </ul>
 </div>
-<div id="leer-los-datos-desde-un-archivo-de-excel" class="section level2">
+<div id="leer-los-datos-desde-un-archivo-de-excel" class="section level2" number="10.3">
 <h2><span class="header-section-number">10.3</span> Leer los datos desde un archivo de Excel</h2>
 <p>Para leer los datos desde Excel, utilizar el paquete readxl de R</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(readxl)
-mis.datos &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span class="st">&#39;electre_datos.xlsx&#39;</span>) <span class="co"># del working directory</span></code></pre></div>
+<div class="sourceCode" id="cb521"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb521-1"><a href="electre1.html#cb521-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb521-2"><a href="electre1.html#cb521-2" aria-hidden="true" tabindex="-1"></a>mis.datos <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&#39;electre_datos.xlsx&#39;</span>) <span class="co"># del working directory</span></span></code></pre></div>
 <pre><code>## New names:
 ## * `` -&gt; ...1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">View</span>(mis.datos)</code></pre></div>
+<div class="sourceCode" id="cb523"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb523-1"><a href="electre1.html#cb523-1" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(mis.datos)</span></code></pre></div>
 </div>
-<div id="analizar-el-paquete-outranking-tools-y-la-función-electre_1" class="section level2">
+<div id="analizar-el-paquete-outranking-tools-y-la-función-electre_1" class="section level2" number="10.4">
 <h2><span class="header-section-number">10.4</span> Analizar el paquete Outranking Tools y la función electre_1()</h2>
 <ul>
 <li>Analizar el paquete Outranking Tools y la función Electre_1() mediante el comando “?Electre_1” (después de haber ejecutado el comando library(OutrankingTools))</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(OutrankingTools)</code></pre></div>
-<pre><code>## Warning: package &#39;OutrankingTools&#39; was built under R version 3.5.3</code></pre>
+<div class="sourceCode" id="cb524"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb524-1"><a href="electre1.html#cb524-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(OutrankingTools)</span></code></pre></div>
 <pre><code>## Loading required package: igraph</code></pre>
-<pre><code>## Warning: package &#39;igraph&#39; was built under R version 3.5.3</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;igraph&#39;</code></pre>
 <pre><code>## The following object is masked from &#39;package:DescTools&#39;:
@@ -496,29 +635,31 @@ mis.datos &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span
 <pre><code>## The following object is masked from &#39;package:base&#39;:
 ## 
 ##     union</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">?Electre_<span class="dv">1</span></code></pre></div>
+<div class="sourceCode" id="cb535"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb535-1"><a href="electre1.html#cb535-1" aria-hidden="true" tabindex="-1"></a>?Electre_1</span></code></pre></div>
 </div>
-<div id="transformar-los-datos-al-formato-requerido" class="section level2">
+<div id="transformar-los-datos-al-formato-requerido" class="section level2" number="10.5">
 <h2><span class="header-section-number">10.5</span> Transformar los datos al formato requerido</h2>
 <p>Vamos a transformar a continuación algunos datos al formato requerido por la función electre_1().</p>
 <ul>
-<li>Asignar los valores de los datos, leídos desde Excel, para los siguientes dos parámetros: -alternativas y -criterios</li>
+<li>Asignar los valores de los datos, leídos desde Excel, para los siguientes dos parámetros:
+-alternativas y
+-criterios</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">alternatives &lt;-<span class="st"> </span><span class="kw">as.character</span>(mis.datos[<span class="dv">1</span>,<span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>)])
-<span class="kw">class</span>(alternatives)</code></pre></div>
+<div class="sourceCode" id="cb536"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb536-1"><a href="electre1.html#cb536-1" aria-hidden="true" tabindex="-1"></a>alternatives <span class="ot">&lt;-</span> <span class="fu">as.character</span>(mis.datos[<span class="dv">1</span>,<span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>)])</span>
+<span id="cb536-2"><a href="electre1.html#cb536-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(alternatives)</span></code></pre></div>
 <pre><code>## [1] &quot;character&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(alternatives)</code></pre></div>
+<div class="sourceCode" id="cb538"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb538-1"><a href="electre1.html#cb538-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(alternatives)</span></code></pre></div>
 <pre><code>## [1] &quot;Daniela&quot;   &quot;Jaime&quot;     &quot;Alejandro&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">criteria &lt;-<span class="st"> </span><span class="kw">as.character</span>(mis.datos[<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>])
-<span class="kw">class</span>(criteria)</code></pre></div>
+<div class="sourceCode" id="cb540"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb540-1"><a href="electre1.html#cb540-1" aria-hidden="true" tabindex="-1"></a>criteria <span class="ot">&lt;-</span> <span class="fu">as.character</span>(mis.datos[<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>])</span>
+<span id="cb540-2"><a href="electre1.html#cb540-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(criteria)</span></code></pre></div>
 <pre><code>## [1] &quot;character&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(criteria)</code></pre></div>
+<div class="sourceCode" id="cb542"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb542-1"><a href="electre1.html#cb542-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(criteria)</span></code></pre></div>
 <pre><code>## [1] &quot;c(\&quot;Referencias\&quot;, \&quot;Experiencia\&quot;, \&quot;Educacion\&quot;, \&quot;Liderazgo\&quot;)&quot;</code></pre>
 <ul>
 <li>Eliminar la primera fila, ya que esta no contiene números / valores relevantes</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mis.datos1 &lt;-<span class="st"> </span>mis.datos[<span class="op">-</span><span class="dv">1</span>, ]
-<span class="kw">print</span>(mis.datos1)</code></pre></div>
+<div class="sourceCode" id="cb544"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb544-1"><a href="electre1.html#cb544-1" aria-hidden="true" tabindex="-1"></a>mis.datos1 <span class="ot">&lt;-</span> mis.datos[<span class="sc">-</span><span class="dv">1</span>, ]</span>
+<span id="cb544-2"><a href="electre1.html#cb544-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mis.datos1)</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 6
 ##   ...1        Alternativa1 Alternativa2 Alternativa3 MinMax  Peso
 ##   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;  &lt;dbl&gt;
@@ -529,8 +670,8 @@ mis.datos &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span
 <ul>
 <li>Crear la matriz de desempeño (performance matrix)</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">performanceMatrix &lt;-<span class="st"> </span>mis.datos1[, <span class="kw">c</span>(<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>)]
-<span class="kw">print</span>(performanceMatrix)</code></pre></div>
+<div class="sourceCode" id="cb546"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb546-1"><a href="electre1.html#cb546-1" aria-hidden="true" tabindex="-1"></a>performanceMatrix <span class="ot">&lt;-</span> mis.datos1[, <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>)]</span>
+<span id="cb546-2"><a href="electre1.html#cb546-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(performanceMatrix)</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 3
 ##   Alternativa1 Alternativa2 Alternativa3
 ##   &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;       
@@ -541,10 +682,10 @@ mis.datos &lt;-<span class="st"> </span><span class="kw">read_excel</span>(<span
 <ul>
 <li>Convertir los números a tipo de dato “numeric”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">performanceMatrix<span class="op">$</span>Alternativa1 &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(performanceMatrix<span class="op">$</span>Alternativa1)
-performanceMatrix<span class="op">$</span>Alternativa2 &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(performanceMatrix<span class="op">$</span>Alternativa2)
-performanceMatrix<span class="op">$</span>Alternativa3 &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(performanceMatrix<span class="op">$</span>Alternativa3)
-<span class="kw">print</span>(performanceMatrix)</code></pre></div>
+<div class="sourceCode" id="cb548"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb548-1"><a href="electre1.html#cb548-1" aria-hidden="true" tabindex="-1"></a>performanceMatrix<span class="sc">$</span>Alternativa1 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(performanceMatrix<span class="sc">$</span>Alternativa1)</span>
+<span id="cb548-2"><a href="electre1.html#cb548-2" aria-hidden="true" tabindex="-1"></a>performanceMatrix<span class="sc">$</span>Alternativa2 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(performanceMatrix<span class="sc">$</span>Alternativa2)</span>
+<span id="cb548-3"><a href="electre1.html#cb548-3" aria-hidden="true" tabindex="-1"></a>performanceMatrix<span class="sc">$</span>Alternativa3 <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(performanceMatrix<span class="sc">$</span>Alternativa3)</span>
+<span id="cb548-4"><a href="electre1.html#cb548-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(performanceMatrix)</span></code></pre></div>
 <pre><code>## # A tibble: 4 x 3
 ##   Alternativa1 Alternativa2 Alternativa3
 ##          &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
@@ -555,8 +696,8 @@ performanceMatrix<span class="op">$</span>Alternativa3 &lt;-<span class="st"> </
 <ul>
 <li>Transponer esta matriz</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">performanceMatrix &lt;-<span class="st"> </span><span class="kw">t</span>(performanceMatrix)
-<span class="kw">print</span>(performanceMatrix)</code></pre></div>
+<div class="sourceCode" id="cb550"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb550-1"><a href="electre1.html#cb550-1" aria-hidden="true" tabindex="-1"></a>performanceMatrix <span class="ot">&lt;-</span> <span class="fu">t</span>(performanceMatrix)</span>
+<span id="cb550-2"><a href="electre1.html#cb550-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(performanceMatrix)</span></code></pre></div>
 <pre><code>##              [,1] [,2] [,3] [,4]
 ## Alternativa1    5    2    8    1
 ## Alternativa2    8   10    6    6
@@ -564,22 +705,22 @@ performanceMatrix<span class="op">$</span>Alternativa3 &lt;-<span class="st"> </
 <ul>
 <li>Asignar al parámetro “criteriaweights” los datos correspondientes, leídos del archivo de Excel</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">criteriaWeights &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(mis.datos1<span class="op">$</span>Peso)
-<span class="kw">print</span>(criteriaWeights)</code></pre></div>
+<div class="sourceCode" id="cb552"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb552-1"><a href="electre1.html#cb552-1" aria-hidden="true" tabindex="-1"></a>criteriaWeights <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(mis.datos1<span class="sc">$</span>Peso)</span>
+<span id="cb552-2"><a href="electre1.html#cb552-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(criteriaWeights)</span></code></pre></div>
 <pre><code>## [1] 0.10 0.35 0.35 0.20</code></pre>
 <ul>
-<li>Asignar los datos correspondientes al parámetro “minimaxcriteria”, leídos de del archivo de Excel</li>
+<li>Asignar los datos correspondientes al parámetro “minimaxcriteria,” leídos de del archivo de Excel</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">minmaxcriteria &lt;-<span class="st"> </span>mis.datos1<span class="op">$</span>MinMax
-<span class="kw">print</span>(minmaxcriteria)</code></pre></div>
+<div class="sourceCode" id="cb554"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb554-1"><a href="electre1.html#cb554-1" aria-hidden="true" tabindex="-1"></a>minmaxcriteria <span class="ot">&lt;-</span> mis.datos1<span class="sc">$</span>MinMax</span>
+<span id="cb554-2"><a href="electre1.html#cb554-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(minmaxcriteria)</span></code></pre></div>
 <pre><code>## [1] &quot;max&quot; &quot;max&quot; &quot;max&quot; &quot;max&quot;</code></pre>
 <ul>
 <li>Corregir el tipo de dato de la variable “criteria” para que realmente haya un vector de criteria…</li>
 <li>Esto se puede lograr mediante: as.character(unlist(mis.datos[-1,1]))</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(criteria) <span class="co"># criteria como está actualmente</span></code></pre></div>
+<div class="sourceCode" id="cb556"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb556-1"><a href="electre1.html#cb556-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(criteria) <span class="co"># criteria como está actualmente</span></span></code></pre></div>
 <pre><code>## [1] &quot;c(\&quot;Referencias\&quot;, \&quot;Experiencia\&quot;, \&quot;Educacion\&quot;, \&quot;Liderazgo\&quot;)&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(mis.datos)</code></pre></div>
+<div class="sourceCode" id="cb558"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb558-1"><a href="electre1.html#cb558-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mis.datos)</span></code></pre></div>
 <pre><code>## # A tibble: 5 x 6
 ##   ...1        Alternativa1 Alternativa2 Alternativa3 MinMax  Peso
 ##   &lt;chr&gt;       &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;        &lt;chr&gt;  &lt;dbl&gt;
@@ -588,44 +729,46 @@ performanceMatrix<span class="op">$</span>Alternativa3 &lt;-<span class="st"> </
 ## 3 Experiencia 2            10           5            max     0.35
 ## 4 Educacion   8            6            8            max     0.35
 ## 5 Liderazgo   1            6            6            max     0.2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#corrección:</span>
-<span class="co">#criteria &lt;- mis.datos1$..1  </span>
-<span class="co">#usar notación &quot;...$...&quot; con mis.datos1 o unlist con mis.datos:</span>
-criteria &lt;-<span class="st"> </span><span class="kw">as.character</span>(<span class="kw">unlist</span>(mis.datos[<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>])) <span class="co"># mejor para no utilizar $..1</span>
-<span class="kw">print</span>(criteria)</code></pre></div>
+<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="electre1.html#cb560-1" aria-hidden="true" tabindex="-1"></a><span class="co">#corrección:</span></span>
+<span id="cb560-2"><a href="electre1.html#cb560-2" aria-hidden="true" tabindex="-1"></a><span class="co">#criteria &lt;- mis.datos1$..1  </span></span>
+<span id="cb560-3"><a href="electre1.html#cb560-3" aria-hidden="true" tabindex="-1"></a><span class="co">#usar notación &quot;...$...&quot; con mis.datos1 o unlist con mis.datos:</span></span>
+<span id="cb560-4"><a href="electre1.html#cb560-4" aria-hidden="true" tabindex="-1"></a>criteria <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">unlist</span>(mis.datos[<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>])) <span class="co"># mejor para no utilizar $..1</span></span>
+<span id="cb560-5"><a href="electre1.html#cb560-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(criteria)</span></code></pre></div>
 <pre><code>## [1] &quot;Referencias&quot; &quot;Experiencia&quot; &quot;Educacion&quot;   &quot;Liderazgo&quot;</code></pre>
 <ul>
-<li>Ejecutar la función Electre_1() y asignar el resultado a una variable “overall”</li>
-<li><p>Utilizar, para los últimos dos parámetros que requiere Electre_1, lo siguiente:</p></li>
+<li><p>Ejecutar la función Electre_1() y asignar el resultado a una variable “overall”</p></li>
+<li><p>Utilizar, para los últimos dos parámetros que requiere Electre_1, lo siguiente:</p>
+<ul>
 <li>concordance_threshold = 0.6,</li>
-<li><p>discordance_threshold = 0.4</p></li>
+<li>discordance_threshold = 0.4</li>
+</ul></li>
 <li><p>Observar el resultado, en particular la gráfica del “outranking” de los candidatos</p></li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">overall &lt;-<span class="kw">Electre_1</span>(performanceMatrix, 
-                    alternatives, 
-                    criteria, 
-                    criteriaWeights, 
-                    minmaxcriteria, 
-                    <span class="dt">concordance_threshold =</span> <span class="fl">0.6</span>, 
-                    <span class="dt">discordance_threshold =</span> <span class="fl">0.4</span>)</code></pre></div>
-<p><img src="r_libro_cl_files/figure-html/unnamed-chunk-128-1.png" width="672" /></p>
+<div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="electre1.html#cb562-1" aria-hidden="true" tabindex="-1"></a>overall <span class="ot">&lt;-</span> <span class="fu">Electre_1</span>(performanceMatrix, </span>
+<span id="cb562-2"><a href="electre1.html#cb562-2" aria-hidden="true" tabindex="-1"></a>                    alternatives, </span>
+<span id="cb562-3"><a href="electre1.html#cb562-3" aria-hidden="true" tabindex="-1"></a>                    criteria, </span>
+<span id="cb562-4"><a href="electre1.html#cb562-4" aria-hidden="true" tabindex="-1"></a>                    criteriaWeights, </span>
+<span id="cb562-5"><a href="electre1.html#cb562-5" aria-hidden="true" tabindex="-1"></a>                    minmaxcriteria, </span>
+<span id="cb562-6"><a href="electre1.html#cb562-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">concordance_threshold =</span> <span class="fl">0.6</span>, </span>
+<span id="cb562-7"><a href="electre1.html#cb562-7" aria-hidden="true" tabindex="-1"></a>                    <span class="at">discordance_threshold =</span> <span class="fl">0.4</span>)</span></code></pre></div>
+<p><img src="r_libro_cl_files/figure-html/unnamed-chunk-127-1.png" width="672" /></p>
 <ul>
-<li>Utilizando la variable “overall”, imprimir a la pantalla la “Performance Matrix”. Es decir, el contenido de la matriz de desempeño</li>
+<li>Utilizando la variable “overall,” imprimir a la pantalla la “Performance Matrix.” Es decir, el contenido de la matriz de desempeño</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#performanceMatrix</span>
-overall<span class="op">$</span><span class="st">`</span><span class="dt">Performance Matrix</span><span class="st">`</span> <span class="co"># o print(overall[[1]]) </span></code></pre></div>
+<div class="sourceCode" id="cb563"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb563-1"><a href="electre1.html#cb563-1" aria-hidden="true" tabindex="-1"></a><span class="co">#performanceMatrix</span></span>
+<span id="cb563-2"><a href="electre1.html#cb563-2" aria-hidden="true" tabindex="-1"></a>overall<span class="sc">$</span><span class="st">`</span><span class="at">Performance Matrix</span><span class="st">`</span> <span class="co"># o print(overall[[1]]) </span></span></code></pre></div>
 <pre><code>##           Referencias Experiencia Educacion Liderazgo
 ## Daniela             5           2         8         1
 ## Jaime               8          10         6         6
 ## Alejandro           5           5         8         6</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#ConcordanceMatrix</span>
-overall<span class="op">$</span><span class="st">`</span><span class="dt">Concordance Matrix</span><span class="st">`</span></code></pre></div>
+<div class="sourceCode" id="cb565"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb565-1"><a href="electre1.html#cb565-1" aria-hidden="true" tabindex="-1"></a><span class="co">#ConcordanceMatrix</span></span>
+<span id="cb565-2"><a href="electre1.html#cb565-2" aria-hidden="true" tabindex="-1"></a>overall<span class="sc">$</span><span class="st">`</span><span class="at">Concordance Matrix</span><span class="st">`</span></span></code></pre></div>
 <pre><code>##           Daniela Jaime Alejandro
 ## Daniela      1.00  0.35      0.45
 ## Jaime        0.65  1.00      0.65
 ## Alejandro    1.00  0.55      1.00</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#DiscordanceMatrix</span>
-overall<span class="op">$</span><span class="st">`</span><span class="dt">Discordance Matrix</span><span class="st">`</span></code></pre></div>
+<div class="sourceCode" id="cb567"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb567-1"><a href="electre1.html#cb567-1" aria-hidden="true" tabindex="-1"></a><span class="co">#DiscordanceMatrix</span></span>
+<span id="cb567-2"><a href="electre1.html#cb567-2" aria-hidden="true" tabindex="-1"></a>overall<span class="sc">$</span><span class="st">`</span><span class="at">Discordance Matrix</span><span class="st">`</span></span></code></pre></div>
 <pre><code>##           Daniela Jaime Alejandro
 ## Daniela      0.00 1.000     0.625
 ## Jaime        0.25 0.000     0.250
@@ -643,7 +786,6 @@ overall<span class="op">$</span><span class="st">`</span><span class="dt">Discor
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -662,6 +804,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -681,10 +824,15 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["r_libro_cl.pdf", "r_libro_cl.epub"],
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
-}
+},
+"info": null
 });
 });
 </script>
@@ -694,7 +842,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))

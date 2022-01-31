@@ -1,0 +1,13 @@
+h1:tidy El paquete tidyverse y su funcionalidad
+h2:objetivo-y-contextualización Objetivo y contextualización
+h2:tibble-parte-del-ecosistema-tidyverse tibble (parte del ecosistema tidyverse)
+h2:utilizar-y-aplicar-funciones-del-tidyverse Utilizar y aplicar funciones del tidyverse
+h3:filter filter
+h3:arrange-para-ordenar-datos arrange (para ordenar datos)
+h3:group_by-y-summarize-contar-registros group_by y summarize (contar registros)
+h3:select select
+h3:mutate mutate
+h2:ejercicio-más-avanzado Ejercicio más avanzado
+h3:procesar-datos-bursátiles-con-pipes Procesar datos bursátiles con pipes (%>%)
+h2:ejercicio-5 Ejercicio 5
+

@@ -1,0 +1,5 @@
+"0","# de aquí en adelante es el ""viejo"" código, solo se actualizan los nombres: future2, forecast2"
+"0","# con make_future_dataframe() podemos generar un dataframe con las fechas de "
+"0","# los futuros periodos"
+"0","future2 <- make_future_dataframe(model2,periods=3*30)"
+"0","tail(future2)"

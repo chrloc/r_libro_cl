@@ -1,2 +1,73 @@
+"0","if(!require('DescTools')) install.packages('DescTools'); library(DescTools)"
+"2","Loading required package: DescTools
+"
+"2","there is no package called ‘DescTools’"
+"2","WARNING: Rtools is required to build R packages but is not currently installed. Please download and install the appropriate version of Rtools before proceeding:
+
+https://cran.rstudio.com/bin/windows/Rtools/
+"
+"2","Installing package into ‘C:/Users/Christian/Documents/R/win-library/4.1’
+(as ‘lib’ is unspecified)
+"
+"2","also installing the dependencies ‘rootSolve’, ‘lmom’, ‘Exact’, ‘gld’
+
+"
+"2","probando la URL 'https://cran.uni-muenster.de/bin/windows/contrib/4.1/rootSolve_1.8.2.3.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 789499 bytes (770 KB)
+"
+"2","downloaded 770 KB
+
+"
+"2","probando la URL 'https://cran.uni-muenster.de/bin/windows/contrib/4.1/lmom_2.8.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 592373 bytes (578 KB)
+"
+"2","downloaded 578 KB
+
+"
+"2","probando la URL 'https://cran.uni-muenster.de/bin/windows/contrib/4.1/Exact_3.1.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 197928 bytes (193 KB)
+"
+"2","downloaded 193 KB
+
+"
+"2","probando la URL 'https://cran.uni-muenster.de/bin/windows/contrib/4.1/gld_2.6.4.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 257374 bytes (251 KB)
+"
+"2","downloaded 251 KB
+
+"
+"2","probando la URL 'https://cran.uni-muenster.de/bin/windows/contrib/4.1/DescTools_0.99.44.zip'
+"
+"2","Content type 'application/zip'"
+"2"," length 6033213 bytes (5.8 MB)
+"
+"2","downloaded 5.8 MB
+
+"
+"1","package â€˜rootSolveâ€™ successfully unpacked and MD5 sums checked
+"
+"1","package â€˜lmomâ€™ successfully unpacked and MD5 sums checked
+"
+"1","package â€˜Exactâ€™ successfully unpacked and MD5 sums checked
+"
+"1","package â€˜gldâ€™ successfully unpacked and MD5 sums checked
+"
+"1","package â€˜DescToolsâ€™ successfully unpacked and MD5 sums checked
+"
+"1","
+"
+"1",""
+"1","The downloaded binary packages are in
+	C:\Users\Christian\AppData\Local\Temp\Rtmp6j2QoY\downloaded_packages"
+"1",""
+"1","
+"
 "0","library(DescTools)"
-"2","package ‘DescTools’ was built under R version 3.5.3"

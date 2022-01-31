@@ -1,0 +1,7 @@
+"0","id <- search_eurostat(""Money market interest rates - annual data"", "
+"0","                         type = ""dataset"")$code[1]"
+"0","print(id)"
+"1","[1]"
+"1"," ""irt_st_a"""
+"1","
+"

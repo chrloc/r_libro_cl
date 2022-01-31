@@ -1,0 +1,255 @@
+# Serie de tiempo {#ST}
+
+## Objetivo
+
+Realizar un pronóstico con base en una serie de tiempo de datos, utilizando un modelo *ARIMA*
+
+
+Fuente: El siguiente ejemplo fue publicado por Hassan OUKHOUYA (14/09/2021). Financial Time series Analysis and Forecasting using R. https://rpubs.com/HassanOUKHOUYA/time_series
+
+## Cargar datos
+
+- Decargar datos de la acción de Google (ticker GOOG) desde la web (yahoo finance), utilizando el paquete quantmod de R
+- Esto para el periodo de 2005-02-07 hasta 2005-07-08
+- Mostrar los útlimos 6 registros de estos datos
+
+```{r serieTiempoStart}
+if(!require('quantmod')) install.packages('quantmod'); library(quantmod)
+
+stockEnv <- new.env()
+tickers <- c('GOOG')
+startDate <- '2005-02-07'
+endDate <- '2005-07-08'
+
+getSymbols(Symbols = tickers,
+           env = stockEnv,
+           src = 'yahoo',
+           from = startDate,
+           to = endDate)
+
+data <- stockEnv$GOOG
+tail(data)
+```
+
+- Seleccionar los precios ajustados (GOOG.Adjusted) únicamente y asignarlos a una variable "precios"
+- Mostrar los útlimos 2 registros de estos datos
+- Mostrar, de cuál clase (class) es la variable "precios"
+
+```{r}
+# Seleccionar los precios ajustados (GOOG.Adjusted) únicamente
+precios <- data$GOOG.Adjusted
+tail(precios,2)
+# class(precios) # "xts" "zoo"
+```
+
+- Presentar un resumen estadístico de los precios (de la serie de tiempo)
+- Observar el nombre de la "primera" columna de estos datos
+
+```{r}
+summary(precios) # o summary(precios$GOOG.Adjusted)
+
+```
+
+## Graficar la serie
+
+- Graficar los datos, utilizando el paquete ggplot2 y un diagrama de línea, donde en el eje horizontal deben salir las fechas (de los precios) y en el eje vertical los precios (del activo) como tal
+- ¿Qué es lo que se puede decir, sobre la tendencia de esta serie de tiempo, basado en la gráfica construida?
+
+```{r}
+if(!require('ggplot2')) install.packages('ggplot2'); library(ggplot2)
+# fortify convierte de la clase un xts / zoo en un data frame
+p <- ggplot(fortify(precios), aes(x=Index, y=GOOG.Adjusted)) + geom_line() + labs(x = 'Fecha', y = 'Precio GOOG', title = '')
+p
+```
+
+
+- Graficar los datos, pero ahora utilizando la función chartSeries() del paquete quantmod, aplicando como tipo del diagrama "bars" (barras)
+
+
+```{r}
+# Graficar los datos, utilizando la función chartSeries() del  paquete quantmod
+chartSeries(precios, type = "bars", theme="white",main="Google Stock")
+```
+
+## Comprobar, si es estacionaria
+
+- Una serie de tiempo es estacionaria, cuando ésta es estable a lo largo del tiempo (es decir, media y varianza son constantes en el tiempo)
+- H0: La serie de datos no es estacionaria
+- H1: Sí, la serie es estacioanria (= series has no unit root)
+- Para realizar esta prueba, con respecto a las hipotésis mencionadas, utilizar el Augmented Dickey-Fuller test (ADF), del paquete tseries de R (función: adf.test())
+- Si el "valor p", que arroja la prueba, es mayor que 5% (0.05), la serie no es estacionaria (non stationary)
+
+```{r}
+if(!require('tseries')) install.packages('tseries'); library(tseries)
+adf.test(precios$GOOG.Adjusted)  # p-value 0.5848
+```
+
+## Identificando una serie no estacionaria
+
+- Aplicar la función acf(): autocorrelation factor
+
+```{r}
+# Aplicar la función acf() del paquete stats
+acf(precios$GOOG.Adjusted)
+```
+
+- Nota: Dado que el ACF del precio no cae a cero con relativa rapidez y el valor de la autocorrelación es relativamente alto y positivo, la serie no es estacionaria.
+
+### Convertir a estacionaria
+
+Hay tres técnicas comúnmente utilizadas para hacer que una serie de tiempo sea estacionaria:
+
+- Eliminación de la tendencia: se elimina el componente de tendencia de la serie de tiempo
+- Diferenciación: esta es la técnica comúnmente utilizada para eliminar la no estacionariedad. Aquí tratamos de modelar las diferencias de los términos (precios) y no el término real (precio como tal). Esta  diferenciación es la parte de la integración en AR(I)MA
+- Estacionalidad: la estacionalidad se puede incorporar fácilmente en el modelo ARIMA directamente.
+
+### Retornos log
+
+- Vamos a calcular el retorno logarítmico para que la serie sea estacionaria, que es exactamente la diferenciación:
+- Primero, calcular entonces los retornos logarítmicos para los precios del activo (nota: esto genera al inicio un registro con NA.)
+- Agregar estos retornos log como una nueva columna a "precios"
+- Eliminar el registro con NA (p.ej. utilizando la función na.omit())
+- Mostrar las primeras 6 filas de los datos
+
+```{r}
+log.ret <- diff(log(precios$GOOG.Adjusted), lag=1)  # genera un NA al inicio
+precios$log.ret <- log.ret # agregar una nueva columna con los retornos log
+precios <- na.omit(precios) # omitir registro/s con NA
+# head(precios)
+```
+
+- Graficar los retornos log calculados, utilizando ggplot y un diagrama de línea
+
+```{r}
+library(ggplot2)
+p.log <- ggplot(precios, aes(x=Index, y=log.ret)) + geom_line() + labs(x='Fecha', y = 'retornos log', title = ' ')
+p.log
+```
+
+- Se pueden observar aumentos y disminuciones "fuertes" en la volatilidad de los retornos logarítmicos
+- Es decir, la varianza cambia con el tiempo
+
+### Diferenciar (1st order)
+
+- Intentar estabilizar la serie de tiempo diferenciándola (1st order differencing de los precios (atributo: GOOG.Adjusted)
+- Agregar estos datos diferenciados como una nueva columna al objeto / a la variable "precios"
+- Graficar los datos (precios) diferenciados, utilizando ggplot
+
+```{r}
+# Diferenciar la serie de tiempo (1st order differencing)
+precio_dif <- diff(precios$GOOG.Adjusted)
+precios$Adj_dif <- precio_dif
+precios <- na.omit(precios)
+#head(precios, 3)
+
+library(ggplot2)
+p.dif <- ggplot(precios, aes(x=Index, y=Adj_dif)) + geom_line() + labs(x='Fecha', y = 'precios: diferencias', title = '1st order differencing')
+p.dif
+```
+
+- Se puede observar que los datos de la gráfica no muestran una tendencia (variación de la media en el tiempo). También que, en términos generales, la varianza no cambia mucho en el tiempo
+- Realizar nuevamente la prueba Augmented Dickey-Fuller (ADF), función adf.test(), ahora con los datos diferenciados y utilizando el parámetro alternative="stationary"
+- Analizar el "valor p" (ahora se espera que este se ubica por debejo del umbral de 5%)
+
+```{r}
+# ADF para los precios diferenciados
+adf.test(precios$Adj_dif, alternative="stationary") # p-value = 0.01493 
+```
+
+- Se puede observar que el valor p es alredor de 1,4% (menor que 5%) y por lo tanto la serie de tiempo es ahora estacionaria
+- Ahora, se pueden determinar las parámetros p y q para el modelo ARIMA
+
+
+## ARIMA
+
+### acf
+
+- Generar primero una gráfica que muestra la autocorrelación normal, utilizando los datos diferenciados (aquí: precios$Adj_dif) y la función acf()
+
+```{r}
+# ARIMA 
+# Normal and Partial Autocorrelation Functions ACF & PACF
+acf(precios$Adj_dif)
+```
+
+- La gráfica (acf) anterior muestra que el rendimiento diario (o la primera diferencia, 1st order differencing) de los precios de las acciones de Google están cerca del ruido blanco (todos los ACF son cerca de cero). El ACF baja relativamente rapido a "cero", lo que indica que la serie de tiempo es estacionaria
+
+
+### pacf
+
+- Ahora, generar una gráfica que muestra la autocorrelación parcial, utilizando los datos diferenciados (aquí: precios$Adj_dif) y la función pacf()
+
+```{r}
+# Partial Autocorrelation Function
+pacf(precios$Adj_dif)
+```
+
+- Todos los pacf están cerca cerca de cero, lo que indica que la serie de tiempo es estacionaria
+
+
+### auto.arima
+
+- Ahora podemos crear un modelo ARIMA (autorregresivo integrado de media móvil), utilizando el paquete forecast de R y la función auto.arima() con los datos diferenciados (precios$Adj_dif) y el parámetro seasonal=FALSE
+- Esto explora combinaciones (p,d,q para ARIMA) mediante la función auto.arima(). El resultado (la combinación) que tenga el BIC y AIC más bajo sería nuestra elección
+
+
+```{r}
+# ARIMA (auto arima)
+if(!require(forecast)) install.packages('forecast'); library(forecast)
+modelo.ARIMA <- auto.arima((precios$Adj_dif), seasonal=FALSE)
+modelo.ARIMA # ARIMA(0,0,0) with non-zero mean 
+
+```
+
+- Nota: auto.arima resulta con los parámetros p,d,q todos en "0"
+- Recordar: d es la cantidad de veces que se realiza la diferenciación. 'p' es el orden del término 'Auto Regresivo' (AR). Se refiere al número de retrasos. 'q' es el orden del término 'promedio móvil' (MA). Se refiere a la cantidad de errores de pronóstico retrasados.
+
+- Utilizar auto.arima ahora con los precios (GOOG.Adjusted) de la acción (y no con los precios diferenciados como en el paso anterior)
+
+
+```{r}
+# Comprobando ARIMA (auto arima)
+if(!require(forecast)) install.packages('forecast'); library(forecast)
+modelo1.ARIMA <- auto.arima((precios$GOOG.Adjusted), seasonal=FALSE)
+modelo1.ARIMA # ARIMA(0,1,0) with drift  
+```
+
+- Observar que los parámetros para p.q,d son: 0,1,0
+
+- De acuerdo con lo anterior, implementar el modelo ARIMA
+- Luego muestra el resumen estadístico para el modelo implementado
+
+```{r}
+#Implementar un modelo ARIMA (0,1,0)
+modelo <- Arima(precios$GOOG.Adjusted, order=c(0,1,0), include.constant=T)
+summary(modelo)
+```
+
+- Comprobar los residuos para el modelo ARIMA(0,1,0)
+
+```{r}
+#Comprobar los residuos para el modelo ARIMA (0,1,0)
+checkresiduals(modelo)
+```
+
+- Así podemos confirmar que los residuos son distinguibles de una serie de ruido blanco ya que los resultados son significativos.
+
+## Pronóstico
+
+- Graficar (con la función plot()) el pronóstico, utilizando la función forecast(), para los próximo 5 días (periodos: parámetro h=5) 
+
+```{r, eval=FALSE, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
+# Multi-Steps Forecast
+plot(forecast(modelo, h=5), main = "ARIMA(0,1,0), pronóstico para 5 días", ylab="Precio", xlab= "Fecha")
+```
+
+- Mostrar el resumen del pronóstico para los próximos 5 días, utilizando un nivel de confianza de 99% (level=99) y la función summary() para el pronóstico realizado
+
+```{r serieTiempoEnd}
+arima_forecast = forecast(modelo,h=5,level=99) # donde level es el nivel de confianza para el pronóstico
+summary(arima_forecast)
+```
+
+## Ejercicio
+
+Estudiar series de tiempo con base en la siguiente fuente: Morales-Oñate, V. (Junio 2021). Notas de clase - Series de Tiemp. https://bookdown.org/victor_morales/SeriesdeTiempo/

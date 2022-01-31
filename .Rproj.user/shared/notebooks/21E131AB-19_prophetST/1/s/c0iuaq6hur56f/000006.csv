@@ -1,0 +1,3 @@
+"0","# aplicar el método predict() para predicir los valores (precios) futuros"
+"0","forecast2 <- predict(model2, future2)"
+"0","tail(forecast2)"

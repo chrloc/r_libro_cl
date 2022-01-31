@@ -108,7 +108,7 @@ x + c(1, 2, 3)  # termina con una advertencia (warning)
 x <= 5
 ```
 
-## Vectores de caracteres (strings)
+## Vectores de carácteres (strings)
 
 Un ejemplo con diferentes frutas como elementos de un solo vector "q".
 
@@ -307,7 +307,7 @@ class(df[, "Fruta"])	# factor
 
 ## Listas
 
-Una lista puede contener datos númericos, caractéres, etc. Es decir, una mezcla de varios tipos de datos. También fotos o listas pueden ser parte de una lista.
+Una lista puede contener datos numéricos, carácteres, etc. Es decir, una mezcla de varios tipos de datos. También fotos o listas pueden ser parte de una lista.
 
 - Crear una lista de tres elementos: 1, 2, 3 
 - Luego, crear una lista de un solo elemento, que es un vector con los números 1 a 3

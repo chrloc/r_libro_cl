@@ -1,0 +1,2 @@
+"0","# Graficar los datos, utilizando la función chartSeries() del  paquete quantmod"
+"0","chartSeries(precios, type = ""bars"", theme=""white"",main=""Google Stock"")"

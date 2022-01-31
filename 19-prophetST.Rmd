@@ -1,0 +1,202 @@
+# Serie de tiempo con Prophet {#prophet}
+
+## Objetivo
+
+Realizar un pronóstico con base en una serie de tiempo de datos, utilizando el paquete *"Prophet"*, desarrollado por Facebook
+
+
+## Cargar datos
+
+- Vamos a utilizar los mismos datos como en el ejercicio anterior sobre series de tiempo. Es decir:
+- Decargar datos de la acción de Google (ticker GOOG) desde la web (yahoo finance), utilizando el paquete quantmod de R y asignar el resultado a una variable "data"
+- Esto para el periodo de 2005-02-07 hasta 2005-07-08
+- Mostrar los útlimos 6 registros de estos datos (de la variable data)
+- Mostrar la clase de la variable "data"
+
+```{r prophetStart}
+if(!require('quantmod')) install.packages('quantmod'); library(quantmod)
+
+stockEnv <- new.env()
+tickers <- c('GOOG')
+startDate <- '2005-02-07'
+endDate <- '2005-07-08'
+
+getSymbols(Symbols = tickers,
+           env = stockEnv,
+           src = 'yahoo',
+           from = startDate,
+           to = endDate)
+
+data <- stockEnv$GOOG
+tail(data)
+class(data) # [1] "xts" "zoo"
+```
+
+## Convertir a data frame
+
+- Ahora, convertir la variable "data" de xts , zoo a un data frame en R, utilizando la función data.frame() y asignar el resultado a una variable "df"
+- Este data frame debe tener una columna "index" con las fechas de la serie de tiempo y en las demás columnas los precios (formato OHLC)
+- Nota: Todos estos precios se pueden asignar mediante el paámetro "coredata" de data.frame()
+- Mostrar la estructura de df (str())
+- Mostrar las primeras 6 filas con las fechas de df
+
+```{r}
+# convertir fechas en una columna, mediante el cast a un data.frame
+# y escribir los datos a un archivo csv
+# write.csv(data.frame(df), 'google.csv')
+# luego se pueden leer los datos con read.csv, lo que incluye la columna con las fechas
+
+# o se puede convertir el objetivo xts a un dataframe
+df <- data.frame(date=index(data), coredata(data))
+str(df)
+head(df[,1])
+```
+
+- Asignar a una variable "df2" únicamenete los valores de la primera columna (con la fechas) y de la séptima columna (GOOG.Adjusted) de df
+- Mostrar la estructura de df2 (str())
+
+```{r}
+# subsetting solo columna de la fecha (col 1) y el cierre ajustado (col 7)
+df2 <- df[ , c(1,7)]
+str(df2)
+```
+
+
+## Realizar el pronóstico con prophet
+
+- Realizar el pronóstico, utilizando el paquete "prophet" 
+- Esto require primero cambiar el nombre de las columnas del data frame df2. Fechas = ds y "GOOG.Adjusted" = y
+- Mostrar la estructura de df2
+- Donde:
+  - y(t) = g(t) + s(t) + h(t) + epsilon
+  - g(t): modela el crecimiento periódico. Prophet deteca automaticamente cambios en la tendencia y señala puntos de cambio
+  - s(t): estacionaridad. Prophet usa una serie Fourier y el componente estacional semanal
+  - h(t): el compenente de vacacciones
+  - epsilon: el término de error, que utiliza prophet
+  
+
+```{r}
+# pronóstico con facebook prophet
+if(!require('prophet')) install.packages('prophet'); library(prophet)
+# y(t) = g(t) + s(t) + h(t) + epsilon
+# g(t): modela el crecimiento periódico. Prophet deteca automaticamente 
+# cambios en la tendencia y señala puntos de cambio
+# s(t): estacionaridad. Prophet usa una serie Fourier y el componente estacional semanal
+# h(t): el compenente de vacacciones
+# epsilon: el término de error, que utiliza prophet
+
+colnames(df2) <- c('ds', 'y')
+str(df2)
+```
+
+### Crear el modelo
+
+- Crear el modelo de pronóstico, utilizando la función prophet() con df2 y asignar el resultado a una variable "model"
+
+```{r}
+#crear el modelo de pronóstico, utilizando prophet
+model <- prophet(df2)
+```
+
+- Con make_future_dataframe() debemos generar un dataframe con las fechas de los futuros periodos y asignar el resultado a una variable "future"
+- Aquí en el ejemplo aplicamos el model y el parámetro: periods=3*30 al respecto
+- Luego, mostrar las últimas 6 filas (registros) de "future"
+
+```{r}
+# con make_future_dataframe() podemos generar un dataframe con las fechas de 
+# los futuros periodos
+future <- make_future_dataframe(model,periods=3*30)
+tail(future)
+
+```
+
+### Pronosticar - predict
+
+- Luego, aplicar la función predict() para predicir los valores (precios) futuros y asignar el resultado a una variable "forecast". Esta función recibe como parámetros: model y future
+- Mostrar las últimas 6 filas de "forecast", pero únicamente los valores de las siguientes columnas: 'ds','yhat', 'yhat_lower', 'yhat_upper'
+
+```{r}
+# aplicar el método predict() para predicir los valores (precios) futuros
+forecast <- predict(model, future)
+# tail(forecast)
+tail(forecast[c('ds','yhat', 'yhat_lower', 'yhat_upper')])
+```
+
+- Graficar con la función plot() con base en:  model y forecast
+
+```{r}
+#graficar
+plot(model, forecast)
+```
+
+- Utilizando la función prophet_plot_components() con model y forecast para mostrar los componentes de la serie de tiempo, como la tendencia de los precios
+
+```{r}
+# componentes en términos de la tendencia y de la estacionalidad semanal
+prophet_plot_components(model, forecast)
+```
+
+- Presentar una gráfica más interactiva, utilizando la función dyplot.prophet()
+
+```{r}
+# gráfica más interactiva
+dyplot.prophet(model, forecast)
+```
+
+- Intentar mejorar el modelo construido
+- Aplciar: prophet(daily.seasonality = FALSE, yearly.seasonality = FALSE) y asignar el resultado a una variable model2
+- Agregar: add_seasonality(model2, name='self_defined_cycle', period=8, fourier.order = 8,mode='additive')
+- Finalmente, asignar fit.prophet(model2, df2) a model2
+
+```{r}
+# mejorar el modelo
+model2 <- prophet(daily.seasonality = FALSE, yearly.seasonality = FALSE)
+add_seasonality(model2, name='self_defined_cycle', period=8, fourier.order = 8,mode='additive')
+model2 <- fit.prophet(model2, df2)
+```
+
+- De aquí en adelante es el "viejo" código, solo se actualizan los nombres: future2, forecast2
+- Con make_future_dataframe() podemos generar un dataframe "future2" con las fechas de los futuros periodos:  periods=3*30
+- Mostar la últimas 6 filas (registros) de future2
+
+```{r}
+# de aquí en adelante es el "viejo" código, solo se actualizan los nombres: future2, forecast2
+# con make_future_dataframe() podemos generar un dataframe con las fechas de 
+# los futuros periodos
+future2 <- make_future_dataframe(model2,periods=3*30)
+tail(future2)
+```
+
+- Luego, aplicar la función predict() para predicir los valores (precios) futuros y asignar el resultado a una variable "forecast2". Esta función recibe como parámetros: model y future2
+- Mostrar las últimas 6 filas de "forecast2", pero únicamente los valores de las siguientes columnas: 'ds','yhat', 'yhat_lower', 'yhat_upper'
+
+```{r}
+# aplicar el método predict() para predicir los valores (precios) futuros
+forecast2 <- predict(model2, future2)
+tail(forecast2)
+tail(forecast2[c('ds','yhat', 'yhat_lower', 'yhat_upper')])
+```
+
+- Graficar con la función plot() con base en:  model2 y forecast2
+
+```{r}
+#graficar
+plot(model2, forecast2)
+```
+
+- Utilizando la función prophet_plot_components() con model2 y forecast2 para mostrar los componentes de la serie de tiempo, como la tendencia de los precios
+
+```{r}
+# componentes en términos de la tendencia y de la estacionalidad semanal
+prophet_plot_components(model2, forecast2)
+```
+
+- Presentar una gráfica más interactiva, utilizando la función dyplot.prophet(), con model2 y forecast2
+- Observar los resultados (el pronóstico) obtenido, navegando de forma interactiva la gráfica
+
+```{r}
+# gráfica más interactiva
+dyplot.prophet(model2, forecast2)
+```
+
+

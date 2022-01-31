@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Sección 3 Usar tipos de datos | Una breve introducción a R con un enfoque financiero y administrativo</title>
   <meta name="description" content="Una breve introducción al lenguaje de programación R. Con unos ejemplos del área administrativo y de las finanzas." />
-  <meta name="generator" content="bookdown 0.17 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Sección 3 Usar tipos de datos | Una breve introducción a R con un enfoque financiero y administrativo" />
   <meta property="og:type" content="book" />
@@ -32,7 +32,9 @@
   
 <link rel="prev" href="intro.html"/>
 <link rel="next" href="cargar.html"/>
-<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<script src="libs/header-attrs-2.9/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
@@ -48,50 +50,83 @@
 
 
 
-
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<script src="libs/viz-1.8.2/viz.js"></script>
-<link href="libs/DiagrammeR-styles-0.2/styles.css" rel="stylesheet" />
-<script src="libs/grViz-binding-1.0.5/grViz.js"></script>
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.3/htmlwidgets.js"></script>
+<link href="libs/dygraphs-1.1.1/dygraph.css" rel="stylesheet" />
+<script src="libs/dygraphs-1.1.1/dygraph-combined.js"></script>
+<script src="libs/dygraphs-1.1.1/shapes.js"></script>
+<script src="libs/moment-2.8.4/moment.js"></script>
+<script src="libs/moment-timezone-0.2.5/moment-timezone-with-data.js"></script>
+<script src="libs/moment-fquarter-1.0.0/moment-fquarter.min.js"></script>
+<script src="libs/dygraphs-binding-1.1.1.6/dygraphs.js"></script>
+<script src="libs/Dygraph.Plugins.Unzoom-1.0/unzoom.js"></script>
 
 
 <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
+
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -110,32 +145,37 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisitos</a></li>
-<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introducción</a><ul>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introducción</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#objetivo"><i class="fa fa-check"></i><b>2.1</b> Objetivo</a></li>
 <li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#usar-r-como-calculadora"><i class="fa fa-check"></i><b>2.2</b> Usar R como “calculadora”</a></li>
 <li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#asignar-un-valor-numérico-a-una-variable"><i class="fa fa-check"></i><b>2.3</b> Asignar un valor numérico a una variable</a></li>
-<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#buscar-ayuda"><i class="fa fa-check"></i><b>2.4</b> Buscar ayuda</a><ul>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#buscar-ayuda"><i class="fa fa-check"></i><b>2.4</b> Buscar ayuda</a>
+<ul>
 <li class="chapter" data-level="2.4.1" data-path="intro.html"><a href="intro.html#un-ejemplo"><i class="fa fa-check"></i><b>2.4.1</b> Un ejemplo</a></li>
 </ul></li>
 <li class="chapter" data-level="2.5" data-path="intro.html"><a href="intro.html#organizar-el-código"><i class="fa fa-check"></i><b>2.5</b> Organizar el código</a></li>
 <li class="chapter" data-level="2.6" data-path="intro.html"><a href="intro.html#una-opción-para-explorar-swirl"><i class="fa fa-check"></i><b>2.6</b> Una opción para explorar: Swirl</a></li>
 <li class="chapter" data-level="2.7" data-path="intro.html"><a href="intro.html#ejercicio-1"><i class="fa fa-check"></i><b>2.7</b> Ejercicio 1</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>3</b> Usar tipos de datos</a><ul>
+<li class="chapter" data-level="3" data-path="tipos.html"><a href="tipos.html"><i class="fa fa-check"></i><b>3</b> Usar tipos de datos</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="tipos.html"><a href="tipos.html#objetivo-1"><i class="fa fa-check"></i><b>3.1</b> Objetivo</a></li>
 <li class="chapter" data-level="3.2" data-path="tipos.html"><a href="tipos.html#datos-booleanos-y-operadores-de-lógica"><i class="fa fa-check"></i><b>3.2</b> Datos booleanos y operadores de lógica</a></li>
 <li class="chapter" data-level="3.3" data-path="tipos.html"><a href="tipos.html#tipo-de-dato-fecha"><i class="fa fa-check"></i><b>3.3</b> Tipo de dato fecha</a></li>
 <li class="chapter" data-level="3.4" data-path="tipos.html"><a href="tipos.html#tipo-de-dato-vector"><i class="fa fa-check"></i><b>3.4</b> Tipo de dato vector</a></li>
-<li class="chapter" data-level="3.5" data-path="tipos.html"><a href="tipos.html#vectores-de-caracteres-strings"><i class="fa fa-check"></i><b>3.5</b> Vectores de caracteres (strings)</a></li>
+<li class="chapter" data-level="3.5" data-path="tipos.html"><a href="tipos.html#vectores-de-carácteres-strings"><i class="fa fa-check"></i><b>3.5</b> Vectores de carácteres (strings)</a></li>
 <li class="chapter" data-level="3.6" data-path="tipos.html"><a href="tipos.html#acceder-a-elementos-de-un-vector"><i class="fa fa-check"></i><b>3.6</b> Acceder a elementos de un vector</a></li>
 <li class="chapter" data-level="3.7" data-path="tipos.html"><a href="tipos.html#factors-variables-categóricas"><i class="fa fa-check"></i><b>3.7</b> Factors (variables categóricas)</a></li>
 <li class="chapter" data-level="3.8" data-path="tipos.html"><a href="tipos.html#funciones-matemáticas-para-vectores"><i class="fa fa-check"></i><b>3.8</b> Funciones matemáticas para vectores</a></li>
 <li class="chapter" data-level="3.9" data-path="tipos.html"><a href="tipos.html#usar-pipes-un-concepto-interesante"><i class="fa fa-check"></i><b>3.9</b> Usar pipes (un concepto “interesante”)</a></li>
 <li class="chapter" data-level="3.10" data-path="tipos.html"><a href="tipos.html#data-frames"><i class="fa fa-check"></i><b>3.10</b> Data frames</a></li>
-<li class="chapter" data-level="3.11" data-path="tipos.html"><a href="tipos.html#listas"><i class="fa fa-check"></i><b>3.11</b> Listas</a><ul>
+<li class="chapter" data-level="3.11" data-path="tipos.html"><a href="tipos.html#listas"><i class="fa fa-check"></i><b>3.11</b> Listas</a>
+<ul>
 <li class="chapter" data-level="3.11.1" data-path="tipos.html"><a href="tipos.html#una-lista-de-listas"><i class="fa fa-check"></i><b>3.11.1</b> Una lista de listas</a></li>
 </ul></li>
-<li class="chapter" data-level="3.12" data-path="tipos.html"><a href="tipos.html#ejercicio-2"><i class="fa fa-check"></i><b>3.12</b> Ejercicio 2</a><ul>
+<li class="chapter" data-level="3.12" data-path="tipos.html"><a href="tipos.html#ejercicio-2"><i class="fa fa-check"></i><b>3.12</b> Ejercicio 2</a>
+<ul>
 <li class="chapter" data-level="3.12.1" data-path="tipos.html"><a href="tipos.html#parte-a"><i class="fa fa-check"></i><b>3.12.1</b> Parte a</a></li>
 <li class="chapter" data-level="3.12.2" data-path="tipos.html"><a href="tipos.html#parte-b"><i class="fa fa-check"></i><b>3.12.2</b> Parte b</a></li>
 <li class="chapter" data-level="3.12.3" data-path="tipos.html"><a href="tipos.html#parte-c"><i class="fa fa-check"></i><b>3.12.3</b> Parte c</a></li>
@@ -143,27 +183,32 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.12.5" data-path="tipos.html"><a href="tipos.html#parte-e"><i class="fa fa-check"></i><b>3.12.5</b> Parte e</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="cargar.html"><a href="cargar.html"><i class="fa fa-check"></i><b>4</b> Cargar datos a R/RStudio</a><ul>
+<li class="chapter" data-level="4" data-path="cargar.html"><a href="cargar.html"><i class="fa fa-check"></i><b>4</b> Cargar datos a R/RStudio</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="cargar.html"><a href="cargar.html#objetivo-2"><i class="fa fa-check"></i><b>4.1</b> Objetivo</a></li>
 <li class="chapter" data-level="4.2" data-path="cargar.html"><a href="cargar.html#leer-datos-desde-un-archivo-de-tipo-csv-y-xlsx"><i class="fa fa-check"></i><b>4.2</b> Leer datos desde un archivo de tipo csv y xlsx</a></li>
 <li class="chapter" data-level="4.3" data-path="cargar.html"><a href="cargar.html#leer-datos-desde-un-archivo-csv-de-una-página-web-url"><i class="fa fa-check"></i><b>4.3</b> Leer datos desde un archivo csv de una página web (url)</a></li>
 <li class="chapter" data-level="4.4" data-path="cargar.html"><a href="cargar.html#leer-datos-de-acciones-utilizando-el-paquete-quantmod"><i class="fa fa-check"></i><b>4.4</b> Leer datos de acciones, utilizando el paquete quantmod</a></li>
 <li class="chapter" data-level="4.5" data-path="cargar.html"><a href="cargar.html#leer-datos-de-una-tabla-de-una-página-web-wikipedia"><i class="fa fa-check"></i><b>4.5</b> Leer datos de una tabla de una página web: wikipedia</a></li>
 <li class="chapter" data-level="4.6" data-path="cargar.html"><a href="cargar.html#cargar-un-conjunto-de-datos-que-viene-con-r"><i class="fa fa-check"></i><b>4.6</b> Cargar un conjunto de datos, que viene con R</a></li>
-<li class="chapter" data-level="4.7" data-path="cargar.html"><a href="cargar.html#cargar-datos-financieros-con-el-paquete-tidyquant"><i class="fa fa-check"></i><b>4.7</b> Cargar datos financieros con el paquete tidyquant</a><ul>
+<li class="chapter" data-level="4.7" data-path="cargar.html"><a href="cargar.html#cargar-datos-financieros-con-el-paquete-tidyquant"><i class="fa fa-check"></i><b>4.7</b> Cargar datos financieros con el paquete tidyquant</a>
+<ul>
 <li class="chapter" data-level="4.7.1" data-path="cargar.html"><a href="cargar.html#renta-variable---precio-de-acciones"><i class="fa fa-check"></i><b>4.7.1</b> Renta variable - precio de acciones</a></li>
 <li class="chapter" data-level="4.7.2" data-path="cargar.html"><a href="cargar.html#renta-fija"><i class="fa fa-check"></i><b>4.7.2</b> Renta fija</a></li>
 </ul></li>
-<li class="chapter" data-level="4.8" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8</b> Cargar datos de criptomonedas</a><ul>
+<li class="chapter" data-level="4.8" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8</b> Cargar datos de criptomonedas</a>
+<ul>
 <li class="chapter" data-level="4.8.1" data-path="cargar.html"><a href="cargar.html#para-cargar-datos-históricos-de-criptomonedas"><i class="fa fa-check"></i><b>4.8.1</b> Para cargar datos históricos de criptomonedas</a></li>
 </ul></li>
 <li class="chapter" data-level="4.9" data-path="cargar.html"><a href="cargar.html#cargar-datos-de-eurostat-con-r"><i class="fa fa-check"></i><b>4.9</b> Cargar datos de Eurostat con R</a></li>
 <li class="chapter" data-level="4.10" data-path="cargar.html"><a href="cargar.html#ejercicio-3"><i class="fa fa-check"></i><b>4.10</b> Ejercicio 3</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="explorar.html"><a href="explorar.html"><i class="fa fa-check"></i><b>5</b> Explorar datos</a><ul>
+<li class="chapter" data-level="5" data-path="explorar.html"><a href="explorar.html"><i class="fa fa-check"></i><b>5</b> Explorar datos</a>
+<ul>
 <li class="chapter" data-level="5.1" data-path="explorar.html"><a href="explorar.html#objetivo-3"><i class="fa fa-check"></i><b>5.1</b> Objetivo</a></li>
 <li class="chapter" data-level="5.2" data-path="explorar.html"><a href="explorar.html#desarrollar-un-entendimiento-inicial-del-conjunto-de-datos"><i class="fa fa-check"></i><b>5.2</b> Desarrollar un entendimiento inicial del conjunto de datos</a></li>
-<li class="chapter" data-level="5.3" data-path="explorar.html"><a href="explorar.html#comprobar-si-existen-datos-faltantes"><i class="fa fa-check"></i><b>5.3</b> Comprobar, si existen datos faltantes</a><ul>
+<li class="chapter" data-level="5.3" data-path="explorar.html"><a href="explorar.html#comprobar-si-existen-datos-faltantes"><i class="fa fa-check"></i><b>5.3</b> Comprobar, si existen datos faltantes</a>
+<ul>
 <li class="chapter" data-level="5.3.1" data-path="explorar.html"><a href="explorar.html#opción-1"><i class="fa fa-check"></i><b>5.3.1</b> Opción 1</a></li>
 <li class="chapter" data-level="5.3.2" data-path="explorar.html"><a href="explorar.html#opción-2"><i class="fa fa-check"></i><b>5.3.2</b> Opción 2</a></li>
 <li class="chapter" data-level="5.3.3" data-path="explorar.html"><a href="explorar.html#opción-3"><i class="fa fa-check"></i><b>5.3.3</b> Opción 3</a></li>
@@ -174,32 +219,38 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="5.6" data-path="explorar.html"><a href="explorar.html#apalancarse-por-el-paquete-desctools"><i class="fa fa-check"></i><b>5.6</b> Apalancarse por el paquete DescTools</a></li>
 <li class="chapter" data-level="5.7" data-path="explorar.html"><a href="explorar.html#ejercicio-4"><i class="fa fa-check"></i><b>5.7</b> Ejercicio 4</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="tidy.html"><a href="tidy.html"><i class="fa fa-check"></i><b>6</b> El paquete tidyverse y su funcionalidad</a><ul>
+<li class="chapter" data-level="6" data-path="tidy.html"><a href="tidy.html"><i class="fa fa-check"></i><b>6</b> El paquete tidyverse y su funcionalidad</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="tidy.html"><a href="tidy.html#objetivo-y-contextualización"><i class="fa fa-check"></i><b>6.1</b> Objetivo y contextualización</a></li>
 <li class="chapter" data-level="6.2" data-path="tidy.html"><a href="tidy.html#tibble-parte-del-ecosistema-tidyverse"><i class="fa fa-check"></i><b>6.2</b> tibble (parte del ecosistema tidyverse)</a></li>
-<li class="chapter" data-level="6.3" data-path="tidy.html"><a href="tidy.html#utilizar-y-aplicar-funciones-del-tidyverse"><i class="fa fa-check"></i><b>6.3</b> Utilizar y aplicar funciones del tidyverse</a><ul>
+<li class="chapter" data-level="6.3" data-path="tidy.html"><a href="tidy.html#utilizar-y-aplicar-funciones-del-tidyverse"><i class="fa fa-check"></i><b>6.3</b> Utilizar y aplicar funciones del tidyverse</a>
+<ul>
 <li class="chapter" data-level="6.3.1" data-path="tidy.html"><a href="tidy.html#filter"><i class="fa fa-check"></i><b>6.3.1</b> filter</a></li>
-<li class="chapter" data-level="6.3.2" data-path="tidy.html"><a href="tidy.html#arrange"><i class="fa fa-check"></i><b>6.3.2</b> arrange</a></li>
-<li class="chapter" data-level="6.3.3" data-path="tidy.html"><a href="tidy.html#group_by-y-summarize"><i class="fa fa-check"></i><b>6.3.3</b> group_by y summarize</a></li>
+<li class="chapter" data-level="6.3.2" data-path="tidy.html"><a href="tidy.html#arrange-para-ordenar-datos"><i class="fa fa-check"></i><b>6.3.2</b> arrange (para ordenar datos)</a></li>
+<li class="chapter" data-level="6.3.3" data-path="tidy.html"><a href="tidy.html#group_by-y-summarize-contar-registros"><i class="fa fa-check"></i><b>6.3.3</b> group_by y summarize (contar registros)</a></li>
 <li class="chapter" data-level="6.3.4" data-path="tidy.html"><a href="tidy.html#select"><i class="fa fa-check"></i><b>6.3.4</b> select</a></li>
 <li class="chapter" data-level="6.3.5" data-path="tidy.html"><a href="tidy.html#mutate"><i class="fa fa-check"></i><b>6.3.5</b> mutate</a></li>
 </ul></li>
-<li class="chapter" data-level="6.4" data-path="tidy.html"><a href="tidy.html#ejercicio-más-avanzado"><i class="fa fa-check"></i><b>6.4</b> Ejercicio más avanzado</a><ul>
+<li class="chapter" data-level="6.4" data-path="tidy.html"><a href="tidy.html#ejercicio-más-avanzado"><i class="fa fa-check"></i><b>6.4</b> Ejercicio más avanzado</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="tidy.html"><a href="tidy.html#procesar-datos-bursátiles-con-pipes"><i class="fa fa-check"></i><b>6.4.1</b> Procesar datos bursátiles con pipes (%&gt;%)</a></li>
 </ul></li>
 <li class="chapter" data-level="6.5" data-path="tidy.html"><a href="tidy.html#ejercicio-5"><i class="fa fa-check"></i><b>6.5</b> Ejercicio 5</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="bucles.html"><a href="bucles.html"><i class="fa fa-check"></i><b>7</b> Bucles / ciclos</a><ul>
+<li class="chapter" data-level="7" data-path="bucles.html"><a href="bucles.html"><i class="fa fa-check"></i><b>7</b> Bucles / ciclos</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="bucles.html"><a href="bucles.html#objetivo-4"><i class="fa fa-check"></i><b>7.1</b> Objetivo</a></li>
-<li class="chapter" data-level="7.2" data-path="bucles.html"><a href="bucles.html#qué-son-las-funciones-del-tipo-apply"><i class="fa fa-check"></i><b>7.2</b> ¿Qué son las funciones del tipo “apply()”?</a></li>
-<li class="chapter" data-level="7.3" data-path="bucles.html"><a href="bucles.html#apply"><i class="fa fa-check"></i><b>7.3</b> apply</a><ul>
+<li class="chapter" data-level="7.2" data-path="bucles.html"><a href="bucles.html#qué-son-las-funciones-del-tipo-apply"><i class="fa fa-check"></i><b>7.2</b> ¿Qué son las funciones del tipo “apply()?”</a></li>
+<li class="chapter" data-level="7.3" data-path="bucles.html"><a href="bucles.html#apply"><i class="fa fa-check"></i><b>7.3</b> apply</a>
+<ul>
 <li class="chapter" data-level="7.3.1" data-path="bucles.html"><a href="bucles.html#apply-vs-for-for-loop"><i class="fa fa-check"></i><b>7.3.1</b> apply vs for (for loop)</a></li>
 </ul></li>
 <li class="chapter" data-level="7.4" data-path="bucles.html"><a href="bucles.html#lapply"><i class="fa fa-check"></i><b>7.4</b> lapply</a></li>
 <li class="chapter" data-level="7.5" data-path="bucles.html"><a href="bucles.html#sapply"><i class="fa fa-check"></i><b>7.5</b> sapply</a></li>
 <li class="chapter" data-level="7.6" data-path="bucles.html"><a href="bucles.html#ejercicio-6"><i class="fa fa-check"></i><b>7.6</b> Ejercicio 6</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="ajusteDistri.html"><a href="ajusteDistri.html"><i class="fa fa-check"></i><b>8</b> Ajuste de datos a una distribución</a><ul>
+<li class="chapter" data-level="8" data-path="ajusteDistri.html"><a href="ajusteDistri.html"><i class="fa fa-check"></i><b>8</b> Ajuste de datos a una distribución</a>
+<ul>
 <li class="chapter" data-level="8.1" data-path="ajusteDistri.html"><a href="ajusteDistri.html#objetivo-5"><i class="fa fa-check"></i><b>8.1</b> Objetivo</a></li>
 <li class="chapter" data-level="8.2" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-normal"><i class="fa fa-check"></i><b>8.2</b> Distribución normal</a></li>
 <li class="chapter" data-level="8.3" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-exponencial"><i class="fa fa-check"></i><b>8.3</b> Distribución exponencial</a></li>
@@ -207,34 +258,38 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="8.5" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-lognormal"><i class="fa fa-check"></i><b>8.5</b> Distribución lognormal</a></li>
 <li class="chapter" data-level="8.6" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-poisson-discreta"><i class="fa fa-check"></i><b>8.6</b> Distribución Poisson (discreta)</a></li>
 <li class="chapter" data-level="8.7" data-path="ajusteDistri.html"><a href="ajusteDistri.html#distribución-binomial"><i class="fa fa-check"></i><b>8.7</b> Distribución binomial</a></li>
-<li class="chapter" data-level="8.8" data-path="ajusteDistri.html"><a href="ajusteDistri.html#unir-todo-en-un-data-frame"><i class="fa fa-check"></i><b>8.8</b> Unir todo en un data frame</a></li>
+<li class="chapter" data-level="8.8" data-path="ajusteDistri.html"><a href="ajusteDistri.html#unir-todo-en-un-solo-data-frame"><i class="fa fa-check"></i><b>8.8</b> Unir todo en un solo data frame</a></li>
 <li class="chapter" data-level="8.9" data-path="ajusteDistri.html"><a href="ajusteDistri.html#realizar-el-ajuste"><i class="fa fa-check"></i><b>8.9</b> Realizar el ajuste</a></li>
 <li class="chapter" data-level="8.10" data-path="ajusteDistri.html"><a href="ajusteDistri.html#ejercicio-7"><i class="fa fa-check"></i><b>8.10</b> Ejercicio 7</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="regLineal.html"><a href="regLineal.html"><i class="fa fa-check"></i><b>9</b> Un modelo lineal “sencillo” (regresión lineal)</a><ul>
+<li class="chapter" data-level="9" data-path="regLineal.html"><a href="regLineal.html"><i class="fa fa-check"></i><b>9</b> Un modelo lineal “sencillo” (regresión lineal)</a>
+<ul>
 <li class="chapter" data-level="9.1" data-path="regLineal.html"><a href="regLineal.html#objetivo-6"><i class="fa fa-check"></i><b>9.1</b> Objetivo</a></li>
 <li class="chapter" data-level="9.2" data-path="regLineal.html"><a href="regLineal.html#cargar-datos-sobre-carros"><i class="fa fa-check"></i><b>9.2</b> Cargar datos sobre carros</a></li>
 <li class="chapter" data-level="9.3" data-path="regLineal.html"><a href="regLineal.html#crear-el-modelo-lineal-regresión-lineal"><i class="fa fa-check"></i><b>9.3</b> Crear el modelo lineal (regresión lineal)</a></li>
 <li class="chapter" data-level="9.4" data-path="regLineal.html"><a href="regLineal.html#realizar-una-predicción"><i class="fa fa-check"></i><b>9.4</b> Realizar una predicción</a></li>
+<li class="chapter" data-level="9.5" data-path="regLineal.html"><a href="regLineal.html#un-segundo-ejemplo-sencillo"><i class="fa fa-check"></i><b>9.5</b> Un segundo ejemplo sencillo</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="regLineal.html"><a href="regLineal.html#utilidad-en-función-del-gasto-para-publicidad"><i class="fa fa-check"></i><b>9.5.1</b> Utilidad en función del gasto para publicidad</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="electre1.html"><a href="electre1.html"><i class="fa fa-check"></i><b>10</b> MCDA: Outranking - sobre calificación</a><ul>
+</ul></li>
+<li class="chapter" data-level="10" data-path="electre1.html"><a href="electre1.html"><i class="fa fa-check"></i><b>10</b> MCDA: Outranking - sobre calificación</a>
+<ul>
 <li class="chapter" data-level="10.1" data-path="electre1.html"><a href="electre1.html#objetivo-y-contextualización-1"><i class="fa fa-check"></i><b>10.1</b> Objetivo y contextualización</a></li>
-<li class="chapter" data-level="10.2" data-path="electre1.html"><a href="electre1.html#datos"><i class="fa fa-check"></i><b>10.2</b> Datos</a></li>
+<li class="chapter" data-level="10.2" data-path="electre1.html"><a href="electre1.html#generar-datos"><i class="fa fa-check"></i><b>10.2</b> Generar datos</a></li>
 <li class="chapter" data-level="10.3" data-path="electre1.html"><a href="electre1.html#leer-los-datos-desde-un-archivo-de-excel"><i class="fa fa-check"></i><b>10.3</b> Leer los datos desde un archivo de Excel</a></li>
 <li class="chapter" data-level="10.4" data-path="electre1.html"><a href="electre1.html#analizar-el-paquete-outranking-tools-y-la-función-electre_1"><i class="fa fa-check"></i><b>10.4</b> Analizar el paquete Outranking Tools y la función electre_1()</a></li>
 <li class="chapter" data-level="10.5" data-path="electre1.html"><a href="electre1.html#transformar-los-datos-al-formato-requerido"><i class="fa fa-check"></i><b>10.5</b> Transformar los datos al formato requerido</a></li>
 </ul></li>
-<li class="chapter" data-level="11" data-path="ahp.html"><a href="ahp.html"><i class="fa fa-check"></i><b>11</b> Modelo AHP (Analytical Hierarchy Process)</a><ul>
+<li class="chapter" data-level="11" data-path="ahp.html"><a href="ahp.html"><i class="fa fa-check"></i><b>11</b> Modelo AHP (Analytical Hierarchy Process)</a>
+<ul>
 <li class="chapter" data-level="11.1" data-path="ahp.html"><a href="ahp.html#objetivo-7"><i class="fa fa-check"></i><b>11.1</b> Objetivo</a></li>
-<li class="chapter" data-level="11.2" data-path="ahp.html"><a href="ahp.html#cargar-los-paquetes-ahp-y-data.tree"><i class="fa fa-check"></i><b>11.2</b> Cargar los paquetes ahp y data.tree</a></li>
-<li class="chapter" data-level="11.3" data-path="ahp.html"><a href="ahp.html#mostrar-los-archivos-ejemplos-que-vienen-con-este-paquete-ahp-y-cargar-uno-de-estos"><i class="fa fa-check"></i><b>11.3</b> Mostrar los archivos (ejemplos), que vienen con este paquete ahp y cargar uno de estos</a></li>
-<li class="chapter" data-level="11.4" data-path="ahp.html"><a href="ahp.html#aplicar-ahp-utilizando-la-función-calculate"><i class="fa fa-check"></i><b>11.4</b> Aplicar ahp, utilizando la función calculate()</a></li>
-<li class="chapter" data-level="11.5" data-path="ahp.html"><a href="ahp.html#mostrar-el-problema-de-decisión-gráficamente-como-árbol"><i class="fa fa-check"></i><b>11.5</b> Mostrar el problema de decisión gráficamente (como árbol)</a></li>
-<li class="chapter" data-level="11.6" data-path="ahp.html"><a href="ahp.html#analizar-los-resultados-de-ahp"><i class="fa fa-check"></i><b>11.6</b> Analizar los resultados de ahp</a><ul>
-<li class="chapter" data-level="11.6.1" data-path="ahp.html"><a href="ahp.html#nota-solución-alternativa"><i class="fa fa-check"></i><b>11.6.1</b> Nota: solución alternativa</a></li>
+<li class="chapter" data-level="11.2" data-path="ahp.html"><a href="ahp.html#cargar-el-paquete-mcda"><i class="fa fa-check"></i><b>11.2</b> Cargar el paquete MCDA</a></li>
+<li class="chapter" data-level="11.3" data-path="ahp.html"><a href="ahp.html#alternativespairwisecomparisonslist"><i class="fa fa-check"></i><b>11.3</b> alternativesPairwiseComparisonsList</a></li>
+<li class="chapter" data-level="11.4" data-path="ahp.html"><a href="ahp.html#mostrar-resultado-con-ahp"><i class="fa fa-check"></i><b>11.4</b> Mostrar resultado con AHP</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="12" data-path="fuzzy.html"><a href="fuzzy.html"><i class="fa fa-check"></i><b>12</b> Modelo fuzzy (borroso)</a><ul>
+<li class="chapter" data-level="12" data-path="fuzzy.html"><a href="fuzzy.html"><i class="fa fa-check"></i><b>12</b> Modelo fuzzy (borroso)</a>
+<ul>
 <li class="chapter" data-level="12.1" data-path="fuzzy.html"><a href="fuzzy.html#objetivo-y-contextualización-2"><i class="fa fa-check"></i><b>12.1</b> Objetivo y contextualización</a></li>
 <li class="chapter" data-level="12.2" data-path="fuzzy.html"><a href="fuzzy.html#definir-el-universo-universe"><i class="fa fa-check"></i><b>12.2</b> Definir el universo (universe)</a></li>
 <li class="chapter" data-level="12.3" data-path="fuzzy.html"><a href="fuzzy.html#definir-las-variables"><i class="fa fa-check"></i><b>12.3</b> Definir las variables</a></li>
@@ -243,10 +298,12 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="12.6" data-path="fuzzy.html"><a href="fuzzy.html#dos-ejemplos-fuzzy"><i class="fa fa-check"></i><b>12.6</b> Dos ejemplos fuzzy</a></li>
 <li class="chapter" data-level="12.7" data-path="fuzzy.html"><a href="fuzzy.html#finalmente-se-debe-resetear-el-universo"><i class="fa fa-check"></i><b>12.7</b> Finalmente se debe “resetear” el universo</a></li>
 </ul></li>
-<li class="chapter" data-level="13" data-path="muestreo.html"><a href="muestreo.html"><i class="fa fa-check"></i><b>13</b> Muestreo - sampling</a><ul>
+<li class="chapter" data-level="13" data-path="muestreo.html"><a href="muestreo.html"><i class="fa fa-check"></i><b>13</b> Muestreo - sampling</a>
+<ul>
 <li class="chapter" data-level="13.1" data-path="muestreo.html"><a href="muestreo.html#objetivo-8"><i class="fa fa-check"></i><b>13.1</b> Objetivo</a></li>
 <li class="chapter" data-level="13.2" data-path="muestreo.html"><a href="muestreo.html#muestreo-aleatorio-simple---simple-random-sampling"><i class="fa fa-check"></i><b>13.2</b> Muestreo aleatorio simple - Simple Random Sampling</a></li>
-<li class="chapter" data-level="13.3" data-path="muestreo.html"><a href="muestreo.html#proceso-de-muestreo-para-realizar-una-encuesta"><i class="fa fa-check"></i><b>13.3</b> Proceso de muestreo para realizar una encuesta</a><ul>
+<li class="chapter" data-level="13.3" data-path="muestreo.html"><a href="muestreo.html#proceso-de-muestreo-para-realizar-una-encuesta"><i class="fa fa-check"></i><b>13.3</b> Proceso de muestreo para realizar una encuesta</a>
+<ul>
 <li class="chapter" data-level="13.3.1" data-path="muestreo.html"><a href="muestreo.html#creamos-nuestra-propia-función-en-r"><i class="fa fa-check"></i><b>13.3.1</b> Creamos “nuestra propia función” en R</a></li>
 <li class="chapter" data-level="13.3.2" data-path="muestreo.html"><a href="muestreo.html#definir-los-valores-para-los-parámetros-de-la-función-muestra.n"><i class="fa fa-check"></i><b>13.3.2</b> Definir los valores para los parámetros de la función “muestra.n”</a></li>
 <li class="chapter" data-level="13.3.3" data-path="muestreo.html"><a href="muestreo.html#llamar-la-función-muestra.n-y-observar-el-resultado"><i class="fa fa-check"></i><b>13.3.3</b> Llamar la función “muestra.n” y observar el resultado</a></li>
@@ -256,12 +313,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul></li>
 <li class="chapter" data-level="13.4" data-path="muestreo.html"><a href="muestreo.html#muestreo-para-un-problema-de-datos-masivos-big-data"><i class="fa fa-check"></i><b>13.4</b> Muestreo para un problema de datos masivos (big data)</a></li>
 <li class="chapter" data-level="13.5" data-path="muestreo.html"><a href="muestreo.html#muestreo-estratificado---stratified-sampling"><i class="fa fa-check"></i><b>13.5</b> Muestreo estratificado - Stratified sampling</a></li>
-<li class="chapter" data-level="13.6" data-path="muestreo.html"><a href="muestreo.html#trabajar-con-potencia-power-analysis"><i class="fa fa-check"></i><b>13.6</b> Trabajar con potencia (power analysis)</a><ul>
+<li class="chapter" data-level="13.6" data-path="muestreo.html"><a href="muestreo.html#trabajar-con-potencia-power-analysis"><i class="fa fa-check"></i><b>13.6</b> Trabajar con potencia (power analysis)</a>
+<ul>
 <li class="chapter" data-level="13.6.1" data-path="muestreo.html"><a href="muestreo.html#utilziar-la-función-pwr.t.test---power-calculations-for-t-tests-of-means"><i class="fa fa-check"></i><b>13.6.1</b> Utilziar la función pwr.t.test() - Power calculations for t-tests of means</a></li>
 </ul></li>
 <li class="chapter" data-level="13.7" data-path="muestreo.html"><a href="muestreo.html#ejercicio-8"><i class="fa fa-check"></i><b>13.7</b> Ejercicio 8</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="arbolDec.html"><a href="arbolDec.html"><i class="fa fa-check"></i><b>14</b> Árbol de decisión - Decision Tree</a><ul>
+<li class="chapter" data-level="14" data-path="arbolDec.html"><a href="arbolDec.html"><i class="fa fa-check"></i><b>14</b> Árbol de decisión - Decision Tree</a>
+<ul>
 <li class="chapter" data-level="14.1" data-path="arbolDec.html"><a href="arbolDec.html#objetivo-9"><i class="fa fa-check"></i><b>14.1</b> Objetivo</a></li>
 <li class="chapter" data-level="14.2" data-path="arbolDec.html"><a href="arbolDec.html#cargar-los-datos"><i class="fa fa-check"></i><b>14.2</b> Cargar los datos</a></li>
 <li class="chapter" data-level="14.3" data-path="arbolDec.html"><a href="arbolDec.html#explorar-los-datos"><i class="fa fa-check"></i><b>14.3</b> Explorar los datos</a></li>
@@ -273,7 +332,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="14.9" data-path="arbolDec.html"><a href="arbolDec.html#evaluar-el-desempeño-del-modelo-árbol-de-decisión"><i class="fa fa-check"></i><b>14.9</b> Evaluar el desempeño del modelo (árbol de decisión)</a></li>
 <li class="chapter" data-level="14.10" data-path="arbolDec.html"><a href="arbolDec.html#ejercicio-9"><i class="fa fa-check"></i><b>14.10</b> Ejercicio 9</a></li>
 </ul></li>
-<li class="chapter" data-level="15" data-path="regrLog.html"><a href="regrLog.html"><i class="fa fa-check"></i><b>15</b> Regresión logística (modelo logit)</a><ul>
+<li class="chapter" data-level="15" data-path="regrLog.html"><a href="regrLog.html"><i class="fa fa-check"></i><b>15</b> Regresión logística (modelo logit)</a>
+<ul>
 <li class="chapter" data-level="15.1" data-path="regrLog.html"><a href="regrLog.html#objetivo-10"><i class="fa fa-check"></i><b>15.1</b> Objetivo</a></li>
 <li class="chapter" data-level="15.2" data-path="regrLog.html"><a href="regrLog.html#cargar-los-datos-históricos-de-un-archivo-csv"><i class="fa fa-check"></i><b>15.2</b> Cargar los datos históricos de un archivo csv</a></li>
 <li class="chapter" data-level="15.3" data-path="regrLog.html"><a href="regrLog.html#explorar-los-datos-1"><i class="fa fa-check"></i><b>15.3</b> Explorar los datos</a></li>
@@ -286,75 +346,152 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="15.10" data-path="regrLog.html"><a href="regrLog.html#convertir-estas-probabilidades-en-dos-clases-1-y-0-buena-paga-y-mala-paga"><i class="fa fa-check"></i><b>15.10</b> Convertir estas probabilidades en dos clases: 1 y 0 (“buena paga” y “mala paga”)</a></li>
 <li class="chapter" data-level="15.11" data-path="regrLog.html"><a href="regrLog.html#ejercicio-10"><i class="fa fa-check"></i><b>15.11</b> Ejercicio 10</a></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="normalizar.html"><a href="normalizar.html"><i class="fa fa-check"></i><b>16</b> Escalar y normalizar (estandarizar datos)</a><ul>
+<li class="chapter" data-level="16" data-path="normalizar.html"><a href="normalizar.html"><i class="fa fa-check"></i><b>16</b> Escalar y normalizar (estandarizar datos)</a>
+<ul>
 <li class="chapter" data-level="16.1" data-path="normalizar.html"><a href="normalizar.html#objetivo-11"><i class="fa fa-check"></i><b>16.1</b> Objetivo</a></li>
 <li class="chapter" data-level="16.2" data-path="normalizar.html"><a href="normalizar.html#cargar-los-datos-históricos-de-un-archivo-csv-1"><i class="fa fa-check"></i><b>16.2</b> Cargar los datos históricos de un archivo csv</a></li>
 <li class="chapter" data-level="16.3" data-path="normalizar.html"><a href="normalizar.html#analizar-los-datos-de-la-columna-credit.amount-monto-del-crédito"><i class="fa fa-check"></i><b>16.3</b> Analizar los datos de la columna “Credit.Amount” (monto del crédito)</a></li>
 <li class="chapter" data-level="16.4" data-path="normalizar.html"><a href="normalizar.html#escalar-los-datos"><i class="fa fa-check"></i><b>16.4</b> Escalar los datos</a></li>
-<li class="chapter" data-level="16.5" data-path="normalizar.html"><a href="normalizar.html#la-normalización-de-los-datos"><i class="fa fa-check"></i><b>16.5</b> La normalización de los datos</a><ul>
+<li class="chapter" data-level="16.5" data-path="normalizar.html"><a href="normalizar.html#la-normalización-de-los-datos"><i class="fa fa-check"></i><b>16.5</b> La normalización de los datos</a>
+<ul>
 <li class="chapter" data-level="16.5.1" data-path="normalizar.html"><a href="normalizar.html#comprobar-el-resultado"><i class="fa fa-check"></i><b>16.5.1</b> Comprobar el resultado</a></li>
 </ul></li>
-<li class="chapter" data-level="16.6" data-path="normalizar.html"><a href="normalizar.html#escala-logarítmica"><i class="fa fa-check"></i><b>16.6</b> Escala logarítmica</a><ul>
+<li class="chapter" data-level="16.6" data-path="normalizar.html"><a href="normalizar.html#escala-logarítmica"><i class="fa fa-check"></i><b>16.6</b> Escala logarítmica</a>
+<ul>
 <li class="chapter" data-level="16.6.1" data-path="normalizar.html"><a href="normalizar.html#un-ejemplo---retornos-logarítmicos"><i class="fa fa-check"></i><b>16.6.1</b> Un ejemplo - retornos logarítmicos</a></li>
 </ul></li>
 <li class="chapter" data-level="16.7" data-path="normalizar.html"><a href="normalizar.html#creando-variables-dummy-one-hot-encoding"><i class="fa fa-check"></i><b>16.7</b> Creando variables dummy (one-hot encoding)</a></li>
 <li class="chapter" data-level="16.8" data-path="normalizar.html"><a href="normalizar.html#ejercicio-11"><i class="fa fa-check"></i><b>16.8</b> Ejercicio 11</a></li>
 </ul></li>
-<li class="chapter" data-level="17" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html"><i class="fa fa-check"></i><b>17</b> Posibles soluciones</a><ul>
-<li class="chapter" data-level="17.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-1-1"><i class="fa fa-check"></i><b>17.1</b> Ejercicio 1</a><ul>
-<li class="chapter" data-level="17.1.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado"><i class="fa fa-check"></i><b>17.1.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.1.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución"><i class="fa fa-check"></i><b>17.1.2</b> Posible solución</a></li>
+<li class="chapter" data-level="17" data-path="rn.html"><a href="rn.html"><i class="fa fa-check"></i><b>17</b> Red Neuronal</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="rn.html"><a href="rn.html#objetivo-12"><i class="fa fa-check"></i><b>17.1</b> Objetivo</a></li>
+<li class="chapter" data-level="17.2" data-path="rn.html"><a href="rn.html#cargar-datos"><i class="fa fa-check"></i><b>17.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="17.3" data-path="rn.html"><a href="rn.html#normalizar-datos"><i class="fa fa-check"></i><b>17.3</b> Normalizar datos</a></li>
+<li class="chapter" data-level="17.4" data-path="rn.html"><a href="rn.html#particionar-los-datos-2"><i class="fa fa-check"></i><b>17.4</b> Particionar los datos</a></li>
+<li class="chapter" data-level="17.5" data-path="rn.html"><a href="rn.html#crear-la-red-neuronal"><i class="fa fa-check"></i><b>17.5</b> Crear la Red Neuronal</a></li>
+<li class="chapter" data-level="17.6" data-path="rn.html"><a href="rn.html#realizar-la-predicción"><i class="fa fa-check"></i><b>17.6</b> Realizar la predicción</a></li>
 </ul></li>
-<li class="chapter" data-level="17.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-2-1"><i class="fa fa-check"></i><b>17.2</b> Ejercicio 2</a><ul>
-<li class="chapter" data-level="17.2.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-a"><i class="fa fa-check"></i><b>17.2.1</b> Enunciado - parte a</a></li>
-<li class="chapter" data-level="17.2.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-1"><i class="fa fa-check"></i><b>17.2.2</b> Posible solución</a></li>
-<li class="chapter" data-level="17.2.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-b"><i class="fa fa-check"></i><b>17.2.3</b> Enunciado - parte b</a></li>
-<li class="chapter" data-level="17.2.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-2"><i class="fa fa-check"></i><b>17.2.4</b> Posible solución</a></li>
-<li class="chapter" data-level="17.2.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-c"><i class="fa fa-check"></i><b>17.2.5</b> Enunciado - parte c</a></li>
-<li class="chapter" data-level="17.2.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-3"><i class="fa fa-check"></i><b>17.2.6</b> Posible solución</a></li>
-<li class="chapter" data-level="17.2.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-d"><i class="fa fa-check"></i><b>17.2.7</b> Enunciado - parte d</a></li>
-<li class="chapter" data-level="17.2.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-4"><i class="fa fa-check"></i><b>17.2.8</b> Posible solución</a></li>
-<li class="chapter" data-level="17.2.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-e"><i class="fa fa-check"></i><b>17.2.9</b> Enunciado - parte e</a></li>
-<li class="chapter" data-level="17.2.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-5"><i class="fa fa-check"></i><b>17.2.10</b> Posible solución</a></li>
+<li class="chapter" data-level="18" data-path="VaR.html"><a href="VaR.html"><i class="fa fa-check"></i><b>18</b> Determinar el VaR</a>
+<ul>
+<li class="chapter" data-level="18.1" data-path="VaR.html"><a href="VaR.html#objetivo-13"><i class="fa fa-check"></i><b>18.1</b> Objetivo</a>
+<ul>
+<li class="chapter" data-level="18.1.1" data-path="VaR.html"><a href="VaR.html#obtener-unos-datos-serie-de-tiempo-st"><i class="fa fa-check"></i><b>18.1.1</b> Obtener unos datos (Serie de tiempo, ST)</a></li>
 </ul></li>
-<li class="chapter" data-level="17.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-3-1"><i class="fa fa-check"></i><b>17.3</b> Ejercicio 3</a><ul>
-<li class="chapter" data-level="17.3.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-1"><i class="fa fa-check"></i><b>17.3.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.3.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-6"><i class="fa fa-check"></i><b>17.3.2</b> Posible solución</a></li>
+<li class="chapter" data-level="18.2" data-path="VaR.html"><a href="VaR.html#determinar-retornos-log"><i class="fa fa-check"></i><b>18.2</b> Determinar retornos log</a></li>
+<li class="chapter" data-level="18.3" data-path="VaR.html"><a href="VaR.html#generar-estadística-de-datos"><i class="fa fa-check"></i><b>18.3</b> Generar estadística de datos</a>
+<ul>
+<li class="chapter" data-level="18.3.1" data-path="VaR.html"><a href="VaR.html#volatilidad"><i class="fa fa-check"></i><b>18.3.1</b> Volatilidad</a></li>
+<li class="chapter" data-level="18.3.2" data-path="VaR.html"><a href="VaR.html#retorno-diario"><i class="fa fa-check"></i><b>18.3.2</b> Retorno diario</a></li>
+<li class="chapter" data-level="18.3.3" data-path="VaR.html"><a href="VaR.html#supuestos-para-el-cálculo-del-var"><i class="fa fa-check"></i><b>18.3.3</b> Supuestos para el cálculo del VaR</a></li>
 </ul></li>
-<li class="chapter" data-level="17.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-4-1"><i class="fa fa-check"></i><b>17.4</b> Ejercicio 4</a><ul>
-<li class="chapter" data-level="17.4.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-2"><i class="fa fa-check"></i><b>17.4.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.4.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-7"><i class="fa fa-check"></i><b>17.4.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-5-1"><i class="fa fa-check"></i><b>17.5</b> Ejercicio 5</a><ul>
-<li class="chapter" data-level="17.5.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-3"><i class="fa fa-check"></i><b>17.5.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.5.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-8"><i class="fa fa-check"></i><b>17.5.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-6-1"><i class="fa fa-check"></i><b>17.6</b> Ejercicio 6</a><ul>
-<li class="chapter" data-level="17.6.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-4"><i class="fa fa-check"></i><b>17.6.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.6.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-9"><i class="fa fa-check"></i><b>17.6.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-7-1"><i class="fa fa-check"></i><b>17.7</b> Ejercicio 7</a><ul>
-<li class="chapter" data-level="17.7.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-5"><i class="fa fa-check"></i><b>17.7.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.7.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-10"><i class="fa fa-check"></i><b>17.7.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-8-1"><i class="fa fa-check"></i><b>17.8</b> Ejercicio 8</a><ul>
-<li class="chapter" data-level="17.8.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-6"><i class="fa fa-check"></i><b>17.8.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.8.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-11"><i class="fa fa-check"></i><b>17.8.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-9-1"><i class="fa fa-check"></i><b>17.9</b> Ejercicio 9</a><ul>
-<li class="chapter" data-level="17.9.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-7"><i class="fa fa-check"></i><b>17.9.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.9.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-12"><i class="fa fa-check"></i><b>17.9.2</b> Posible Solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-10-1"><i class="fa fa-check"></i><b>17.10</b> Ejercicio 10</a><ul>
-<li class="chapter" data-level="17.10.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-8"><i class="fa fa-check"></i><b>17.10.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.10.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-13"><i class="fa fa-check"></i><b>17.10.2</b> Posible solución</a></li>
-</ul></li>
-<li class="chapter" data-level="17.11" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-11-1"><i class="fa fa-check"></i><b>17.11</b> Ejercicio 11</a><ul>
-<li class="chapter" data-level="17.11.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-9"><i class="fa fa-check"></i><b>17.11.1</b> Enunciado</a></li>
-<li class="chapter" data-level="17.11.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-14"><i class="fa fa-check"></i><b>17.11.2</b> Posible solución</a></li>
+<li class="chapter" data-level="18.4" data-path="VaR.html"><a href="VaR.html#var"><i class="fa fa-check"></i><b>18.4</b> VaR</a>
+<ul>
+<li class="chapter" data-level="18.4.1" data-path="VaR.html"><a href="VaR.html#var-paramétrico"><i class="fa fa-check"></i><b>18.4.1</b> VaR paramétrico</a></li>
+<li class="chapter" data-level="18.4.2" data-path="VaR.html"><a href="VaR.html#var-histórico"><i class="fa fa-check"></i><b>18.4.2</b> VaR histórico</a></li>
+<li class="chapter" data-level="18.4.3" data-path="VaR.html"><a href="VaR.html#var-montecarlo"><i class="fa fa-check"></i><b>18.4.3</b> VaR Montecarlo</a></li>
+<li class="chapter" data-level="18.4.4" data-path="VaR.html"><a href="VaR.html#comparativo-de-los-tres-vars"><i class="fa fa-check"></i><b>18.4.4</b> Comparativo de los tres VaRs</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="18" data-path="palabras-finales.html"><a href="palabras-finales.html"><i class="fa fa-check"></i><b>18</b> Palabras finales</a></li>
+<li class="chapter" data-level="19" data-path="ST.html"><a href="ST.html"><i class="fa fa-check"></i><b>19</b> Serie de tiempo</a>
+<ul>
+<li class="chapter" data-level="19.1" data-path="ST.html"><a href="ST.html#objetivo-14"><i class="fa fa-check"></i><b>19.1</b> Objetivo</a></li>
+<li class="chapter" data-level="19.2" data-path="ST.html"><a href="ST.html#cargar-datos-1"><i class="fa fa-check"></i><b>19.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="19.3" data-path="ST.html"><a href="ST.html#graficar-la-serie"><i class="fa fa-check"></i><b>19.3</b> Graficar la serie</a></li>
+<li class="chapter" data-level="19.4" data-path="ST.html"><a href="ST.html#comprobar-si-es-estacionaria"><i class="fa fa-check"></i><b>19.4</b> Comprobar, si es estacionaria</a></li>
+<li class="chapter" data-level="19.5" data-path="ST.html"><a href="ST.html#identificando-una-serie-no-estacionaria"><i class="fa fa-check"></i><b>19.5</b> Identificando una serie no estacionaria</a>
+<ul>
+<li class="chapter" data-level="19.5.1" data-path="ST.html"><a href="ST.html#convertir-a-estacionaria"><i class="fa fa-check"></i><b>19.5.1</b> Convertir a estacionaria</a></li>
+<li class="chapter" data-level="19.5.2" data-path="ST.html"><a href="ST.html#retornos-log"><i class="fa fa-check"></i><b>19.5.2</b> Retornos log</a></li>
+<li class="chapter" data-level="19.5.3" data-path="ST.html"><a href="ST.html#diferenciar-1st-order"><i class="fa fa-check"></i><b>19.5.3</b> Diferenciar (1st order)</a></li>
+</ul></li>
+<li class="chapter" data-level="19.6" data-path="ST.html"><a href="ST.html#arima"><i class="fa fa-check"></i><b>19.6</b> ARIMA</a>
+<ul>
+<li class="chapter" data-level="19.6.1" data-path="ST.html"><a href="ST.html#acf"><i class="fa fa-check"></i><b>19.6.1</b> acf</a></li>
+<li class="chapter" data-level="19.6.2" data-path="ST.html"><a href="ST.html#pacf"><i class="fa fa-check"></i><b>19.6.2</b> pacf</a></li>
+<li class="chapter" data-level="19.6.3" data-path="ST.html"><a href="ST.html#auto.arima"><i class="fa fa-check"></i><b>19.6.3</b> auto.arima</a></li>
+</ul></li>
+<li class="chapter" data-level="19.7" data-path="ST.html"><a href="ST.html#pronóstico"><i class="fa fa-check"></i><b>19.7</b> Pronóstico</a></li>
+<li class="chapter" data-level="19.8" data-path="ST.html"><a href="ST.html#ejercicio"><i class="fa fa-check"></i><b>19.8</b> Ejercicio</a></li>
+</ul></li>
+<li class="chapter" data-level="20" data-path="prophet.html"><a href="prophet.html"><i class="fa fa-check"></i><b>20</b> Serie de tiempo con Prophet</a>
+<ul>
+<li class="chapter" data-level="20.1" data-path="prophet.html"><a href="prophet.html#objetivo-15"><i class="fa fa-check"></i><b>20.1</b> Objetivo</a></li>
+<li class="chapter" data-level="20.2" data-path="prophet.html"><a href="prophet.html#cargar-datos-2"><i class="fa fa-check"></i><b>20.2</b> Cargar datos</a></li>
+<li class="chapter" data-level="20.3" data-path="prophet.html"><a href="prophet.html#convertir-a-data-frame"><i class="fa fa-check"></i><b>20.3</b> Convertir a data frame</a></li>
+<li class="chapter" data-level="20.4" data-path="prophet.html"><a href="prophet.html#realizar-el-pronóstico-con-prophet"><i class="fa fa-check"></i><b>20.4</b> Realizar el pronóstico con prophet</a>
+<ul>
+<li class="chapter" data-level="20.4.1" data-path="prophet.html"><a href="prophet.html#crear-el-modelo"><i class="fa fa-check"></i><b>20.4.1</b> Crear el modelo</a></li>
+<li class="chapter" data-level="20.4.2" data-path="prophet.html"><a href="prophet.html#pronosticar---predict"><i class="fa fa-check"></i><b>20.4.2</b> Pronosticar - predict</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="21" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html"><i class="fa fa-check"></i><b>21</b> Posibles soluciones</a>
+<ul>
+<li class="chapter" data-level="21.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-1-1"><i class="fa fa-check"></i><b>21.1</b> Ejercicio 1</a>
+<ul>
+<li class="chapter" data-level="21.1.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado"><i class="fa fa-check"></i><b>21.1.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.1.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución"><i class="fa fa-check"></i><b>21.1.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-2-1"><i class="fa fa-check"></i><b>21.2</b> Ejercicio 2</a>
+<ul>
+<li class="chapter" data-level="21.2.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-a"><i class="fa fa-check"></i><b>21.2.1</b> Enunciado - parte a</a></li>
+<li class="chapter" data-level="21.2.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-1"><i class="fa fa-check"></i><b>21.2.2</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-b"><i class="fa fa-check"></i><b>21.2.3</b> Enunciado - parte b</a></li>
+<li class="chapter" data-level="21.2.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-2"><i class="fa fa-check"></i><b>21.2.4</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-c"><i class="fa fa-check"></i><b>21.2.5</b> Enunciado - parte c</a></li>
+<li class="chapter" data-level="21.2.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-3"><i class="fa fa-check"></i><b>21.2.6</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-d"><i class="fa fa-check"></i><b>21.2.7</b> Enunciado - parte d</a></li>
+<li class="chapter" data-level="21.2.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-4"><i class="fa fa-check"></i><b>21.2.8</b> Posible solución</a></li>
+<li class="chapter" data-level="21.2.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado---parte-e"><i class="fa fa-check"></i><b>21.2.9</b> Enunciado - parte e</a></li>
+<li class="chapter" data-level="21.2.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-5"><i class="fa fa-check"></i><b>21.2.10</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.3" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-3-1"><i class="fa fa-check"></i><b>21.3</b> Ejercicio 3</a>
+<ul>
+<li class="chapter" data-level="21.3.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-1"><i class="fa fa-check"></i><b>21.3.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.3.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-6"><i class="fa fa-check"></i><b>21.3.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.4" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-4-1"><i class="fa fa-check"></i><b>21.4</b> Ejercicio 4</a>
+<ul>
+<li class="chapter" data-level="21.4.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-2"><i class="fa fa-check"></i><b>21.4.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.4.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-7"><i class="fa fa-check"></i><b>21.4.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.5" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-5-1"><i class="fa fa-check"></i><b>21.5</b> Ejercicio 5</a>
+<ul>
+<li class="chapter" data-level="21.5.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-3"><i class="fa fa-check"></i><b>21.5.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.5.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-8"><i class="fa fa-check"></i><b>21.5.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.6" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-6-1"><i class="fa fa-check"></i><b>21.6</b> Ejercicio 6</a>
+<ul>
+<li class="chapter" data-level="21.6.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-4"><i class="fa fa-check"></i><b>21.6.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.6.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-9"><i class="fa fa-check"></i><b>21.6.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.7" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-7-1"><i class="fa fa-check"></i><b>21.7</b> Ejercicio 7</a>
+<ul>
+<li class="chapter" data-level="21.7.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-5"><i class="fa fa-check"></i><b>21.7.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.7.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-10"><i class="fa fa-check"></i><b>21.7.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.8" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-8-1"><i class="fa fa-check"></i><b>21.8</b> Ejercicio 8</a>
+<ul>
+<li class="chapter" data-level="21.8.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-6"><i class="fa fa-check"></i><b>21.8.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.8.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-11"><i class="fa fa-check"></i><b>21.8.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.9" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-9-1"><i class="fa fa-check"></i><b>21.9</b> Ejercicio 9</a>
+<ul>
+<li class="chapter" data-level="21.9.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-7"><i class="fa fa-check"></i><b>21.9.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.9.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-12"><i class="fa fa-check"></i><b>21.9.2</b> Posible Solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.10" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-10-1"><i class="fa fa-check"></i><b>21.10</b> Ejercicio 10</a>
+<ul>
+<li class="chapter" data-level="21.10.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-8"><i class="fa fa-check"></i><b>21.10.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.10.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-13"><i class="fa fa-check"></i><b>21.10.2</b> Posible solución</a></li>
+</ul></li>
+<li class="chapter" data-level="21.11" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#ejercicio-11-1"><i class="fa fa-check"></i><b>21.11</b> Ejercicio 11</a>
+<ul>
+<li class="chapter" data-level="21.11.1" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#enunciado-9"><i class="fa fa-check"></i><b>21.11.1</b> Enunciado</a></li>
+<li class="chapter" data-level="21.11.2" data-path="posibles-soluciones.html"><a href="posibles-soluciones.html#posible-solución-14"><i class="fa fa-check"></i><b>21.11.2</b> Posible solución</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="22" data-path="palabras-finales.html"><a href="palabras-finales.html"><i class="fa fa-check"></i><b>22</b> Palabras finales</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -375,79 +512,80 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="tipos" class="section level1">
+<div id="tipos" class="section level1" number="3">
 <h1><span class="header-section-number">Sección 3</span> Usar tipos de datos</h1>
-<div id="objetivo-1" class="section level2">
+<div id="objetivo-1" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Objetivo</h2>
 <p>A continuación, se presenta información sobre diferentes tipos de datos, que ofrece R, y como manipularlos.</p>
 </div>
-<div id="datos-booleanos-y-operadores-de-lógica" class="section level2">
+<div id="datos-booleanos-y-operadores-de-lógica" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Datos booleanos y operadores de lógica</h2>
-<p>Estos operadores devuelven el valor “TRUE” (verdadero) o “FALSE” (falso). A continuación, se muestran algunos ejemplos. Dónde: TRUE = 1 y FALSE = 0.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="ot">TRUE</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span></code></pre></div>
+<p>Estos operadores devuelven el valor “TRUE” (verdadero) o “FALSE” (falso). A continuación, se muestran algunos ejemplos.
+Dónde: TRUE = 1 y FALSE = 0.</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="tipos.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="ot">FALSE</span> <span class="op">*</span><span class="st"> </span><span class="dv">2</span></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="tipos.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="cn">FALSE</span> <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="ot">TRUE</span>
-d</code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="tipos.html#cb35-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="cn">TRUE</span></span>
+<span id="cb35-2"><a href="tipos.html#cb35-2" aria-hidden="true" tabindex="-1"></a>d</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.logical</span>(d)</code></pre></div>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="tipos.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.logical</span>(d)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(d)</code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="tipos.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(d)</span></code></pre></div>
 <pre><code>## [1] &quot;logical&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ¿2 es igual a 3?</span>
-<span class="dv">2</span> <span class="op">==</span><span class="st"> </span><span class="dv">3</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="tipos.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ¿2 es igual a 3?</span></span>
+<span id="cb41-2"><a href="tipos.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">==</span> <span class="dv">3</span></span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># ¿2 no es igual a 3?</span>
-<span class="dv">2</span> <span class="op">!=</span><span class="st"> </span><span class="dv">3</span></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="tipos.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ¿2 no es igual a 3?</span></span>
+<span id="cb43-2"><a href="tipos.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">!=</span> <span class="dv">3</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span> <span class="op">&lt;=</span><span class="st"> </span><span class="dv">3</span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="tipos.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">&lt;=</span> <span class="dv">3</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">2</span> <span class="op">&gt;=</span><span class="st"> </span><span class="dv">3</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="tipos.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">&gt;=</span> <span class="dv">3</span></span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># &quot;¿datos&quot; es igual a &quot;info&quot;?</span>
-<span class="st">&quot;datos&quot;</span> <span class="op">==</span><span class="st"> &quot;info&quot;</span></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="tipos.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># &quot;¿datos&quot; es igual a &quot;info&quot;?</span></span>
+<span id="cb49-2"><a href="tipos.html#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;datos&quot;</span> <span class="sc">==</span> <span class="st">&quot;info&quot;</span></span></code></pre></div>
 <pre><code>## [1] FALSE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="st">&quot;datos&quot;</span> <span class="op">&lt;</span><span class="st"> &quot;info&quot;</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="tipos.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="st">&quot;datos&quot;</span> <span class="sc">&lt;</span> <span class="st">&quot;info&quot;</span></span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
-<div id="tipo-de-dato-fecha" class="section level2">
+<div id="tipo-de-dato-fecha" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Tipo de dato fecha</h2>
 <p>La función as.Date() vs. la función as.POSIXct():</p>
 <ul>
 <li>Convertir el siguiente string “2014-06-08” en una fecha con el nombre (de la variable) “fecha1” (notación angloamericana: YYYY-MM-DD)</li>
 <li>Mostrar esta fecha “fecha1” en la pantalla</li>
-<li>Mostrar la clase de la variable “fecha1”, utilizando el comando class()</li>
+<li>Mostrar la clase de la variable “fecha1,” utilizando el comando class()</li>
 <li>Convertir esta variable “fecha1” a un número</li>
 <li>Mostrar este número en la pantalla y dar una interpretación de este número</li>
 <li>Convertir el siguiente string “2014-06-08 17:42” en una fecha con el nombre (de la variable) “fecha2” (notación de tipo time stamp: YYYY-MM-DD hh:mm)</li>
 <li>Mostrar esta fecha “fecha2” en la pantalla</li>
-<li>Mostrar la clase de la variable “fecha2”, utilizando el comando class()</li>
+<li>Mostrar la clase de la variable “fecha2,” utilizando el comando class()</li>
 <li>Convertir esta variable “fecha2” a un número</li>
 <li>Mostrar este número en la pantalla y dar una interpretación de este número</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fecha1 &lt;-<span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;2014-06-08&quot;</span>)
-fecha1</code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="tipos.html#cb53-1" aria-hidden="true" tabindex="-1"></a>fecha1 <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="st">&quot;2014-06-08&quot;</span>)</span>
+<span id="cb53-2"><a href="tipos.html#cb53-2" aria-hidden="true" tabindex="-1"></a>fecha1</span></code></pre></div>
 <pre><code>## [1] &quot;2014-06-08&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(fecha1)</code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="tipos.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(fecha1)</span></code></pre></div>
 <pre><code>## [1] &quot;Date&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.numeric</span>(fecha1)  <span class="co"># convertir una fecha a tipo de dato &quot;numérico&quot; devuelve la cantidad de días desde 1970</span></code></pre></div>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="tipos.html#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(fecha1)  <span class="co"># convertir una fecha a tipo de dato &quot;numérico&quot; devuelve la cantidad de días desde 1970</span></span></code></pre></div>
 <pre><code>## [1] 16229</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">fecha2 &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(<span class="st">&quot;2014-06-08 17:42&quot;</span>)
-fecha2</code></pre></div>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="tipos.html#cb59-1" aria-hidden="true" tabindex="-1"></a>fecha2 <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="st">&quot;2014-06-08 17:42&quot;</span>)</span>
+<span id="cb59-2"><a href="tipos.html#cb59-2" aria-hidden="true" tabindex="-1"></a>fecha2</span></code></pre></div>
 <pre><code>## [1] &quot;2014-06-08 17:42:00 -05&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(fecha2)</code></pre></div>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="tipos.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(fecha2)</span></code></pre></div>
 <pre><code>## [1] &quot;POSIXct&quot; &quot;POSIXt&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">as.numeric</span>(fecha2) <span class="co"># devuelve la cantidad de segundos desde 1970</span></code></pre></div>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="tipos.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(fecha2) <span class="co"># devuelve la cantidad de segundos desde 1970</span></span></code></pre></div>
 <pre><code>## [1] 1402267320</code></pre>
 <p>Una manipulación más fácil de las fechas se puede lograr utilizando el paquete “lubridate” y el paquete “chron” de R.</p>
 </div>
-<div id="tipo-de-dato-vector" class="section level2">
+<div id="tipo-de-dato-vector" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Tipo de dato vector</h2>
 <ul>
-<li>Crear un vector numérico “x”, que contiene los números 1 hasta 10</li>
+<li>Crear un vector numérico “x,” que contiene los números 1 hasta 10</li>
 <li>Mostrar el contenido del vector “x” en la pantalla</li>
-<li>Crear un vector numérico “y”, que contiene los números 11 hasta 1</li>
+<li>Crear un vector numérico “y,” que contiene los números 11 hasta 1</li>
 <li>Mostrar el contenido del vector “y” en la pantalla</li>
 <li>Multiplicar el contenido del vector “x” por 2 y mostrar el resultado en la pantalla</li>
 <li>Luego, agregar 2 al contenido del vector “x” y mostrar el resultado en la pantalla</li>
@@ -456,138 +594,138 @@ fecha2</code></pre></div>
 <li>Llevar el contenido del vector “x” a la 2 y mostrar el resultado en la pantalla</li>
 <li>Calcular la raíz cuadrada del contenido del vector “x” y mostrar el resultado en la pantalla</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>)
-x</code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="tipos.html#cb65-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span> (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">7</span>, <span class="dv">8</span>, <span class="dv">9</span>, <span class="dv">10</span>)</span>
+<span id="cb65-2"><a href="tipos.html#cb65-2" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y  &lt;-<span class="st"> </span><span class="dv">11</span><span class="op">:</span><span class="dv">1</span>
-y</code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="tipos.html#cb67-1" aria-hidden="true" tabindex="-1"></a>y  <span class="ot">&lt;-</span> <span class="dv">11</span><span class="sc">:</span><span class="dv">1</span></span>
+<span id="cb67-2"><a href="tipos.html#cb67-2" aria-hidden="true" tabindex="-1"></a>y</span></code></pre></div>
 <pre><code>##  [1] 11 10  9  8  7  6  5  4  3  2  1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x <span class="op">*</span><span class="st"> </span><span class="dv">2</span></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="tipos.html#cb69-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">*</span> <span class="dv">2</span></span></code></pre></div>
 <pre><code>##  [1]  2  4  6  8 10 12 14 16 18 20</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x <span class="op">+</span><span class="st"> </span><span class="dv">2</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="tipos.html#cb71-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">+</span> <span class="dv">2</span></span></code></pre></div>
 <pre><code>##  [1]  3  4  5  6  7  8  9 10 11 12</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x <span class="op">-</span><span class="st"> </span><span class="dv">3</span></code></pre></div>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="tipos.html#cb73-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">-</span> <span class="dv">3</span></span></code></pre></div>
 <pre><code>##  [1] -2 -1  0  1  2  3  4  5  6  7</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x <span class="op">/</span><span class="st"> </span><span class="dv">4</span> </code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="tipos.html#cb75-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">/</span> <span class="dv">4</span> </span></code></pre></div>
 <pre><code>##  [1] 0.25 0.50 0.75 1.00 1.25 1.50 1.75 2.00 2.25 2.50</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x<span class="op">^</span><span class="dv">2</span></code></pre></div>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="tipos.html#cb77-1" aria-hidden="true" tabindex="-1"></a>x<span class="sc">^</span><span class="dv">2</span></span></code></pre></div>
 <pre><code>##  [1]   1   4   9  16  25  36  49  64  81 100</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">sqrt</span>(x)</code></pre></div>
-<pre><code>##  [1] 1.000000 1.414214 1.732051 2.000000 2.236068 2.449490 2.645751
-##  [8] 2.828427 3.000000 3.162278</code></pre>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="tipos.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(x)</span></code></pre></div>
+<pre><code>##  [1] 1.000000 1.414214 1.732051 2.000000 2.236068 2.449490 2.645751 2.828427
+##  [9] 3.000000 3.162278</code></pre>
 <ul>
 <li>Crear un vector numérico “x” con los números 1 a 10</li>
 <li>Luego, crear un vector “y” con números desde -5 hasta +4</li>
 <li>Sumar el contenido del vector “x” con el contenido del vector “y”</li>
 <li>Determinar la longitud del vector “x”</li>
 <li>Determinar la longitud del vector “y”</li>
-<li>¿Cuál es la longitud de la suma de los vectores “x” y “y”?</li>
+<li>¿Cuál es la longitud de la suma de los vectores “x” y “y?”</li>
 <li>¿Qué pasa, si se suman vectores de una longitud diferente, p.ej.: x + c(1,2), donde c(1,2) genera un vector con los números 1 y 2?</li>
 <li>¿Cuál es la longitud del resultado (length(x + c(1,2)) ?</li>
 <li>¿Qué pasa, si un vector no es un múltiple del otro, en términos de su longitud: x + c(1,2,3)?</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span>
-y &lt;-<span class="st"> </span><span class="op">-</span><span class="dv">5</span><span class="op">:</span><span class="dv">4</span>
-x <span class="op">+</span><span class="st"> </span>y</code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="tipos.html#cb81-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb81-2"><a href="tipos.html#cb81-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">5</span><span class="sc">:</span><span class="dv">4</span></span>
+<span id="cb81-3"><a href="tipos.html#cb81-3" aria-hidden="true" tabindex="-1"></a>x <span class="sc">+</span> y</span></code></pre></div>
 <pre><code>##  [1] -4 -2  0  2  4  6  8 10 12 14</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(x)</code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="tipos.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(x)</span></code></pre></div>
 <pre><code>## [1] 10</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(y)</code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="tipos.html#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(y)</span></code></pre></div>
 <pre><code>## [1] 10</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(x <span class="op">+</span><span class="st"> </span>y) <span class="co">#10</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="tipos.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(x <span class="sc">+</span> y) <span class="co">#10</span></span></code></pre></div>
 <pre><code>## [1] 10</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Ojo:</span>
-<span class="co"># El vector más corto se recicla. </span>
-<span class="co"># Esto significa que sus elementos se repiten hasta </span>
-<span class="co"># existe coincidencia con cada elemento del vector más largo.</span>
-x <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="tipos.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Ojo:</span></span>
+<span id="cb89-2"><a href="tipos.html#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="co"># El vector más corto se recicla. </span></span>
+<span id="cb89-3"><a href="tipos.html#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Esto significa que sus elementos se repiten hasta </span></span>
+<span id="cb89-4"><a href="tipos.html#cb89-4" aria-hidden="true" tabindex="-1"></a><span class="co"># existe coincidencia con cada elemento del vector más largo.</span></span>
+<span id="cb89-5"><a href="tipos.html#cb89-5" aria-hidden="true" tabindex="-1"></a>x <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>##  [1]  2  4  4  6  6  8  8 10 10 12</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(x <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</code></pre></div>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="tipos.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(x <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span></code></pre></div>
 <pre><code>## [1] 10</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x <span class="op">+</span><span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)  <span class="co"># termina con una advertencia (warning)</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="tipos.html#cb93-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)  <span class="co"># termina con una advertencia (warning)</span></span></code></pre></div>
 <pre><code>## Warning in x + c(1, 2, 3): longitud de objeto mayor no es múltiplo de la
 ## longitud de uno menor</code></pre>
 <pre><code>##  [1]  2  4  6  5  7  9  8 10 12 11</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x <span class="op">&lt;=</span><span class="st"> </span><span class="dv">5</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="tipos.html#cb96-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">&lt;=</span> <span class="dv">5</span></span></code></pre></div>
 <pre><code>##  [1]  TRUE  TRUE  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE FALSE</code></pre>
 </div>
-<div id="vectores-de-caracteres-strings" class="section level2">
-<h2><span class="header-section-number">3.5</span> Vectores de caracteres (strings)</h2>
-<p>Un ejemplo con diferentes frutas como elementos de un solo vector “q”.</p>
+<div id="vectores-de-carácteres-strings" class="section level2" number="3.5">
+<h2><span class="header-section-number">3.5</span> Vectores de carácteres (strings)</h2>
+<p>Un ejemplo con diferentes frutas como elementos de un solo vector “q.”</p>
 <ul>
 <li>Crear un vector “q” con los siguientes 10 elementos: Manzana, Pera, Piña, Naranja, Mandarina, Banano, Durazno, Uva, Fresa, Melocotón.</li>
 <li>Determinar para “q” el número de caracteres de cada elemento del vector, utilizando la función nchar()</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">q &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Manzana&quot;</span>, <span class="st">&quot;Pera&quot;</span>, <span class="st">&quot;Piña&quot;</span>, <span class="st">&quot;Naranja&quot;</span>, <span class="st">&quot;Mandarina&quot;</span>,
-              <span class="st">&quot;Banano&quot;</span>, <span class="st">&quot;Durazno&quot;</span>, <span class="st">&quot;Uva&quot;</span>, <span class="st">&quot;Fresa&quot;</span>, <span class="st">&quot;Melocotón&quot;)</span>
-<span class="st">nchar(q)   </span></code></pre></div>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="tipos.html#cb98-1" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Manzana&quot;</span>, <span class="st">&quot;Pera&quot;</span>, <span class="st">&quot;Piña&quot;</span>, <span class="st">&quot;Naranja&quot;</span>, <span class="st">&quot;Mandarina&quot;</span>,</span>
+<span id="cb98-2"><a href="tipos.html#cb98-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Banano&quot;</span>, <span class="st">&quot;Durazno&quot;</span>, <span class="st">&quot;Uva&quot;</span>, <span class="st">&quot;Fresa&quot;</span>, <span class="st">&quot;Melocotón&quot;</span>)</span>
+<span id="cb98-3"><a href="tipos.html#cb98-3" aria-hidden="true" tabindex="-1"></a><span class="fu">nchar</span>(q)   </span></code></pre></div>
 <pre><code>##  [1] 7 4 4 7 9 6 7 3 5 9</code></pre>
 </div>
-<div id="acceder-a-elementos-de-un-vector" class="section level2">
+<div id="acceder-a-elementos-de-un-vector" class="section level2" number="3.6">
 <h2><span class="header-section-number">3.6</span> Acceder a elementos de un vector</h2>
 <p>Utilicaremos el vector “x” anteriormente creado, que contiene los números 1 hasta 10</p>
 <ul>
 <li>Imprimir el contenido del vector “x” a la pantalla (consola)</li>
-<li>Acceder al primer elemento del vector “x”, utilizando la notación de corchetes</li>
+<li>Acceder al primer elemento del vector “x,” utilizando la notación de corchetes</li>
 <li>Acceder a todos los elementos del vector “x” menos el primero</li>
 <li>Acceder al primer y cuarto elemento del vector “x” únicamente</li>
 <li>Acceder a los primeros tres elementos del vector “x” únicamente</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x</code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="tipos.html#cb100-1" aria-hidden="true" tabindex="-1"></a>x</span></code></pre></div>
 <pre><code>##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[<span class="dv">1</span>] <span class="co"># primer elemento</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="tipos.html#cb102-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span>] <span class="co"># primer elemento</span></span></code></pre></div>
 <pre><code>## [1] 1</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[<span class="op">-</span><span class="dv">1</span>] <span class="co"># todos los elementos del vector menos el primer elemento</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="tipos.html#cb104-1" aria-hidden="true" tabindex="-1"></a>x[<span class="sc">-</span><span class="dv">1</span>] <span class="co"># todos los elementos del vector menos el primer elemento</span></span></code></pre></div>
 <pre><code>## [1]  2  3  4  5  6  7  8  9 10</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">4</span>)] <span class="co"># el primer elemento y el cuarto elemento</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="tipos.html#cb106-1" aria-hidden="true" tabindex="-1"></a>x[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">4</span>)] <span class="co"># el primer elemento y el cuarto elemento</span></span></code></pre></div>
 <pre><code>## [1] 1 4</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>] <span class="co"># los primeros tres elementos</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="tipos.html#cb108-1" aria-hidden="true" tabindex="-1"></a>x[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>] <span class="co"># los primeros tres elementos</span></span></code></pre></div>
 <pre><code>## [1] 1 2 3</code></pre>
-<p>Proveer un nombre para cada elemento del vector, utilizando una pareja de tipo “nombre-valor”.</p>
+<p>Proveer un nombre para cada elemento del vector, utilizando una pareja de tipo “nombre-valor.”</p>
 <ul>
 <li>Crear un vector con las siguientes parejas de tipo “nombre-valor”: Uno: a; Dos: f; Tres: m</li>
 <li>Crear un vector “v” con los números 1 hasta 3</li>
 <li>Asignar como nombre a los tres elementos de “v” las letras a, b y c, utilizando la función names() e</li>
 <li>Imprimir el contenido de “v” a la pantalla</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">c</span>(<span class="dt">Uno=</span><span class="st">&quot;a&quot;</span>, <span class="dt">Dos=</span><span class="st">&quot;f&quot;</span>, <span class="dt">Tres=</span><span class="st">&quot;m&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="tipos.html#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="at">Uno=</span><span class="st">&quot;a&quot;</span>, <span class="at">Dos=</span><span class="st">&quot;f&quot;</span>, <span class="at">Tres=</span><span class="st">&quot;m&quot;</span>)</span></code></pre></div>
 <pre><code>##  Uno  Dos Tres 
 ##  &quot;a&quot;  &quot;f&quot;  &quot;m&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">v &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">3</span>
-<span class="kw">names</span>(v) &lt;-<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>)
-v</code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="tipos.html#cb112-1" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span></span>
+<span id="cb112-2"><a href="tipos.html#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(v) <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;a&quot;</span>, <span class="st">&quot;b&quot;</span>, <span class="st">&quot;c&quot;</span>)</span>
+<span id="cb112-3"><a href="tipos.html#cb112-3" aria-hidden="true" tabindex="-1"></a>v</span></code></pre></div>
 <pre><code>## a b c 
 ## 1 2 3</code></pre>
 </div>
-<div id="factors-variables-categóricas" class="section level2">
+<div id="factors-variables-categóricas" class="section level2" number="3.7">
 <h2><span class="header-section-number">3.7</span> Factors (variables categóricas)</h2>
 <p>Utilicaremos el vector “q” anteriormente creado, que contiene los 10 nombres de frutas diferentes.</p>
 <ul>
 <li>Crear un nuevo vector “q2” con los siguientes elementos: q (es decir el vector ya creado), Manzana, Piña, Pera, Melocotón, Manzana, Pera</li>
-<li>Determinar la longitud de “q2”, utilizando la función length()</li>
+<li>Determinar la longitud de “q2,” utilizando la función length()</li>
 <li>Convertir “q2” al tipo de dato “factor” (es decir, a una variable categórica) y asignar el resultado a una variable “q2Factor”</li>
 <li>Imprimir “q2Factor” a la pantalla</li>
 <li>Determinar la clase del objeto “q2Factor”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">q2 &lt;-<span class="kw">c</span>(q, <span class="st">&quot;Manzana&quot;</span>, <span class="st">&quot;Piña&quot;</span>, <span class="st">&quot;Pera&quot;</span>, <span class="st">&quot;Melocotón&quot;,</span>
-<span class="st">              &quot;</span>Manzana<span class="st">&quot;, &quot;</span>Pera<span class="st">&quot;)</span>
-<span class="st">length(q2)</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="tipos.html#cb114-1" aria-hidden="true" tabindex="-1"></a>q2 <span class="ot">&lt;-</span><span class="fu">c</span>(q, <span class="st">&quot;Manzana&quot;</span>, <span class="st">&quot;Piña&quot;</span>, <span class="st">&quot;Pera&quot;</span>, <span class="st">&quot;Melocotón&quot;</span>,</span>
+<span id="cb114-2"><a href="tipos.html#cb114-2" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Manzana&quot;</span>, <span class="st">&quot;Pera&quot;</span>)</span>
+<span id="cb114-3"><a href="tipos.html#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(q2)</span></code></pre></div>
 <pre><code>## [1] 16</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">q2Factor &lt;-<span class="st"> </span><span class="kw">as.factor</span>(q2)
-q2Factor</code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="tipos.html#cb116-1" aria-hidden="true" tabindex="-1"></a>q2Factor <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(q2)</span>
+<span id="cb116-2"><a href="tipos.html#cb116-2" aria-hidden="true" tabindex="-1"></a>q2Factor</span></code></pre></div>
 <pre><code>##  [1] Manzana   Pera      Piña      Naranja   Mandarina Banano    Durazno  
 ##  [8] Uva       Fresa     Melocotón Manzana   Piña      Pera      Melocotón
 ## [15] Manzana   Pera     
-## 10 Levels: Banano Durazno Fresa Mandarina Manzana Melocotón ... Uva</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(q2Factor)</code></pre></div>
+## 10 Levels: Banano Durazno Fresa Mandarina Manzana Melocotón Naranja ... Uva</code></pre>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="tipos.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(q2Factor)</span></code></pre></div>
 <pre><code>## [1] &quot;factor&quot;</code></pre>
 </div>
-<div id="funciones-matemáticas-para-vectores" class="section level2">
+<div id="funciones-matemáticas-para-vectores" class="section level2" number="3.8">
 <h2><span class="header-section-number">3.8</span> Funciones matemáticas para vectores</h2>
 <p>Utilicaremos el vector “x” anteriormente creado, que contiene los números 1 hasta 10</p>
 <ul>
 <li>Determinar el promedio de los valores del vector “x”</li>
-<li>Consultar todas funciones que contienen la secuencia de letra “mea”, incluyendo p.ej. “mean”, utilizando la función apropos()</li>
+<li>Consultar todas funciones que contienen la secuencia de letra “mea,” incluyendo p.ej. “mean,” utilizando la función apropos()</li>
 <li>Generar un vector “z” con los siguientes 7 elementos: 1, 2, NA, 8, 3, NA, 3. Donde NA representa un dato faltante</li>
 <li>Generar un vector “zChar” con los siguientes 3 elementos: Manzana, NA, Pera</li>
 <li>Realizar una prueba (de tipo booleana), si los vectores “z” y “zChar” contienen elementos NA, utilizando la función is.na()</li>
@@ -598,85 +736,86 @@ q2Factor</code></pre></div>
 <li>Asignar el valor NULL a una variable “d”</li>
 <li>Realizar una prueba (de tipo booleana), si “d” es nulo, utilizando la función is.null()</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(x) <span class="co"># el promedio</span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="tipos.html#cb120-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x) <span class="co"># el promedio</span></span></code></pre></div>
 <pre><code>## [1] 5.5</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">apropos</span>(<span class="st">&quot;mea&quot;</span>)</code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="tipos.html#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">apropos</span>(<span class="st">&quot;mea&quot;</span>)</span></code></pre></div>
 <pre><code>##  [1] &quot;.colMeans&quot;          &quot;.rowMeans&quot;          &quot;colMeans&quot;          
 ##  [4] &quot;influence.measures&quot; &quot;kmeans&quot;             &quot;mean&quot;              
 ##  [7] &quot;mean.Date&quot;          &quot;mean.default&quot;       &quot;mean.difftime&quot;     
 ## [10] &quot;mean.POSIXct&quot;       &quot;mean.POSIXlt&quot;       &quot;rollmean&quot;          
 ## [13] &quot;rollmean.default&quot;   &quot;rollmeanr&quot;          &quot;rowMeans&quot;          
 ## [16] &quot;runMean&quot;            &quot;weighted.mean&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="ot">NA</span>, <span class="dv">8</span>, <span class="dv">3</span>, <span class="ot">NA</span>, <span class="dv">3</span>)
-zChar &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Manzana&quot;</span>, <span class="ot">NA</span>, <span class="st">&quot;Pera&quot;</span>)
-<span class="kw">is.na</span>(z)</code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="tipos.html#cb124-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>, <span class="dv">8</span>, <span class="dv">3</span>, <span class="cn">NA</span>, <span class="dv">3</span>)</span>
+<span id="cb124-2"><a href="tipos.html#cb124-2" aria-hidden="true" tabindex="-1"></a>zChar <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Manzana&quot;</span>, <span class="cn">NA</span>, <span class="st">&quot;Pera&quot;</span>)</span>
+<span id="cb124-3"><a href="tipos.html#cb124-3" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(z)</span></code></pre></div>
 <pre><code>## [1] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">is.na</span>(zChar)</code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="tipos.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.na</span>(zChar)</span></code></pre></div>
 <pre><code>## [1] FALSE  TRUE FALSE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(z)</code></pre></div>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="tipos.html#cb128-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(z)</span></code></pre></div>
 <pre><code>## [1] NA</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(z, <span class="dt">na.rm=</span><span class="ot">TRUE</span>) <span class="co"># #remover los datos faltantes primero, utilizando el parametro na.rm=TRUE</span></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="tipos.html#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(z, <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="co"># #remover los datos faltantes primero, utilizando el parametro na.rm=TRUE</span></span></code></pre></div>
 <pre><code>## [1] 3.4</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">p &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="ot">NULL</span>,<span class="dv">3</span>)
-p</code></pre></div>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="tipos.html#cb132-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="cn">NULL</span>,<span class="dv">3</span>)</span>
+<span id="cb132-2"><a href="tipos.html#cb132-2" aria-hidden="true" tabindex="-1"></a>p</span></code></pre></div>
 <pre><code>## [1] 1 3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">length</span>(p)    <span class="co"># es decir el valor nulo, NULL, no se almacena en &quot;p&quot;</span></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="tipos.html#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(p)    <span class="co"># es decir el valor nulo, NULL, no se almacena en &quot;p&quot;</span></span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d &lt;-<span class="st"> </span><span class="ot">NULL</span>
-<span class="kw">is.null</span>(d)</code></pre></div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="tipos.html#cb136-1" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb136-2"><a href="tipos.html#cb136-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is.null</span>(d)</span></code></pre></div>
 <pre><code>## [1] TRUE</code></pre>
 </div>
-<div id="usar-pipes-un-concepto-interesante" class="section level2">
+<div id="usar-pipes-un-concepto-interesante" class="section level2" number="3.9">
 <h2><span class="header-section-number">3.9</span> Usar pipes (un concepto “interesante”)</h2>
-<p>Nota: Pipe significa “then”, es decir “entonces”. Un pipe se lea desde la izquierda hacia la derecha.</p>
+<p>Nota: Pipe significa “then,” es decir “entonces.” Un pipe se lea desde la izquierda hacia la derecha.</p>
 <ul>
-<li>Instalar y cargar el paquete “magrittr”, que se requiere para aplicar los “pipes”, utilizando install.packages(“magrittr”, dependencies=TRUE) y luego library(magrittr)</li>
-<li>Determinar el promedio de “x”, donde x es un vector de números de 1 a 10 (ya hemos hecho este cálculo)</li>
+<li>Instalar y cargar el paquete “magrittr,” que se requiere para aplicar los “pipes,” utilizando install.packages(“magrittr,” dependencies=TRUE) y luego library(magrittr)</li>
+<li>Determinar el promedio de “x,” donde x es un vector de números de 1 a 10 (ya hemos hecho este cálculo)</li>
 <li>Luego, realizar este mismo cálculo utilizando el operador pipe (%&gt;%), que se puede producir in RStudio así: CTRL + SHIFT + m</li>
 <li>Generar un vector “z” con los siguientes elementos: 1, 2, NA, 8, 3, NA, 3</li>
 <li>Determinar la suma de los elementos “NA” en “z”</li>
 <li>Luego, realizar este mismo cálculo utilizando el operador pipe (%&gt;%)</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse) <span class="co"># para utilizar p.ej. pipes</span></code></pre></div>
-<pre><code>## -- Attaching packages -- tidyverse 1.2.1 --</code></pre>
-<pre><code>## v ggplot2 3.1.0     v purrr   0.2.5
-## v tibble  2.1.3     v dplyr   0.8.3
-## v tidyr   1.0.2     v stringr 1.3.1
-## v readr   1.3.1     v forcats 0.3.0</code></pre>
-<pre><code>## Warning: package &#39;tibble&#39; was built under R version 3.5.3</code></pre>
-<pre><code>## Warning: package &#39;tidyr&#39; was built under R version 3.5.3</code></pre>
-<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 3.5.3</code></pre>
-<pre><code>## -- Conflicts ----- tidyverse_conflicts() --
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="tipos.html#cb138-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># para utilizar p.ej. pipes</span></span></code></pre></div>
+<pre><code>## Warning in (function (kind = NULL, normal.kind = NULL, sample.kind = NULL) :
+## non-uniform &#39;Rounding&#39; sampler used</code></pre>
+<pre><code>## -- Attaching packages --------------------------------------- tidyverse 1.3.1 --</code></pre>
+<pre><code>## v ggplot2 3.3.5     v purrr   0.3.4
+## v tibble  3.1.2     v dplyr   1.0.7
+## v tidyr   1.1.3     v stringr 1.4.0
+## v readr   2.0.0     v forcats 0.5.1</code></pre>
+<pre><code>## Warning in (function (kind = NULL, normal.kind = NULL, sample.kind = NULL) :
+## non-uniform &#39;Rounding&#39; sampler used</code></pre>
+<pre><code>## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
 ## x dplyr::filter() masks stats::filter()
 ## x dplyr::first()  masks xts::first()
 ## x dplyr::lag()    masks stats::lag()
 ## x dplyr::last()   masks xts::last()</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(x)</code></pre></div>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="tipos.html#cb144-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x)</span></code></pre></div>
 <pre><code>## [1] 5.5</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">mean</span>(.)</code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="tipos.html#cb146-1" aria-hidden="true" tabindex="-1"></a>x <span class="sc">%&gt;%</span> <span class="fu">mean</span>(.)</span></code></pre></div>
 <pre><code>## [1] 5.5</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="ot">NA</span>, <span class="dv">8</span>, <span class="dv">3</span>, <span class="ot">NA</span>, <span class="dv">3</span>)
-<span class="kw">sum</span>(<span class="kw">is.na</span>(z))</code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="tipos.html#cb148-1" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="cn">NA</span>, <span class="dv">8</span>, <span class="dv">3</span>, <span class="cn">NA</span>, <span class="dv">3</span>)</span>
+<span id="cb148-2"><a href="tipos.html#cb148-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(z))</span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z <span class="op">%&gt;%</span><span class="st"> </span>is.na <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">sum</span>(.)</code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="tipos.html#cb150-1" aria-hidden="true" tabindex="-1"></a>z <span class="sc">%&gt;%</span> is.na <span class="sc">%&gt;%</span> <span class="fu">sum</span>(.)</span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
 </div>
-<div id="data-frames" class="section level2">
+<div id="data-frames" class="section level2" number="3.10">
 <h2><span class="header-section-number">3.10</span> Data frames</h2>
 <p>El data frame es un tipo de dato muy común y además un tipo de dato muy útil, que organiza los datos en filas y columnas. El data frame es parecido a una <strong>hoja de cálculo</strong> en MS-Excel</p>
 <ul>
 <li>Crear un vector “x” con los números de 10 a 1</li>
 <li>Crear un vector “y” con los números de -4 a 5</li>
 <li>Crear un vector “q” con los siguientes elementos (frutas): Manzana, Pera, Piña, Naranja, Mandarina, Banano, Durazno, Uva, Fresa, Melocotón</li>
-<li>Generar un data frame “df”, que contiene “x”, “y” y “q”. Es decir, los 3 vectores, donde cada vector conforma una columna en el data frame “df”</li>
+<li>Generar un data frame “df,” que contiene “x,” “y” y “q.” Es decir, los 3 vectores, donde cada vector conforma una columna en el data frame “df”</li>
 <li>Imprimir el contenido del data frame “df” a la pantalla</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">10</span><span class="op">:</span><span class="dv">1</span>
-y &lt;-<span class="st"> </span><span class="op">-</span><span class="dv">4</span><span class="op">:</span><span class="dv">5</span>
-q &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Manzana&quot;</span>, <span class="st">&quot;Pera&quot;</span>, <span class="st">&quot;Piña&quot;</span>, <span class="st">&quot;Naranja&quot;</span>, <span class="st">&quot;Mandarina&quot;</span>,
-              <span class="st">&quot;Banano&quot;</span>, <span class="st">&quot;Durazno&quot;</span>, <span class="st">&quot;Uva&quot;</span>, <span class="st">&quot;Fresa&quot;</span>, <span class="st">&quot;Melocotón&quot;)</span>
-<span class="st">df &lt;-  data.frame(x, y, q)</span>
-<span class="st">df</span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="tipos.html#cb152-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">10</span><span class="sc">:</span><span class="dv">1</span></span>
+<span id="cb152-2"><a href="tipos.html#cb152-2" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">4</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb152-3"><a href="tipos.html#cb152-3" aria-hidden="true" tabindex="-1"></a>q <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Manzana&quot;</span>, <span class="st">&quot;Pera&quot;</span>, <span class="st">&quot;Piña&quot;</span>, <span class="st">&quot;Naranja&quot;</span>, <span class="st">&quot;Mandarina&quot;</span>,</span>
+<span id="cb152-4"><a href="tipos.html#cb152-4" aria-hidden="true" tabindex="-1"></a>              <span class="st">&quot;Banano&quot;</span>, <span class="st">&quot;Durazno&quot;</span>, <span class="st">&quot;Uva&quot;</span>, <span class="st">&quot;Fresa&quot;</span>, <span class="st">&quot;Melocotón&quot;</span>)</span>
+<span id="cb152-5"><a href="tipos.html#cb152-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span>  <span class="fu">data.frame</span>(x, y, q)</span>
+<span id="cb152-6"><a href="tipos.html#cb152-6" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
 <pre><code>##     x  y         q
 ## 1  10 -4   Manzana
 ## 2   9 -3      Pera
@@ -688,10 +827,10 @@ q &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot
 ## 8   3  3       Uva
 ## 9   2  4     Fresa
 ## 10  1  5 Melocotón</code></pre>
-<p>También hubiera sido posible, asignar nombres (para las columnas) en el proceso de generar el data frame, lo que normalmente es una “buena idea”.</p>
+<p>También hubiera sido posible, asignar nombres (para las columnas) en el proceso de generar el data frame, lo que normalmente es una “buena idea.”</p>
 <p>Primero=x, Segundo=y, Fruta=q</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">Primero=</span>x, <span class="dt">Segundo=</span>y, <span class="dt">Fruta=</span>q)
-df</code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="tipos.html#cb154-1" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Primero=</span>x, <span class="at">Segundo=</span>y, <span class="at">Fruta=</span>q)</span>
+<span id="cb154-2"><a href="tipos.html#cb154-2" aria-hidden="true" tabindex="-1"></a>df</span></code></pre></div>
 <pre><code>##    Primero Segundo     Fruta
 ## 1       10      -4   Manzana
 ## 2        9      -3      Pera
@@ -712,23 +851,23 @@ df</code></pre></div>
 <li>Asignar como nombres de las filas las siguientes etiquetas (nombres): Uno, Dos, Tres, Cuatro, Cinco, Seis, Siete, Ocho, Nueve, Diez.</li>
 <li>Mostrar los nombres de las filas del data frame “df”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">nrow</span>(df)</code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="tipos.html#cb156-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df)</span></code></pre></div>
 <pre><code>## [1] 10</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ncol</span>(df)</code></pre></div>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="tipos.html#cb158-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(df)</span></code></pre></div>
 <pre><code>## [1] 3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(df)</code></pre></div>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="tipos.html#cb160-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(df)</span></code></pre></div>
 <pre><code>## [1] 10  3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(df)</code></pre></div>
+<div class="sourceCode" id="cb162"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb162-1"><a href="tipos.html#cb162-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(df)</span></code></pre></div>
 <pre><code>## [1] &quot;Primero&quot; &quot;Segundo&quot; &quot;Fruta&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(df)</code></pre></div>
+<div class="sourceCode" id="cb164"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb164-1"><a href="tipos.html#cb164-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(df)</span></code></pre></div>
 <pre><code>##  [1] &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot;  &quot;9&quot;  &quot;10&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">colnames</span>(df)</code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="tipos.html#cb166-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df)</span></code></pre></div>
 <pre><code>## [1] &quot;Primero&quot; &quot;Segundo&quot; &quot;Fruta&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(df) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Uno&quot;</span>, <span class="st">&quot;Dos&quot;</span>, <span class="st">&quot;Tres&quot;</span>, <span class="st">&quot;Cuatro&quot;</span>, <span class="st">&quot;Cinco&quot;</span>, <span class="st">&quot;Seis&quot;</span>,
-                                           <span class="st">&quot;Siete&quot;</span>, <span class="st">&quot;Ocho&quot;</span>, <span class="st">&quot;Nueve&quot;</span>, <span class="st">&quot;Diez&quot;</span>)
-<span class="kw">rownames</span>(df)</code></pre></div>
-<pre><code>##  [1] &quot;Uno&quot;    &quot;Dos&quot;    &quot;Tres&quot;   &quot;Cuatro&quot; &quot;Cinco&quot;  &quot;Seis&quot;   &quot;Siete&quot; 
-##  [8] &quot;Ocho&quot;   &quot;Nueve&quot;  &quot;Diez&quot;</code></pre>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="tipos.html#cb168-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(df) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Uno&quot;</span>, <span class="st">&quot;Dos&quot;</span>, <span class="st">&quot;Tres&quot;</span>, <span class="st">&quot;Cuatro&quot;</span>, <span class="st">&quot;Cinco&quot;</span>, <span class="st">&quot;Seis&quot;</span>,</span>
+<span id="cb168-2"><a href="tipos.html#cb168-2" aria-hidden="true" tabindex="-1"></a>                                           <span class="st">&quot;Siete&quot;</span>, <span class="st">&quot;Ocho&quot;</span>, <span class="st">&quot;Nueve&quot;</span>, <span class="st">&quot;Diez&quot;</span>)</span>
+<span id="cb168-3"><a href="tipos.html#cb168-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(df)</span></code></pre></div>
+<pre><code>##  [1] &quot;Uno&quot;    &quot;Dos&quot;    &quot;Tres&quot;   &quot;Cuatro&quot; &quot;Cinco&quot;  &quot;Seis&quot;   &quot;Siete&quot;  &quot;Ocho&quot;  
+##  [9] &quot;Nueve&quot;  &quot;Diez&quot;</code></pre>
 <ul>
 <li>Cambiar los nombres de las filas nuevamente a los valores iniciales. Es decir, al indice genérico.</li>
 <li>Mostrar los nombres de las filas del data frame “df”</li>
@@ -737,10 +876,10 @@ df</code></pre></div>
 <li>Mostrar las últimas 6 filas del data frame “df”</li>
 <li>Mostrar la clase del objeto (data frame) “df”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">rownames</span>(df) &lt;-<span class="st"> </span><span class="ot">NULL</span>
-<span class="kw">rownames</span>(df)</code></pre></div>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="tipos.html#cb170-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(df) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb170-2"><a href="tipos.html#cb170-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(df)</span></code></pre></div>
 <pre><code>##  [1] &quot;1&quot;  &quot;2&quot;  &quot;3&quot;  &quot;4&quot;  &quot;5&quot;  &quot;6&quot;  &quot;7&quot;  &quot;8&quot;  &quot;9&quot;  &quot;10&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(df) <span class="co"># las primeras 6 filas</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="tipos.html#cb172-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df) <span class="co"># las primeras 6 filas</span></span></code></pre></div>
 <pre><code>##   Primero Segundo     Fruta
 ## 1      10      -4   Manzana
 ## 2       9      -3      Pera
@@ -748,7 +887,7 @@ df</code></pre></div>
 ## 4       7      -1   Naranja
 ## 5       6       0 Mandarina
 ## 6       5       1    Banano</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(df, <span class="dv">8</span>)  <span class="co"># las primeras 8 filas</span></code></pre></div>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="tipos.html#cb174-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df, <span class="dv">8</span>)  <span class="co"># las primeras 8 filas</span></span></code></pre></div>
 <pre><code>##   Primero Segundo     Fruta
 ## 1      10      -4   Manzana
 ## 2       9      -3      Pera
@@ -758,7 +897,7 @@ df</code></pre></div>
 ## 6       5       1    Banano
 ## 7       4       2   Durazno
 ## 8       3       3       Uva</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(df)</code></pre></div>
+<div class="sourceCode" id="cb176"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb176-1"><a href="tipos.html#cb176-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(df)</span></code></pre></div>
 <pre><code>##    Primero Segundo     Fruta
 ## 5        6       0 Mandarina
 ## 6        5       1    Banano
@@ -766,7 +905,7 @@ df</code></pre></div>
 ## 8        3       3       Uva
 ## 9        2       4     Fresa
 ## 10       1       5 Melocotón</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(df)</code></pre></div>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="tipos.html#cb178-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot;</code></pre>
 <ul>
 <li>Acceder a todos los datos de la columna “Fruta” del data frame “df”</li>
@@ -774,35 +913,31 @@ df</code></pre></div>
 <li>Mostrar los elementos en la tercera fila, en la columna 2 y 3 del data frame “df”</li>
 <li>Determinar la clase de los elementos (datos) en la columna “Fruta” del data frame “df”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df<span class="op">$</span>Fruta</code></pre></div>
-<pre><code>##  [1] Manzana   Pera      Piña      Naranja   Mandarina Banano    Durazno  
-##  [8] Uva       Fresa     Melocotón
-## 10 Levels: Banano Durazno Fresa Mandarina Manzana Melocotón ... Uva</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#...entrega el mismo resultado:</span>
-df[, <span class="dv">3</span>]  <span class="co"># todos los datos de la columna 3</span></code></pre></div>
-<pre><code>##  [1] Manzana   Pera      Piña      Naranja   Mandarina Banano    Durazno  
-##  [8] Uva       Fresa     Melocotón
-## 10 Levels: Banano Durazno Fresa Mandarina Manzana Melocotón ... Uva</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df[,<span class="st">&quot;Fruta&quot;</span>]</code></pre></div>
-<pre><code>##  [1] Manzana   Pera      Piña      Naranja   Mandarina Banano    Durazno  
-##  [8] Uva       Fresa     Melocotón
-## 10 Levels: Banano Durazno Fresa Mandarina Manzana Melocotón ... Uva</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df[[<span class="st">&quot;Fruta&quot;</span>]]   <span class="co"># entrega el mimso resultado</span></code></pre></div>
-<pre><code>##  [1] Manzana   Pera      Piña      Naranja   Mandarina Banano    Durazno  
-##  [8] Uva       Fresa     Melocotón
-## 10 Levels: Banano Durazno Fresa Mandarina Manzana Melocotón ... Uva</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df[<span class="dv">3</span>, <span class="dv">2</span>]   <span class="co"># elemento de la tercera fila y segunda columna: -2</span></code></pre></div>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="tipos.html#cb180-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Fruta</span></code></pre></div>
+<pre><code>##  [1] &quot;Manzana&quot;   &quot;Pera&quot;      &quot;Piña&quot;      &quot;Naranja&quot;   &quot;Mandarina&quot; &quot;Banano&quot;   
+##  [7] &quot;Durazno&quot;   &quot;Uva&quot;       &quot;Fresa&quot;     &quot;Melocotón&quot;</code></pre>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="tipos.html#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="co">#...entrega el mismo resultado:</span></span>
+<span id="cb182-2"><a href="tipos.html#cb182-2" aria-hidden="true" tabindex="-1"></a>df[, <span class="dv">3</span>]  <span class="co"># todos los datos de la columna 3</span></span></code></pre></div>
+<pre><code>##  [1] &quot;Manzana&quot;   &quot;Pera&quot;      &quot;Piña&quot;      &quot;Naranja&quot;   &quot;Mandarina&quot; &quot;Banano&quot;   
+##  [7] &quot;Durazno&quot;   &quot;Uva&quot;       &quot;Fresa&quot;     &quot;Melocotón&quot;</code></pre>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="tipos.html#cb184-1" aria-hidden="true" tabindex="-1"></a>df[,<span class="st">&quot;Fruta&quot;</span>]</span></code></pre></div>
+<pre><code>##  [1] &quot;Manzana&quot;   &quot;Pera&quot;      &quot;Piña&quot;      &quot;Naranja&quot;   &quot;Mandarina&quot; &quot;Banano&quot;   
+##  [7] &quot;Durazno&quot;   &quot;Uva&quot;       &quot;Fresa&quot;     &quot;Melocotón&quot;</code></pre>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="tipos.html#cb186-1" aria-hidden="true" tabindex="-1"></a>df[[<span class="st">&quot;Fruta&quot;</span>]]   <span class="co"># entrega el mimso resultado</span></span></code></pre></div>
+<pre><code>##  [1] &quot;Manzana&quot;   &quot;Pera&quot;      &quot;Piña&quot;      &quot;Naranja&quot;   &quot;Mandarina&quot; &quot;Banano&quot;   
+##  [7] &quot;Durazno&quot;   &quot;Uva&quot;       &quot;Fresa&quot;     &quot;Melocotón&quot;</code></pre>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="tipos.html#cb188-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">3</span>, <span class="dv">2</span>]   <span class="co"># elemento de la tercera fila y segunda columna: -2</span></span></code></pre></div>
 <pre><code>## [1] -2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># row 3, columns 2 through 3</span>
-df[<span class="dv">3</span>, <span class="dv">2</span><span class="op">:</span><span class="dv">3</span>]</code></pre></div>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="tipos.html#cb190-1" aria-hidden="true" tabindex="-1"></a><span class="co"># row 3, columns 2 through 3</span></span>
+<span id="cb190-2"><a href="tipos.html#cb190-2" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">3</span>, <span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>]</span></code></pre></div>
 <pre><code>##   Segundo Fruta
 ## 3      -2  Piña</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(df[, <span class="st">&quot;Fruta&quot;</span>])    <span class="co"># factor</span></code></pre></div>
-<pre><code>## [1] &quot;factor&quot;</code></pre>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="tipos.html#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df[, <span class="st">&quot;Fruta&quot;</span>])    <span class="co"># factor</span></span></code></pre></div>
+<pre><code>## [1] &quot;character&quot;</code></pre>
 </div>
-<div id="listas" class="section level2">
+<div id="listas" class="section level2" number="3.11">
 <h2><span class="header-section-number">3.11</span> Listas</h2>
-<p>Una lista puede contener datos númericos, caractéres, etc. Es decir, una mezcla de varios tipos de datos. También fotos o listas pueden ser parte de una lista.</p>
+<p>Una lista puede contener datos numéricos, carácteres, etc. Es decir, una mezcla de varios tipos de datos. También fotos o listas pueden ser parte de una lista.</p>
 <ul>
 <li>Crear una lista de tres elementos: 1, 2, 3</li>
 <li>Luego, crear una lista de un solo elemento, que es un vector con los números 1 a 3</li>
@@ -817,7 +952,7 @@ df[<span class="dv">3</span>, <span class="dv">2</span><span class="op">:</span>
 <li>Mostrar los nombres de “lista5”</li>
 <li>Imprimir “lista5” a la pantalla</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="tipos.html#cb194-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>)</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 1
 ## 
@@ -826,16 +961,16 @@ df[<span class="dv">3</span>, <span class="dv">2</span><span class="op">:</span>
 ## 
 ## [[3]]
 ## [1] 3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))</code></pre></div>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb196-1"><a href="tipos.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>))</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 1 2 3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">(lista3 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="dv">3</span><span class="op">:</span><span class="dv">7</span>)) <span class="co"># observe, como se colocaron las paréntesis en este caso</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb198-1"><a href="tipos.html#cb198-1" aria-hidden="true" tabindex="-1"></a>(lista3 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="dv">3</span><span class="sc">:</span><span class="dv">7</span>)) <span class="co"># observe, como se colocaron las paréntesis en este caso</span></span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 1 2 3
 ## 
 ## [[2]]
 ## [1] 3 4 5 6 7</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">list</span>(df, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)</code></pre></div>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb200-1"><a href="tipos.html#cb200-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(df, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code></pre></div>
 <pre><code>## [[1]]
 ##    Primero Segundo     Fruta
 ## 1       10      -4   Manzana
@@ -851,8 +986,8 @@ df[<span class="dv">3</span>, <span class="dv">2</span><span class="op">:</span>
 ## 
 ## [[2]]
 ##  [1]  1  2  3  4  5  6  7  8  9 10</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lista4 &lt;-<span class="st"> </span><span class="kw">list</span>(df, <span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, lista3)
-lista4</code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb202-1"><a href="tipos.html#cb202-1" aria-hidden="true" tabindex="-1"></a>lista4 <span class="ot">&lt;-</span> <span class="fu">list</span>(df, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, lista3)</span>
+<span id="cb202-2"><a href="tipos.html#cb202-2" aria-hidden="true" tabindex="-1"></a>lista4</span></code></pre></div>
 <pre><code>## [[1]]
 ##    Primero Segundo     Fruta
 ## 1       10      -4   Manzana
@@ -875,15 +1010,15 @@ lista4</code></pre></div>
 ## 
 ## [[3]][[2]]
 ## [1] 3 4 5 6 7</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(lista4) <span class="co"># listas pueden también tener nombres como un data frame</span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb204-1"><a href="tipos.html#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lista4) <span class="co"># listas pueden también tener nombres como un data frame</span></span></code></pre></div>
 <pre><code>## NULL</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">names</span>(lista4) &lt;-<span class="kw">c</span>(<span class="st">&quot;data.frame&quot;</span>, <span class="st">&quot;vector&quot;</span>, <span class="st">&quot;lista&quot;</span>)
-<span class="kw">names</span>(lista4)</code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb206-1"><a href="tipos.html#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lista4) <span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">&quot;data.frame&quot;</span>, <span class="st">&quot;vector&quot;</span>, <span class="st">&quot;lista&quot;</span>)</span>
+<span id="cb206-2"><a href="tipos.html#cb206-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lista4)</span></code></pre></div>
 <pre><code>## [1] &quot;data.frame&quot; &quot;vector&quot;     &quot;lista&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lista5 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">ElDataFrame=</span>df, <span class="dt">ElVector=</span><span class="dv">1</span><span class="op">:</span><span class="dv">10</span>, <span class="dt">LaLista=</span>lista3) <span class="co"># parejas de nombre-valor en la creación de una lista</span>
-<span class="kw">names</span>(lista5)</code></pre></div>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="tipos.html#cb208-1" aria-hidden="true" tabindex="-1"></a>lista5 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">ElDataFrame=</span>df, <span class="at">ElVector=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">LaLista=</span>lista3) <span class="co"># parejas de nombre-valor en la creación de una lista</span></span>
+<span id="cb208-2"><a href="tipos.html#cb208-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(lista5)</span></code></pre></div>
 <pre><code>## [1] &quot;ElDataFrame&quot; &quot;ElVector&quot;    &quot;LaLista&quot;</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lista5</code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="tipos.html#cb210-1" aria-hidden="true" tabindex="-1"></a>lista5</span></code></pre></div>
 <pre><code>## $ElDataFrame
 ##    Primero Segundo     Fruta
 ## 1       10      -4   Manzana
@@ -910,7 +1045,7 @@ lista4</code></pre></div>
 <ul>
 <li>Ejemplo: Acceder al primer elemento de la lista5</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">lista5[[<span class="dv">1</span>]]</code></pre></div>
+<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="tipos.html#cb212-1" aria-hidden="true" tabindex="-1"></a>lista5[[<span class="dv">1</span>]]</span></code></pre></div>
 <pre><code>##    Primero Segundo     Fruta
 ## 1       10      -4   Manzana
 ## 2        9      -3      Pera
@@ -922,7 +1057,7 @@ lista4</code></pre></div>
 ## 8        3       3       Uva
 ## 9        2       4     Fresa
 ## 10       1       5 Melocotón</code></pre>
-<div id="una-lista-de-listas" class="section level3">
+<div id="una-lista-de-listas" class="section level3" number="3.11.1">
 <h3><span class="header-section-number">3.11.1</span> Una lista de listas</h3>
 <p>Crear 3 listas con números:</p>
 <ul>
@@ -930,23 +1065,23 @@ lista4</code></pre></div>
 <li>La lista “dataset2” con números 4 a 6</li>
 <li>La lista “dataset3” con números 7 a 9</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dataset1 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>) <span class="co"># números 1 hasta 3</span>
-<span class="kw">print</span>(dataset1)</code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb214-1"><a href="tipos.html#cb214-1" aria-hidden="true" tabindex="-1"></a>dataset1 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) <span class="co"># números 1 hasta 3</span></span>
+<span id="cb214-2"><a href="tipos.html#cb214-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset1)</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 1 2 3</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dataset2 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dv">4</span><span class="op">:</span><span class="dv">6</span>) <span class="co"># números 4 hasta 6</span>
-<span class="kw">print</span>(dataset2)</code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb216-1"><a href="tipos.html#cb216-1" aria-hidden="true" tabindex="-1"></a>dataset2 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>) <span class="co"># números 4 hasta 6</span></span>
+<span id="cb216-2"><a href="tipos.html#cb216-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset2)</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 4 5 6</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dataset3 &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dv">7</span><span class="op">:</span><span class="dv">9</span>) <span class="co"># números 7 hasta 9</span>
-<span class="kw">print</span>(dataset3)</code></pre></div>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="tipos.html#cb218-1" aria-hidden="true" tabindex="-1"></a>dataset3 <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="dv">7</span><span class="sc">:</span><span class="dv">9</span>) <span class="co"># números 7 hasta 9</span></span>
+<span id="cb218-2"><a href="tipos.html#cb218-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(dataset3)</span></code></pre></div>
 <pre><code>## [[1]]
 ## [1] 7 8 9</code></pre>
 <ul>
 <li>Unir las 3 listas en una nueva lista con el nombre “data.list”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data.list &lt;-<span class="st"> </span><span class="kw">list</span>(dataset1, dataset2, dataset3)
-data.list</code></pre></div>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="tipos.html#cb220-1" aria-hidden="true" tabindex="-1"></a>data.list <span class="ot">&lt;-</span> <span class="fu">list</span>(dataset1, dataset2, dataset3)</span>
+<span id="cb220-2"><a href="tipos.html#cb220-2" aria-hidden="true" tabindex="-1"></a>data.list</span></code></pre></div>
 <pre><code>## [[1]]
 ## [[1]][[1]]
 ## [1] 1 2 3
@@ -963,27 +1098,27 @@ data.list</code></pre></div>
 <ul>
 <li>Acceder en la lista “dataset1” al segundo elemento</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dataset1[[<span class="dv">1</span>]][<span class="dv">2</span>] <span class="co">#2</span></code></pre></div>
+<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="tipos.html#cb222-1" aria-hidden="true" tabindex="-1"></a>dataset1[[<span class="dv">1</span>]][<span class="dv">2</span>] <span class="co">#2</span></span></code></pre></div>
 <pre><code>## [1] 2</code></pre>
 <p>Ahora de la lista de las 3 listas, acceder al segundo elemento. Es decir, al contenido de la segunda lista (dataset2), que esta parte de la lista “data.list”</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data.list[<span class="dv">2</span>] <span class="co"># 4 5 6</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="tipos.html#cb224-1" aria-hidden="true" tabindex="-1"></a>data.list[<span class="dv">2</span>] <span class="co"># 4 5 6</span></span></code></pre></div>
 <pre><code>## [[1]]
 ## [[1]][[1]]
 ## [1] 4 5 6</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data.list[<span class="dv">2</span>][<span class="dv">1</span>] <span class="co"># 4 5 6</span></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="tipos.html#cb226-1" aria-hidden="true" tabindex="-1"></a>data.list[<span class="dv">2</span>][<span class="dv">1</span>] <span class="co"># 4 5 6</span></span></code></pre></div>
 <pre><code>## [[1]]
 ## [[1]][[1]]
 ## [1] 4 5 6</code></pre>
 <ul>
 <li>Acceder al segundo elemento de la segunda lista (dataset2), que es parte de la lista “data.list”</li>
 </ul>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">data.list[[<span class="dv">2</span>]][[<span class="dv">1</span>]][<span class="dv">2</span>] <span class="co"># 5</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="tipos.html#cb228-1" aria-hidden="true" tabindex="-1"></a>data.list[[<span class="dv">2</span>]][[<span class="dv">1</span>]][<span class="dv">2</span>] <span class="co"># 5</span></span></code></pre></div>
 <pre><code>## [1] 5</code></pre>
 </div>
 </div>
-<div id="ejercicio-2" class="section level2">
+<div id="ejercicio-2" class="section level2" number="3.12">
 <h2><span class="header-section-number">3.12</span> Ejercicio 2</h2>
-<div id="parte-a" class="section level3">
+<div id="parte-a" class="section level3" number="3.12.1">
 <h3><span class="header-section-number">3.12.1</span> Parte a</h3>
 <ul>
 <li>Crear un vector “vector1” con los números “3” y “4” y convertirlo a un data frame y asignar el resultado a una variable “data1”</li>
@@ -991,32 +1126,34 @@ data.list</code></pre></div>
 <li>Acceder al primer elemento del data frame (3) y mostrarlo en la pantalla</li>
 </ul>
 </div>
-<div id="parte-b" class="section level3">
+<div id="parte-b" class="section level3" number="3.12.2">
 <h3><span class="header-section-number">3.12.2</span> Parte b</h3>
 <ul>
-<li>Crear un vector “vector2” con el texto (string) “3”, “4” y “5” y convertirlo a un data frame y asignar el resultado a una variable “data2”</li>
+<li>Crear un vector “vector2” con el texto (string) “3,” “4” y “5” y convertirlo a un data frame y asignar el resultado a una variable “data2”</li>
 <li>Mostrar el resultado de la conversión, utilizando la función class()</li>
 </ul>
 </div>
-<div id="parte-c" class="section level3">
+<div id="parte-c" class="section level3" number="3.12.3">
 <h3><span class="header-section-number">3.12.3</span> Parte c</h3>
 <ul>
-<li>Ahora, convertir el contenido de este data frame “data2” (caracteres) al tipo de dato “numeric”. Es decir, convertir el contenido a tres números y asignar el resultado a una variable “data3”</li>
+<li>Ahora, convertir el contenido de este data frame “data2” (caracteres) al tipo de dato “numeric.” Es decir, convertir el contenido a tres números y asignar el resultado a una variable “data3”</li>
 <li>Mostrar el resultado de la conversión, utilizando la función class()</li>
 </ul>
 </div>
-<div id="parte-d" class="section level3">
+<div id="parte-d" class="section level3" number="3.12.4">
 <h3><span class="header-section-number">3.12.4</span> Parte d</h3>
 <ul>
 <li>Crear un vector “vector3” con los 6 estratos (seis categorías: 1 a 6), como se utilizan p.ej. en Colombia. Es decir, crear este vector3 de tipo de dato “factor”</li>
-<li>Convertir el contenido de este vector al tipo de dato “numeric”. Es decir, convertir el contenido a seis números y asignar el resultado a una variable “data4”</li>
+<li>Convertir el contenido de este vector al tipo de dato “numeric.” Es decir, convertir el contenido a seis números y asignar el resultado a una variable “data4”</li>
 <li>Mostrar el resultado de la conversión, utilizando la función class()</li>
 </ul>
 </div>
-<div id="parte-e" class="section level3">
+<div id="parte-e" class="section level3" number="3.12.5">
 <h3><span class="header-section-number">3.12.5</span> Parte e</h3>
 <ul>
-<li>Crear un data frame “df10” con dos columnas. La primera columna “x” debe contener los datos 1, 2 y 3 y la segunda “y” los datos 4, 5 y 6. Sin embargo, los tres datos de la primera columna deben ser del tipo de dato “numeric” (numérico). Mientras los tres datos de la segunda columna deben ser del tipo de dato “factor” (categórica) -Ahora convertir los valores de la segunda columna (y), del tipo de dato “factor” a “numeric” -Mostrar que los valores de la segunda columna “y” ahora realmente son del tipo de dato “numeric”</li>
+<li>Crear un data frame “df10” con dos columnas. La primera columna “x” debe contener los datos 1, 2 y 3 y la segunda “y” los datos 4, 5 y 6. Sin embargo, los tres datos de la primera columna deben ser del tipo de dato “numeric” (numérico). Mientras los tres datos de la segunda columna deben ser del tipo de dato “factor” (categórica)
+-Ahora convertir los valores de la segunda columna (y), del tipo de dato “factor” a “numeric”
+-Mostrar que los valores de la segunda columna “y” ahora realmente son del tipo de dato “numeric”</li>
 </ul>
 <p>Nota: Observar bien lo que hace la función as.numeric() en el presente caso</p>
 
@@ -1033,7 +1170,6 @@ data.list</code></pre></div>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
-<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
 <script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
@@ -1052,6 +1188,7 @@ gitbook.start({
 "weibo": false,
 "instapaper": false,
 "vk": false,
+"whatsapp": false,
 "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
@@ -1071,10 +1208,15 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["r_libro_cl.pdf", "r_libro_cl.epub"],
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
 "toc": {
 "collapse": "subsection"
-}
+},
+"info": null
 });
 });
 </script>
@@ -1084,7 +1226,7 @@ gitbook.start({
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    var src = "";
+    var src = "true";
     if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
     if (location.protocol !== "file:")
       if (/^https?:/.test(src))

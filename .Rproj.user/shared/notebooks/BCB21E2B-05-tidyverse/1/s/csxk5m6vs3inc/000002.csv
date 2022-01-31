@@ -1,0 +1,2 @@
+"0","url=""http://freakonometrics.free.fr/german_credit.csv"""
+"0","dataset <- read.csv(url, header = TRUE, sep = "","")"

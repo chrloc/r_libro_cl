@@ -1,0 +1,32 @@
+"0","library(XLConnect)"
+"2","XLConnect 1.0.5 by Mirai Solutions GmbH [aut],
+  Martin Studer [cre],
+  The Apache Software Foundation [ctb, cph] (Apache POI),
+  Graph Builder [ctb, cph] (Curvesapi Java library),
+  Brett Woolridge [ctb, cph] (SparseBitSet Java library)
+"
+"2","https://mirai-solutions.ch
+https://github.com/miraisolutions/xlconnect
+"
+"0","glimpse(tq_index(""SP500""))"
+"2","Getting holdings for SP500
+"
+"1","Rows: 505"
+"1",""
+"1","
+"
+"1","Columns: 8"
+"1",""
+"1","
+"
+"1","$ symbol         [3m[38;5;246m<chr>[39m[23m ""AAPL"", ""MSFT"", ""AMZN"", ""TSLA"", ""G~
+$ company        [3m[38;5;246m<chr>[39m[23m ""Apple Inc."", ""Microsoft Corporati~
+$ identifier     [3m[38;5;246m<chr>[39m[23m ""03783310"", ""59491810"", ""02313510""~
+$ sedol          [3m[38;5;246m<chr>[39m[23m ""2046251"", ""2588173"", ""2000019"", ""~
+$ weight         [3m[38;5;246m<dbl>[39m[23m 0.068284491, 0.058630572, 0.035768~
+$ sector         [3m[38;5;246m<chr>[39m[23m ""Information Technology"", ""Informa~
+$ shares_held    [3m[38;5;246m<dbl>[39m[23m 172882480, 83281800, 4838013, 9023~
+$ local_currency [3m[38;5;246m<chr>[39m[23m ""USD"", ""USD"", ""USD"", ""USD"", ""USD"",~"
+"1",""
+"1","
+"

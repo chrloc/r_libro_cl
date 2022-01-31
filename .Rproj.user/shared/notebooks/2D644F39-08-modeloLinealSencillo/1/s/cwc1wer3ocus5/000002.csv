@@ -1,0 +1,4 @@
+"0","utilidad <- c(13, 14, 12, 14, 15)"
+"0","publicidad <-  c(5, 9, 5, 8, 9)"
+"0","datosPubl <- data.frame(utilidad, publicidad)"
+"0","print(datosPubl)"

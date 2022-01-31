@@ -1,0 +1,3 @@
+"0","library(dplyr) # debe ser una versión de dplyr mayor a 0.8"
+"0","library(eurostat) # R Tools para Eurostat open data (requiere versión dplyr > 0.8)"
+"0","?eurostat # página de ayuda"

@@ -1,0 +1,16 @@
+h1:ST Serie de tiempo
+h2:objetivo Objetivo
+h2:cargar-datos Cargar datos
+h2:graficar-la-serie Graficar la serie
+h2:comprobar-si-es-estacionaria Comprobar, si es estacionaria
+h2:identificando-una-serie-no-estacionaria Identificando una serie no estacionaria
+h3:convertir-a-estacionaria Convertir a estacionaria
+h3:retornos-log Retornos log
+h3:diferenciar-1st-order Diferenciar (1st order)
+h2:arima ARIMA
+h3:acf acf
+h3:pacf pacf
+h3:auto.arima auto.arima
+h2:pronóstico Pronóstico
+h2:ejercicio Ejercicio
+

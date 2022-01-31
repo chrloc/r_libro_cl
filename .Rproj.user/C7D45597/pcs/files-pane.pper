@@ -1,9 +1,9 @@
 {
-    "path" : "~/directorioR/r_libro_cl",
-    "sortOrder" : [
+    "path": "~/directorioR/r_libro_cl",
+    "sortOrder": [
         {
-            "ascending" : true,
-            "columnIndex" : 2
+            "columnIndex": 2,
+            "ascending": true
         }
     ]
 }

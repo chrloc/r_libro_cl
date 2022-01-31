@@ -1,0 +1,4 @@
+"0","dataset %>%"
+"0","  filter(Creditability ==0) %>% "
+"0","  arrange(desc(Age..years.)) %>% "
+"0","  head(n=5)"

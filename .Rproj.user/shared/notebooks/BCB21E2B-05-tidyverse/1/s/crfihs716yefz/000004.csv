@@ -1,0 +1,4 @@
+"0","# o con case_when()"
+"0","# dataset <-  dataset %>%"
+"0","#   mutate(Default = case_when(Creditability == 1 ~ 'No',"
+"0","#                                    Creditability == 0 ~ 'Yes' ))"

@@ -1,0 +1,6 @@
+"0","criteria <- read_excel('ahp_con_MCDA.xlsx', sheet='ahp', col_names=FALSE, range='B3:C6')"
+"2","New names:
+* `` -> ...1
+* `` -> ...2
+"
+"0","print(criteria)"

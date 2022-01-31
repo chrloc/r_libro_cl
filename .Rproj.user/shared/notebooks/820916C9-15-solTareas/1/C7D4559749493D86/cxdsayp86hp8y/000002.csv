@@ -1,5 +1,0 @@
-"0","library(readxl)"
-"2","package ‘readxl’ was built under R version 3.5.3"
-"0","dataset10 <- read_excel(file.choose(), sheet=1, col_names = TRUE)"
-"2","Error: Can't establish that the input is either xls or xlsx.
-"

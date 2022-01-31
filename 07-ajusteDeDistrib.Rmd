@@ -6,8 +6,8 @@ Determinar, a cuál distribución se ajustan datos, utilizando el paquete rriskD
 
 - Cargar el paquete / library rriskDistributions
 
-```{r}
-library(rriskDistributions)
+```{r ajusteStart}
+if(!require(rriskDistributions)) install.packages('rriskDistributions'); library(rriskDistributions)
 ```
 
 ## Distribución normal 
@@ -146,7 +146,7 @@ table(datos.binom)
 hist(datos.binom)
 ```
 
-## Unir todo en un data frame
+## Unir todo en un solo data frame
 
 - Unir datos.norm, datos.exp, datos.unif, datos.lognorm y datos.poiss en un solo data frame con el nombre "datos"
 
@@ -159,7 +159,7 @@ datos <- data.frame(normal = datos.norm, expon = datos.exp, uniforme = datos.uni
 - Utilizar la función fit.cont() del paquete rriskDistributions para distribuciones continuas con el fin de realizar el ajuste. *Nota:* Este proceso es "pesado" y se demora un rato ...
 - Finalmente, se abre una nueva ventana, que informa sobre la distribución "más ajustada". Esta figura no se muestra a continuación. Sin embargo, el resultado se presentará en una tabla
 
-```{r}
+```{r ajusteEnd}
 library(rriskDistributions)
 # utilizar la función fit.cont() para distribuciones continuas
 res1 <-  fit.cont(datos$normal)

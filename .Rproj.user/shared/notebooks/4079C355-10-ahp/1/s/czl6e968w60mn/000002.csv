@@ -1,0 +1,5 @@
+"0","criteria.calif <- read_excel('ahp_con_MCDA.xlsx', sheet='ahp', col_names=TRUE, range='B12:F16')"
+"2","New names:
+* `` -> ...1
+"
+"0","print(criteria.calif)"

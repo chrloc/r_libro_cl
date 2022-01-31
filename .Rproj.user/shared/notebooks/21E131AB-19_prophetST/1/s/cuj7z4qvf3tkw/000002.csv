@@ -1,0 +1,8 @@
+"0","# gráfica más interactiva"
+"0","dyplot.prophet(model, forecast)"
+"2","`select_()` was deprecated in dplyr 0.7.0.
+Please use `select()` instead."
+"2","Registered S3 method overwritten by 'htmlwidgets':
+  method           from         
+  print.htmlwidget tools:rstudio
+"

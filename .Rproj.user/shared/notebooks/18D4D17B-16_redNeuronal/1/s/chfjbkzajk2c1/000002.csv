@@ -1,0 +1,6 @@
+"0","# exactitud"
+"0","mean(resultados$actual==ifelse(resultados$pred > 0.5, 1, 0)) # 0.7470588"
+"1","[1]"
+"1"," 0.6882353"
+"1","
+"

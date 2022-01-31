@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Programar un ciclo de una forma "sencilla". Es decir, un secuencia de comandos que se ejecuta repetidas veces, pero sin escribir mucho código.
+Programar un ciclo de una forma "sencilla". Es decir, una secuencia de comandos que se ejecuta repetidas veces, pero sin escribir mucho código.
 
 ## ¿Qué son las funciones del tipo "apply()"? 
 
@@ -22,7 +22,7 @@ A continuación, nos enfocamos en la aplicación de las funciones: apply, lapply
 
 - Consultar la ayuda para la función apply
 
-```{r}
+```{r buckleStart}
 ?apply
 ```
 
@@ -128,7 +128,7 @@ for(i in 1:nrow(dataset.num)){
 print(output)
 ```
 
-- Hacer lo mismo que lo anterior (for loop), pero utilizando apply() en lugar de for, lo que significa escribir menos código...
+- Hacer lo mismo que lo anterior (for loop), pero utilizando apply() en lugar del for(), lo que significa escribir menos código...
 Después, utilizar rowMeans(), que debe arrojar el mismo resultado en este caso
 
 ```{r}
@@ -196,7 +196,7 @@ sapply(dataset.list, "[", 2, 2:3) # segunda fila, columnas 2 hasta 3 (como matri
 
 ¿Cuál es el valor mínimo en cada fila de los 3 data frames de dataset.list?
 
-```{r}
+```{r buckeEnd}
 sapply(dataset.list, apply, 1, min)
 which.min(dataset.list[[1]][1,]) # indica que los valores mínimos son en la tercera columna ("Calificacion")
 ```

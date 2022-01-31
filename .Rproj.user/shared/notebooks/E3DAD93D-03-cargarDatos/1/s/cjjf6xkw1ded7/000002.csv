@@ -1,0 +1,1 @@
+"0","kable(head(search_eurostat(""interest rates"")), n=5)"

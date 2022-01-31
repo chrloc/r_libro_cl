@@ -1,0 +1,1 @@
+"0","datos <- data.frame(normal = datos.norm, expon = datos.exp, uniforme = datos.unif, logn = datos.lognorm, poiss = datos.poiss)"

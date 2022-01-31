@@ -1,0 +1,4 @@
+"0","log.ret <- diff(log(precios$GOOG.Adjusted), lag=1)  # genera un NA al inicio"
+"0","precios$log.ret <- log.ret # agregar una nueva columna con los retornos log"
+"0","precios <- na.omit(precios) # omitir registro/s con NA"
+"0","# head(precios)"

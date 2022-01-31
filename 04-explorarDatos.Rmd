@@ -89,7 +89,7 @@ dataset.boxplot + geom_boxplot() + labs(x="Default (0 or 1)", y = "Amount")
 - Histogramas proveen información sobre un posible sesgo en la distribución de los datos (skewness) y sobre su nivel de levantamiento o cuán aplanada es la distribución (kurtosis). Es decir, se puede ver el nivel de normalidad de la distribución
 
 ```{r}
-dataset.histogram <-ggplot(data=dataset, aes(x = Creditability)) + theme(legend.position="none")
+dataset.histogram <- ggplot(data=dataset, aes(x = Creditability)) + theme(legend.position="none")
 dataset.histogram + geom_bar(colour="darkgreen", fill="white" ) + labs(x="Default 0 or 1", y="Frequency")
 ```
 
@@ -105,11 +105,12 @@ dataset.histogram + geom_bar(colour="darkgreen", fill="white" ) + labs(x="Defaul
 ## Apalancarse por el paquete DescTools
 
 El paquete DescTools provee funcionalidad en términos de una estadística descriptiva y de un análisis exploratorio de los datos para comprender mejor los datos (antes de generar modelos).
-Donde DescTools = Tools for Descriptive Statistics and Exploratory Data Analysis.
+Donde, DescTools = Tools for Descriptive Statistics and Exploratory Data Analysis.
 
 - Cargar este paquete, utilizando la función library()
 
 ```{r}
+if(!require('DescTools')) install.packages('DescTools'); library(DescTools)
 library(DescTools)
 ```
 
@@ -119,7 +120,7 @@ library(DescTools)
 ?DescTools
 ```
 
-- Describir de la variable data los datos de la columna "Credit.Amount", utilizando la función Desc(). Nota: Es con D mayúscula
+- Describir del dataset (con los datos de los créditos) los datos de la columna "Credit.Amount", utilizando la función Desc(). Nota: Es con D mayúscula
 - Observar el resultado en la pantalla
 
 ```{r}
@@ -133,7 +134,7 @@ Desc(dataset$Credit.Amount)
 PlotQQ(dataset$Credit.Amount)
 ```
 
-- Ahora, utilizar la función PlotFdist() de DescTools para la misma variable (Credit.Amount)
+- Ahora, utilizar la función PlotFdist() de DescTools (Frequency Distribution Plot) para la misma variable (Credit.Amount)
 - Observar el resultado, que combina una gráfica de la distribución de frecuencias, un histograma, un diagrama de caja (box plot) y ecdf.plotd
 
 ```{r}

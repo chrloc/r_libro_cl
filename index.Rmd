@@ -1,7 +1,7 @@
 --- 
 title: "Una breve introducción a R con un enfoque financiero y administrativo"
 author: "Christian Lochmuller"
-date: "2019, compilado `r Sys.Date()`"
+date: "2019, actualizado `r Sys.Date()`"
 site: bookdown::bookdown_site
 documentclass: book
 bibliography: [book.bib, packages.bib]
@@ -16,7 +16,7 @@ Los prerequisitos incluyen:
 
 - Conocimientos en términos de los fundamentos de la programación.
 - Bajar e installar el lenguaje de programación R ("gratuito"): https://www.r-project.org/
-- Bajar e installar el IDE RStudio Desktop ("gratuito"): https://www.rstudio.com/products/rstudio/download/
+- Bajar e instalar el IDE RStudio Desktop ("gratuito"): https://www.rstudio.com/products/rstudio/download/
 - Motivación para aprender sobre la programación con R y capacidad de "aprender a aprender".
 
 También es pertinente señalar, que en la nube esta disponible una versión de R / RStudio: https://rstudio.cloud/. Sin embargo, aquí trabaremos con la versión "desktop".

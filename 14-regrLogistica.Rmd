@@ -17,7 +17,7 @@ El objetivo consiste en construir un clasificador, utilizando una regresión log
 url <- "http://freakonometrics.free.fr/german_credit.csv"
 mis.datos <- read.csv(url, header = TRUE, sep = ",")
 
-```{r}
+```{r lgrStart}
 url <- "http://freakonometrics.free.fr/german_credit.csv"
 mis.datos <- read.csv(url, header = TRUE, sep = ",")
 # Estos mismos datos también se pueden bajar de la siguiente dirección:
@@ -211,7 +211,7 @@ head(probs)
 - Generar una matriz de error (matriz de clasificación), utilizando la función table() con respecto a la variable de salida (variable de predicción)
 - Interpretar los valores de esta matriz
 
-```{r}
+```{r lgrEnd}
 prediccion <- ifelse(probs > 0.5, 1, 0)
 table(prediccion, test_data2$Creditability_Default)
 ```
