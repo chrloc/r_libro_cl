@@ -1,0 +1,4 @@
+"0","# objetivos de optimización: maximizar el retorno "
+"0","portf <- add.objective(portf, type = 'return', name = 'mean')"
+"0","# ...y minimizar el riesgo"
+"0","portf <- add.objective(portf, type = 'risk', name = 'StdDev')"

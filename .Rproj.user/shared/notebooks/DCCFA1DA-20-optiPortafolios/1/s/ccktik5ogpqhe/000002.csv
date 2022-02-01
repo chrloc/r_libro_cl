@@ -1,0 +1,2 @@
+"0","# inicializar un objeto de portafolio con la función portfolio.spec() y con los nombres de cada acción"
+"0","portf <- portfolio.spec(colnames(portfolioReturns))"

@@ -1,7 +1,0 @@
-# One-Hot-Encoding {#oneHotEnc}
-
-## Objetivo
-
-El objetivo de esta sección consiste en explicar, cómo se pueden "escalar" y/o "normalizar" datos en R, para evitar sesgos en el análisis de estos. Además, cómo se puede crear una variable "dummy" en R (one-hot encoding).
-
-## Cargar los datos

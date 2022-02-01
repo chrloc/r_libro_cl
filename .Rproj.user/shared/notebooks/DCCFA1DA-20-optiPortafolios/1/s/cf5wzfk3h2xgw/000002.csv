@@ -1,0 +1,3 @@
+"0","# extraer la frontera eficiciente"
+"0","# parametros como en la página de ayuda para la función extractEfficientFrontier()"
+"0","ef <- extractEfficientFrontier(optPortf, match.col = ""StdDev"", n.portfolios = 25, risk_aversion = NULL)"

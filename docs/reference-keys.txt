@@ -201,6 +201,16 @@ convertir-a-data-frame
 realizar-el-pronóstico-con-prophet
 crear-el-modelo
 pronosticar---predict
+optPortf
+objetivo-16
+cargar-datos-3
+determiar-los-retornos
+preparar-los-datos-para-la-optimización
+definir-restricciones
+definir-objetivos-de-la-optimización
+realizar-la-optimización
+visualizar-los-resultados
+frontera-eficiente
 posibles-soluciones
 ejercicio-1-1
 enunciado

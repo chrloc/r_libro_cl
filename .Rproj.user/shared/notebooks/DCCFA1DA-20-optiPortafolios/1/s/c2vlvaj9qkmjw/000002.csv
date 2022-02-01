@@ -1,0 +1,6 @@
+"0","# visualizarlo ..."
+"0","# parametros como en la página de ayuda para la función chart.EfficientFrontier()"
+"0","chart.EfficientFrontier(ef, match.col = ""StdDev"", n.portfolios = 25, xlim = NULL, ylim = NULL,"
+"0","												cex.axis = 0.8, element.color = ""darkgray"", main = ""Efficient Frontier"","
+"0","												RAR.text = ""SR"", rf = 0, tangent.line = TRUE, cex.legend = 0.8,"
+"0","												chart.assets = TRUE, labels.assets = TRUE, pch.assets = 21, cex.assets = 0.8)"

@@ -1,0 +1,5 @@
+"0","# agregar restricciones"
+"0","# full investment"
+"0","portf <- add.constraint(portf, type='weight_sum', min_sum = 1, max_sum = 1)"
+"0","# box constraint for each individual asset; min 10% of each asset and max 40%"
+"0","portf <- add.constraint(portf, type='box', min = 0.1, max = 0.4)"
